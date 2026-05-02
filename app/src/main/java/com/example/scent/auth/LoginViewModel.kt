@@ -1,4 +1,4 @@
 package com.example.scent.auth
 
-class LoginScreen {
+class LoginViewModel {
 }
