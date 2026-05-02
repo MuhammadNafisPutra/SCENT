@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class RegisterViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-
     private val _state = MutableStateFlow(RegisterState())
     val state: StateFlow<RegisterState> = _state.asStateFlow()
 
@@ -38,7 +37,6 @@ class RegisterViewModel : ViewModel() {
         val email = _state.value.emailInput.trim()
         val password = _state.value.passwordInput
 
-        // Validasi
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             _state.value = _state.value.copy(errorMessage = "Semua kolom harus diisi")
             return
@@ -57,7 +55,6 @@ class RegisterViewModel : ViewModel() {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    // Berhasil daftar
                     _state.value = _state.value.copy(isLoading = false, isSuccess = true)
                 } else {
                     _state.value = _state.value.copy(

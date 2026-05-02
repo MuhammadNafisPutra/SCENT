@@ -22,16 +22,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun RegisterScreen(
     viewModel: RegisterViewModel = viewModel(),
     onNavigateToHome: () -> Unit = {},
-    onNavigateToLogin: () -> Unit = {} // Untuk tombol <- MASUK
+    onNavigateToLogin: () -> Unit = {}
 ) {
     val state by viewModel.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Definisi Warna Kustom Sesuai Desain
-    val bgColor = Color(0xFF121212) // Hitam gelap
+    val bgColor = Color(0xFF121212)
     val textColor = Color.White
-    val subTextColor = Color(0xFFAAAAAA) // Abu-abu terang
-    val inputBgColor = Color(0xFF1A1A1A) // Agak terang dari background
+    val subTextColor = Color(0xFFAAAAAA)
+    val inputBgColor = Color(0xFF1A1A1A)
     val borderColor = Color(0xFF333333)
 
     LaunchedEffect(state.errorMessage, state.isSuccess) {
@@ -46,7 +45,7 @@ fun RegisterScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = bgColor // Set background scaffold
+        containerColor = bgColor
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -54,7 +53,6 @@ fun RegisterScreen(
                 .padding(paddingValues)
                 .padding(horizontal = 24.dp, vertical = 16.dp)
         ) {
-            // --- TOP BAR KUSTOM ---
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -78,7 +76,6 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // --- HEADER TEKS ---
             Text(
                 text = "Buat Akun",
                 color = textColor,
@@ -95,7 +92,6 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // --- FORM NAMA LENGKAP ---
             Text(
                 text = "NAMA LENGKAP",
                 color = subTextColor,
@@ -122,7 +118,6 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // --- FORM EMAIL ---
             Text(
                 text = "ALAMAT EMAIL",
                 color = subTextColor,
@@ -149,7 +144,6 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // --- FORM KATA SANDI ---
             Text(
                 text = "KATA SANDI",
                 color = subTextColor,
@@ -187,7 +181,6 @@ fun RegisterScreen(
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            // --- TOMBOL DAFTAR ---
             Button(
                 onClick = { viewModel.registerUser() },
                 modifier = Modifier

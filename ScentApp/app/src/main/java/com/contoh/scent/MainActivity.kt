@@ -20,10 +20,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ScentTheme {
-                // Panggil layar register Anda di sini
                 RegisterScreen(
                     onNavigateToHome = {
-                        // Nanti kita isi logika untuk pindah ke Home di sini
                     }
                 )
             }
