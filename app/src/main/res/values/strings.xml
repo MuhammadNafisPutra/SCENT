@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">SCENT</string>
+
+    <string name="welcome_back">Selamat Datang Kembali</string>
+    <string name="login_desc">Masukkan kredensial Anda untuk mengakses\nkoleksi Anda.</string>
+    <string name="email_label">ALAMAT EMAIL</string>
+    <string name="email_placeholder">atelier@scent.com</string>
+    <string name="password_label">KATA SANDI</string>
+    <string name="forgot_password">LUPA KATA SANDI</string>
+    <string name="btn_login">MASUK</string>
+    <string name="new_to_scent">Baru di SCENT? </string>
+    <string name="register_now">Daftar Sekarang</string>
 </resources>
