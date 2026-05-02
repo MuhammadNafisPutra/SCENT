@@ -13,6 +13,10 @@ class RegisterViewModel : ViewModel() {
     private val _state = MutableStateFlow(RegisterState())
     val state: StateFlow<RegisterState> = _state.asStateFlow()
 
+    fun onNameChange(name: String) {
+        _state.value = _state.value.copy(nameInput = name)
+    }
+
     fun onEmailChange(email: String) {
         _state.value = _state.value.copy(emailInput = email)
     }
@@ -21,17 +25,22 @@ class RegisterViewModel : ViewModel() {
         _state.value = _state.value.copy(passwordInput = password)
     }
 
+    fun togglePasswordVisibility() {
+        _state.value = _state.value.copy(isPasswordVisible = !_state.value.isPasswordVisible)
+    }
+
     fun clearError() {
         _state.value = _state.value.copy(errorMessage = null)
     }
 
     fun registerUser() {
+        val name = _state.value.nameInput.trim()
         val email = _state.value.emailInput.trim()
         val password = _state.value.passwordInput
 
         // Validasi
-        if (email.isEmpty() || password.isEmpty()) {
-            _state.value = _state.value.copy(errorMessage = "Email dan Password tidak boleh kosong")
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+            _state.value = _state.value.copy(errorMessage = "Semua kolom harus diisi")
             return
         }
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -39,21 +48,21 @@ class RegisterViewModel : ViewModel() {
             return
         }
         if (password.length < 6) {
-            _state.value = _state.value.copy(errorMessage = "Password minimal 6 karakter")
+            _state.value = _state.value.copy(errorMessage = "Kata sandi minimal 6 karakter")
             return
         }
 
-        // Lolos validasi, mulai loading
         _state.value = _state.value.copy(isLoading = true, errorMessage = null)
 
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    // Berhasil daftar
                     _state.value = _state.value.copy(isLoading = false, isSuccess = true)
                 } else {
                     _state.value = _state.value.copy(
                         isLoading = false,
-                        errorMessage = task.exception?.message ?: "Terjadi kesalahan saat mendaftar"
+                        errorMessage = task.exception?.message ?: "Terjadi kesalahan"
                     )
                 }
             }
