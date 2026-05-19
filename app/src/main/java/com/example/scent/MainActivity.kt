@@ -4,13 +4,22 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.scent.data.repository.ProductRepository
+import com.example.scent.ui.favorit.FavoriteScreen
+import com.example.scent.ui.favorit.FavoriteViewModel
 import com.example.scent.ui.theme.SCENTTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,29 +28,49 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             SCENTTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                ScentApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun ScentApp() {
+    val navController = rememberNavController()
+    val repository    = remember { ProductRepository() }
+
+    Scaffold(
+        modifier       = Modifier.fillMaxSize(),
+        containerColor = Color(0xFF0A0A0A)
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            ScentNavHost(
+                navController = navController,
+                repository    = repository
+            )
+        }
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    SCENTTheme {
-        Greeting("Android")
+fun ScentNavHost(
+    navController : NavHostController,
+    repository    : ProductRepository
+) {
+    NavHost(
+        navController    = navController,
+        startDestination = "favorit"
+    ) {
+        composable("favorit") {
+            val viewModel: FavoriteViewModel = viewModel(
+                factory = FavoriteViewModel.Factory(repository)
+            )
+            FavoriteScreen(
+                viewModel      = viewModel,
+                onProductClick = { productId ->
+                    navController.navigate("detail/$productId")
+                }
+            )
+        }
     }
 }
