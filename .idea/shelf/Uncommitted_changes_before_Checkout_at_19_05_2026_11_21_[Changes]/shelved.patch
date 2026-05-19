@@ -1,0 +1,40 @@
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"GradleMigrationSettings\" migrationVersion=\"1\" />\r\n  <component name=\"GradleSettings\">\r\n    <option name=\"linkedExternalProjectsSettings\">\r\n      <GradleProjectSettings>\r\n        <option name=\"testRunner\" value=\"CHOOSE_PER_TEST\" />\r\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\r\n        <option name=\"gradleJvm\" value=\"#GRADLE_LOCAL_JAVA_HOME\" />\r\n        <option name=\"modules\">\r\n          <set>\r\n            <option value=\"$PROJECT_DIR$\" />\r\n            <option value=\"$PROJECT_DIR$/app\" />\r\n          </set>\r\n        </option>\r\n      </GradleProjectSettings>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision 6a313a1b1c99de16c4f1679ef991a5525a9edf50)
++++ b/.idea/gradle.xml	(date 1779159295586)
+@@ -10,6 +10,9 @@
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
++            <option value="$PROJECT_DIR$/ScentApp" />
++            <option value="$PROJECT_DIR$/ScentApp/Home" />
++            <option value="$PROJECT_DIR$/ScentApp/Register" />
+             <option value="$PROJECT_DIR$/app" />
+           </set>
+         </option>
+Index: settings.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>pluginManagement {\r\n    repositories {\r\n        google {\r\n            content {\r\n                includeGroupByRegex(\"com\\\\.android.*\")\r\n                includeGroupByRegex(\"com\\\\.google.*\")\r\n                includeGroupByRegex(\"androidx.*\")\r\n            }\r\n        }\r\n        mavenCentral()\r\n        gradlePluginPortal()\r\n    }\r\n}\r\ndependencyResolutionManagement {\r\n    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)\r\n    repositories {\r\n        google()\r\n        mavenCentral()\r\n    }\r\n}\r\n\r\nrootProject.name = \"SCENT\"\r\ninclude(\":app\")\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/settings.gradle.kts b/settings.gradle.kts
+--- a/settings.gradle.kts	(revision 6a313a1b1c99de16c4f1679ef991a5525a9edf50)
++++ b/settings.gradle.kts	(date 1779159519904)
+@@ -18,6 +18,7 @@
+         mavenCentral()
+     }
+ }
+-
+ rootProject.name = "SCENT"
+ include(":app")
++include(":ScentApp:Home")
++include(":ScentApp:Register")
+\ No newline at end of file

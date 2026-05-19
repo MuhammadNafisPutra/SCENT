@@ -1,0 +1,17 @@
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectModuleManager\">\r\n    <modules>\r\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/SCENT UAS.iml\" filepath=\"$PROJECT_DIR$/.idea/SCENT UAS.iml\" />\r\n    </modules>\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+--- a/.idea/modules.xml	(revision 3462f5465bc52192abe364c2f939b8b8bc37f6da)
++++ b/.idea/modules.xml	(date 1779026879509)
+@@ -3,6 +3,7 @@
+   <component name="ProjectModuleManager">
+     <modules>
+       <module fileurl="file://$PROJECT_DIR$/.idea/SCENT UAS.iml" filepath="$PROJECT_DIR$/.idea/SCENT UAS.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SCENT.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SCENT.app.unitTest.iml" />
+     </modules>
+   </component>
+ </project>
+\ No newline at end of file
