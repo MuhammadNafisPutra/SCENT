@@ -206,10 +206,7 @@ private fun ProductImageSection(
             ),
         contentAlignment = Alignment.Center
     ) {
-        // Ilustrasi botol parfum
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
-            // Spray nozzle
             Box(
                 modifier = Modifier
                     .width(28.dp)
@@ -217,14 +214,12 @@ private fun ProductImageSection(
                     .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
                     .background(Color(0xFF3A3A3A))
             )
-            // Leher
             Box(
                 modifier = Modifier
                     .width(10.dp)
                     .height(12.dp)
                     .background(Color(0xFF2A2A2A))
             )
-            // Tutup
             Box(
                 modifier = Modifier
                     .width(42.dp)
@@ -236,7 +231,6 @@ private fun ProductImageSection(
                         )
                     )
             )
-            // Badan botol
             Box(
                 modifier = Modifier
                     .width(100.dp)
@@ -257,7 +251,6 @@ private fun ProductImageSection(
                         shape = RoundedCornerShape(6.dp)
                     )
             ) {
-                // Label di badan botol
                 Column(
                     modifier            = Modifier
                         .align(Alignment.Center)
@@ -443,7 +436,6 @@ private fun ReviewsHeader(
                 )
             )
         }
-
         Spacer(Modifier.height(14.dp))
         Box(
             modifier = Modifier
@@ -465,9 +457,6 @@ private fun ReviewsHeader(
         }
     }
 }
-
-// ── Card Ulasan ───────────────────────────────────────────────────────────────
-
 @Composable
 private fun ReviewCard(
     review   : Review,
@@ -530,10 +519,7 @@ private fun ReviewCard(
                 )
             )
         }
-
         Spacer(Modifier.height(14.dp))
-
-        // Isi ulasan
         Text(
             text  = review.text,
             style = MaterialTheme.typography.bodyMedium.copy(
@@ -541,8 +527,6 @@ private fun ReviewCard(
                 color      = ScentTextPrimary
             )
         )
-
-        // Foto ulasan (jika ada)
         if (review.imageCount > 0) {
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

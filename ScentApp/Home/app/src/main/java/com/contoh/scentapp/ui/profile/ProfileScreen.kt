@@ -37,6 +37,7 @@ fun ProfileScreen(
     onDetailAkun : () -> Unit = {},
     onAlamat     : () -> Unit = {},
     onBahasa     : () -> Unit = {},
+    onPenjualan  : () -> Unit = {},
     viewModel    : ProfileViewModel = viewModel(factory = ProfileViewModelFactory())
 ) {
     val uiState   by viewModel.uiState.collectAsStateWithLifecycle()
@@ -197,7 +198,7 @@ fun ProfileScreen(
                     modifier = Modifier.padding(horizontal = 20.dp))
             }
             item(key = "penjualan") {
-                MenuItem(Icons.Default.Store, "Penjualan") {}
+                MenuItem(Icons.Default.Store, "Penjualan", onPenjualan)
                 HorizontalDivider(color = ScentDivider, thickness = 0.5.dp,
                     modifier = Modifier.padding(horizontal = 20.dp))
             }

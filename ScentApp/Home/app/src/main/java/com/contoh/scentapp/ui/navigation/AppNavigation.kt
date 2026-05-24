@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.contoh.scentapp.ui.auth.LoginScreen
+import com.contoh.scentapp.ui.auth.RegisterScreen
 import com.contoh.scentapp.ui.cart.CartScreen
 import com.contoh.scentapp.ui.detail.DetailScreen
 import com.contoh.scentapp.ui.favorite.FavoriteScreen
@@ -22,29 +24,48 @@ import com.contoh.scentapp.ui.profile.AccountDetailScreen
 import com.contoh.scentapp.ui.profile.LanguageScreen
 import com.contoh.scentapp.ui.profile.ProfileScreen
 import com.contoh.scentapp.ui.profile.ShippingAddressScreen
+import com.contoh.scentapp.ui.sales.AddProductScreen
+import com.contoh.scentapp.ui.sales.SalesScreen
 import com.contoh.scentapp.ui.search.SearchScreen
 import com.contoh.scentapp.ui.shipping.ShippingScreen
 import com.contoh.scentapp.ui.theme.ScentBlack
 import com.contoh.scentapp.ui.theme.components.ScentBottomNavBar
 
+// ── Routes ────────────────────────────────────────────────────────────────────
 
 object Routes {
+    // Auth
+    const val LOGIN    = "login"
+    const val REGISTER = "register"
+
+    // Main tabs
     const val HOME     = "home"
     const val FAVORITE = "favorite"
     const val CART     = "cart"
     const val PROFILE  = "profile"
+
+    // Product
     const val DETAIL = "detail/{productId}"
     const val SEARCH = "search?query={query}"
+
+    // Cart flow
     const val SHIPPING      = "shipping"
     const val ORDER_SUCCESS = "order_success"
-    const val ACCOUNT_DETAIL     = "account_detail"
-    const val SHIPPING_ADDRESS   = "shipping_address"
-    const val LANGUAGE           = "language"
+
+    // Profile sub-screens
+    const val ACCOUNT_DETAIL   = "account_detail"
+    const val SHIPPING_ADDRESS = "shipping_address"
+    const val LANGUAGE         = "language"
+
+    // Sales
+    const val SALES       = "sales"
+    const val ADD_PRODUCT = "add_product"
 
     fun detailRoute(productId: Int) = "detail/$productId"
     fun searchRoute(query: String = "") =
         if (query.isBlank()) "search?query=" else "search?query=$query"
 }
+
 
 private val bottomNavRoutes = setOf(
     Routes.HOME, Routes.FAVORITE, Routes.CART, Routes.PROFILE
@@ -54,8 +75,9 @@ private val bottomNavRoutes = setOf(
 fun AppNavigation() {
     val navController  = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute   = backStackEntry?.destination?.route ?: Routes.HOME
-    val showBottomBar  = currentRoute in bottomNavRoutes
+    val currentRoute   = backStackEntry?.destination?.route ?: Routes.LOGIN
+
+    val showBottomBar = currentRoute in bottomNavRoutes
 
     Scaffold(
         containerColor = ScentBlack,
@@ -78,11 +100,37 @@ fun AppNavigation() {
     ) { innerPadding ->
         NavHost(
             navController    = navController,
-            startDestination = Routes.HOME,
+            startDestination = Routes.LOGIN,           // ← start dari Login
             modifier         = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
+            // ── Auth ──────────────────────────────────────────────────────────
+
+            composable(Routes.LOGIN) {
+                LoginScreen(
+                    onLoginSuccess = {
+                        navController.navigate(Routes.HOME) {
+                            popUpTo(Routes.LOGIN) { inclusive = true }
+                        }
+                    },
+                    onRegister = { navController.navigate(Routes.REGISTER) }
+                )
+            }
+
+            composable(Routes.REGISTER) {
+                RegisterScreen(
+                    onRegisterSuccess = {
+                        navController.navigate(Routes.HOME) {
+                            popUpTo(Routes.LOGIN) { inclusive = true }
+                        }
+                    },
+                    onLogin = { navController.popBackStack() }
+                )
+            }
+
+            // ── Tab Utama ─────────────────────────────────────────────────────
+
             composable(Routes.HOME) {
                 HomeScreen(
                     onProductClick = { productId ->
@@ -93,6 +141,7 @@ fun AppNavigation() {
                     }
                 )
             }
+
             composable(Routes.FAVORITE) {
                 FavoriteScreen(
                     onBack         = { navController.popBackStack() },
@@ -101,6 +150,7 @@ fun AppNavigation() {
                     }
                 )
             }
+
             composable(Routes.CART) {
                 CartScreen(
                     onBack             = { navController.popBackStack() },
@@ -108,14 +158,19 @@ fun AppNavigation() {
                     onContinueShopping = { navController.navigate(Routes.HOME) }
                 )
             }
+
             composable(Routes.PROFILE) {
                 ProfileScreen(
-                    onBack           = { navController.popBackStack() },
-                    onDetailAkun     = { navController.navigate(Routes.ACCOUNT_DETAIL) },
-                    onAlamat         = { navController.navigate(Routes.SHIPPING_ADDRESS) },
-                    onBahasa         = { navController.navigate(Routes.LANGUAGE) }
+                    onBack       = { navController.popBackStack() },
+                    onDetailAkun = { navController.navigate(Routes.ACCOUNT_DETAIL) },
+                    onAlamat     = { navController.navigate(Routes.SHIPPING_ADDRESS) },
+                    onBahasa     = { navController.navigate(Routes.LANGUAGE) },
+                    onPenjualan  = { navController.navigate(Routes.SALES) }
                 )
             }
+
+            // ── Detail & Search ───────────────────────────────────────────────
+
             composable(
                 route     = Routes.DETAIL,
                 arguments = listOf(navArgument("productId") { type = NavType.IntType })
@@ -126,6 +181,7 @@ fun AppNavigation() {
                     onBack    = { navController.popBackStack() }
                 )
             }
+
             composable(
                 route     = Routes.SEARCH,
                 arguments = listOf(
@@ -141,12 +197,14 @@ fun AppNavigation() {
                     onBack       = { navController.popBackStack() }
                 )
             }
+
             composable(Routes.SHIPPING) {
                 ShippingScreen(
                     onBack    = { navController.popBackStack() },
                     onConfirm = { navController.navigate(Routes.ORDER_SUCCESS) }
                 )
             }
+
             composable(Routes.ORDER_SUCCESS) {
                 OrderSuccessScreen(
                     onBackHome = {
@@ -157,19 +215,34 @@ fun AppNavigation() {
                     }
                 )
             }
+
+            // ── Profile Sub-Screens ───────────────────────────────────────────
+
             composable(Routes.ACCOUNT_DETAIL) {
-                AccountDetailScreen(
-                    onBack = { navController.popBackStack() }
-                )
+                AccountDetailScreen(onBack = { navController.popBackStack() })
             }
+
             composable(Routes.SHIPPING_ADDRESS) {
-                ShippingAddressScreen(
-                    onBack = { navController.popBackStack() }
+                ShippingAddressScreen(onBack = { navController.popBackStack() })
+            }
+
+            composable(Routes.LANGUAGE) {
+                LanguageScreen(onBack = { navController.popBackStack() })
+            }
+
+            // ── Sales ─────────────────────────────────────────────────────────
+
+            composable(Routes.SALES) {
+                SalesScreen(
+                    onBack       = { navController.popBackStack() },
+                    onAddProduct = { navController.navigate(Routes.ADD_PRODUCT) }
                 )
             }
-            composable(Routes.LANGUAGE) {
-                LanguageScreen(
-                    onBack = { navController.popBackStack() }
+
+            composable(Routes.ADD_PRODUCT) {
+                AddProductScreen(
+                    onBack = { navController.popBackStack() },
+                    onSave = { navController.popBackStack() }
                 )
             }
         }
