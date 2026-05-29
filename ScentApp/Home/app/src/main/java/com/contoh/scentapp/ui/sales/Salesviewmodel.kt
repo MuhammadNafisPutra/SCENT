@@ -12,8 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// ── UI State ──────────────────────────────────────────────────────────────────
-
 data class SalesUiState(
     val totalPendapatan : Long              = 42_890_000L,
     val growthPercent   : String            = "+12.4% dari bulan lalu",
@@ -25,8 +23,6 @@ data class SalesUiState(
     val formattedPendapatan: String
         get() = "Rp ${"%,d".format(totalPendapatan).replace(",", ".")}"
 }
-
-// ── ViewModel ─────────────────────────────────────────────────────────────────
 
 class SalesViewModel : ViewModel() {
 
@@ -73,15 +69,11 @@ class SalesViewModel : ViewModel() {
         }
     }
 
-    // ── Tambah produk baru (dipanggil dari AddProductScreen) ──────────────────
-
     fun addProduct(product: SalesProduct) {
         _uiState.update { state ->
             state.copy(products = state.products + product)
         }
     }
-
-    // ── Demo Data ─────────────────────────────────────────────────────────────
 
     private fun demoProducts() = listOf(
         SalesProduct(
@@ -123,8 +115,6 @@ class SalesViewModel : ViewModel() {
         )
     )
 }
-
-// ── Factory ───────────────────────────────────────────────────────────────────
 
 class SalesViewModelFactory : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")

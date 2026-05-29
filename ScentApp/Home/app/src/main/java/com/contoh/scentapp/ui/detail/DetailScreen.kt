@@ -469,14 +469,12 @@ private fun ReviewCard(
             .background(ScentBlack)
             .padding(16.dp)
     ) {
-        // Header: avatar + nama + tanggal
         Row(
             modifier              = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment     = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // Avatar lingkaran
                 Box(
                     modifier = Modifier
                         .size(40.dp)

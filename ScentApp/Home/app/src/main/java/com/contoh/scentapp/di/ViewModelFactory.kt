@@ -1,67 +1,84 @@
-package com.example.scent.di
+package com.contoh.scentapp.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.scent.data.repository.impl.AuthRepositoryImpl
-import com.example.scent.data.repository.impl.CartRepositoryImpl
-import com.example.scent.data.repository.impl.ProductRepositoryImpl
-import com.example.scent.ui.screens.auth.LoginViewModel
-import com.example.scent.ui.screens.auth.RegisterViewModel
-import com.example.scent.ui.screens.cart.CartViewModel
-import com.example.scent.ui.screens.home.HomeViewModel
-import com.example.scent.ui.screens.home.SearchViewModel
-import com.example.scent.ui.screens.inventory.InventoryViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.contoh.scentapp.data.repository.CartRepository
+import com.contoh.scentapp.data.repository.ProductRepository
+import com.contoh.scentapp.ui.auth.AuthViewModel
+import com.contoh.scentapp.ui.cart.CartViewModel
+import com.contoh.scentapp.ui.detail.DetailViewModel
+import com.contoh.scentapp.ui.favorite.FavoriteViewModel
+import com.contoh.scentapp.ui.home.HomeViewModel
+import com.contoh.scentapp.ui.profile.ProfileViewModel
+import com.contoh.scentapp.ui.sales.SalesViewModel
+import com.contoh.scentapp.ui.search.SearchViewModel
+
 
 object ViewModelFactory {
 
-    private val auth by lazy { FirebaseAuth.getInstance() }
-    private val firestore by lazy { FirebaseFirestore.getInstance() }
+    private val productRepo: ProductRepository
+        get() = ProductRepository.getInstance()
 
-    private val authRepo by lazy { AuthRepositoryImpl(auth, firestore) }
-    private val productRepo by lazy { ProductRepositoryImpl(firestore) }
+    private val cartRepo: CartRepository
+        get() = CartRepository.getInstance()
 
-    fun loginFactory() = object : ViewModelProvider.Factory {
+
+    fun authFactory() = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return LoginViewModel(authRepo) as T
-        }
-    }
-
-    fun registerFactory() = object : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return RegisterViewModel(authRepo) as T
+            return AuthViewModel() as T
         }
     }
 
     fun homeFactory() = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(productRepo) as T
+            return HomeViewModel(repository = productRepo) as T
         }
     }
 
     fun searchFactory() = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return SearchViewModel(productRepo) as T
+            return SearchViewModel(repository = productRepo) as T
         }
     }
 
-    fun cartFactory(userId: String) = object : ViewModelProvider.Factory {
+    fun detailFactory(productId: Int) = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val cartRepo = CartRepositoryImpl(firestore)
-            @Suppress("UNCHECKED_CAST")
-            return CartViewModel(cartRepo, userId) as T
+            return DetailViewModel(
+                productId  = productId,
+                repository = productRepo
+            ) as T
         }
     }
 
-    fun inventoryFactory(sellerId: String) = object : ViewModelProvider.Factory {
+    fun favoriteFactory() = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            @Suppress("UNCHECKED_CAST")
-            return InventoryViewModel(productRepo, sellerId) as T
+            return FavoriteViewModel(repository = productRepo) as T
+        }
+    }
+
+    fun cartFactory() = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return CartViewModel(repository = cartRepo) as T
+        }
+    }
+
+    fun profileFactory() = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return ProfileViewModel() as T
+        }
+    }
+
+    fun salesFactory() = object : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return SalesViewModel() as T
         }
     }
 }

@@ -24,10 +24,10 @@ class CartRepository private constructor() {
 
     fun addToCart(item: CartItem) {
         _cartItems.update { list ->
-            val existing = list.find { it.productId == item.productId }
+            val existing = list.find { it.id == item.id }
             if (existing != null) {
                 list.map {
-                    if (it.productId == item.productId)
+                    if (it.id == item.id)
                         it.copy(quantity = it.quantity + 1)
                     else it
                 }
@@ -38,7 +38,7 @@ class CartRepository private constructor() {
     }
 
     fun removeFromCart(productId: Int) {
-        _cartItems.update { list -> list.filter { it.productId != productId } }
+        _cartItems.update { list -> list.filter { it.id != productId } }
     }
 
     fun increaseQuantity(productId: Int) {

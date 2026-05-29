@@ -31,33 +31,20 @@ import com.contoh.scentapp.ui.shipping.ShippingScreen
 import com.contoh.scentapp.ui.theme.ScentBlack
 import com.contoh.scentapp.ui.theme.components.ScentBottomNavBar
 
-// ── Routes ────────────────────────────────────────────────────────────────────
-
 object Routes {
-    // Auth
     const val LOGIN    = "login"
     const val REGISTER = "register"
-
-    // Main tabs
     const val HOME     = "home"
     const val FAVORITE = "favorite"
     const val CART     = "cart"
     const val PROFILE  = "profile"
-
-    // Product
     const val DETAIL = "detail/{productId}"
     const val SEARCH = "search?query={query}"
-
-    // Cart flow
     const val SHIPPING      = "shipping"
     const val ORDER_SUCCESS = "order_success"
-
-    // Profile sub-screens
     const val ACCOUNT_DETAIL   = "account_detail"
     const val SHIPPING_ADDRESS = "shipping_address"
     const val LANGUAGE         = "language"
-
-    // Sales
     const val SALES       = "sales"
     const val ADD_PRODUCT = "add_product"
 
@@ -100,13 +87,11 @@ fun AppNavigation() {
     ) { innerPadding ->
         NavHost(
             navController    = navController,
-            startDestination = Routes.LOGIN,           // ← start dari Login
+            startDestination = Routes.LOGIN,
             modifier         = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            // ── Auth ──────────────────────────────────────────────────────────
-
             composable(Routes.LOGIN) {
                 LoginScreen(
                     onLoginSuccess = {
@@ -117,7 +102,6 @@ fun AppNavigation() {
                     onRegister = { navController.navigate(Routes.REGISTER) }
                 )
             }
-
             composable(Routes.REGISTER) {
                 RegisterScreen(
                     onRegisterSuccess = {
@@ -128,9 +112,6 @@ fun AppNavigation() {
                     onLogin = { navController.popBackStack() }
                 )
             }
-
-            // ── Tab Utama ─────────────────────────────────────────────────────
-
             composable(Routes.HOME) {
                 HomeScreen(
                     onProductClick = { productId ->
@@ -141,7 +122,6 @@ fun AppNavigation() {
                     }
                 )
             }
-
             composable(Routes.FAVORITE) {
                 FavoriteScreen(
                     onBack         = { navController.popBackStack() },
@@ -150,7 +130,6 @@ fun AppNavigation() {
                     }
                 )
             }
-
             composable(Routes.CART) {
                 CartScreen(
                     onBack             = { navController.popBackStack() },
@@ -158,7 +137,6 @@ fun AppNavigation() {
                     onContinueShopping = { navController.navigate(Routes.HOME) }
                 )
             }
-
             composable(Routes.PROFILE) {
                 ProfileScreen(
                     onBack       = { navController.popBackStack() },
@@ -168,9 +146,6 @@ fun AppNavigation() {
                     onPenjualan  = { navController.navigate(Routes.SALES) }
                 )
             }
-
-            // ── Detail & Search ───────────────────────────────────────────────
-
             composable(
                 route     = Routes.DETAIL,
                 arguments = listOf(navArgument("productId") { type = NavType.IntType })
@@ -181,7 +156,6 @@ fun AppNavigation() {
                     onBack    = { navController.popBackStack() }
                 )
             }
-
             composable(
                 route     = Routes.SEARCH,
                 arguments = listOf(
@@ -197,14 +171,12 @@ fun AppNavigation() {
                     onBack       = { navController.popBackStack() }
                 )
             }
-
             composable(Routes.SHIPPING) {
                 ShippingScreen(
                     onBack    = { navController.popBackStack() },
                     onConfirm = { navController.navigate(Routes.ORDER_SUCCESS) }
                 )
             }
-
             composable(Routes.ORDER_SUCCESS) {
                 OrderSuccessScreen(
                     onBackHome = {
@@ -215,9 +187,6 @@ fun AppNavigation() {
                     }
                 )
             }
-
-            // ── Profile Sub-Screens ───────────────────────────────────────────
-
             composable(Routes.ACCOUNT_DETAIL) {
                 AccountDetailScreen(onBack = { navController.popBackStack() })
             }
@@ -229,16 +198,12 @@ fun AppNavigation() {
             composable(Routes.LANGUAGE) {
                 LanguageScreen(onBack = { navController.popBackStack() })
             }
-
-            // ── Sales ─────────────────────────────────────────────────────────
-
             composable(Routes.SALES) {
                 SalesScreen(
                     onBack       = { navController.popBackStack() },
                     onAddProduct = { navController.navigate(Routes.ADD_PRODUCT) }
                 )
             }
-
             composable(Routes.ADD_PRODUCT) {
                 AddProductScreen(
                     onBack = { navController.popBackStack() },

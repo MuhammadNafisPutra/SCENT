@@ -1,7 +1,7 @@
-package com.example.scent.data.repository.impl
+package com.contoh.scentapp.data.repository
 
-import com.example.scent.data.model.User
-import com.example.scent.domain.repository.AuthRepository
+import com.contoh.scentapp.data.model.User
+import com.contoh.scentapp.domain.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await

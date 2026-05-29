@@ -17,45 +17,31 @@ class AuthViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState: StateFlow<AuthUiState> = _uiState.asStateFlow()
-
-    // ── Login field handlers ──────────────────────────────────────────────────
-
     fun onLoginEmailChange(value: String) {
         _uiState.update { it.copy(loginEmail = value, errorMessage = null) }
     }
-
     fun onLoginPasswordChange(value: String) {
         _uiState.update { it.copy(loginPassword = value, errorMessage = null) }
     }
-
     fun toggleLoginPasswordVisibility() {
         _uiState.update { it.copy(showLoginPass = !it.showLoginPass) }
     }
 
-    // ── Register field handlers ───────────────────────────────────────────────
-
     fun onRegisterNameChange(value: String) {
         _uiState.update { it.copy(registerName = value, errorMessage = null) }
     }
-
     fun onRegisterEmailChange(value: String) {
         _uiState.update { it.copy(registerEmail = value, errorMessage = null) }
     }
-
     fun onRegisterPasswordChange(value: String) {
         _uiState.update { it.copy(registerPassword = value, errorMessage = null) }
     }
-
     fun toggleRegisterPasswordVisibility() {
         _uiState.update { it.copy(showRegisterPass = !it.showRegisterPass) }
     }
 
-    // ── Login ─────────────────────────────────────────────────────────────────
-
     fun login(onSuccess: () -> Unit) {
         val state = _uiState.value
-
-        // Validasi sederhana
         if (state.loginEmail.isBlank()) {
             _uiState.update { it.copy(errorMessage = "Email tidak boleh kosong") }
             return
@@ -74,8 +60,6 @@ class AuthViewModel : ViewModel() {
         }
     }
 
-    // ── Register ──────────────────────────────────────────────────────────────
-
     fun register(onSuccess: () -> Unit) {
         val state = _uiState.value
 
@@ -91,7 +75,6 @@ class AuthViewModel : ViewModel() {
             _uiState.update { it.copy(errorMessage = "Kata sandi minimal 6 karakter") }
             return
         }
-
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             delay(800)
@@ -99,7 +82,6 @@ class AuthViewModel : ViewModel() {
             onSuccess()
         }
     }
-
     fun clearError() {
         _uiState.update { it.copy(errorMessage = null) }
     }

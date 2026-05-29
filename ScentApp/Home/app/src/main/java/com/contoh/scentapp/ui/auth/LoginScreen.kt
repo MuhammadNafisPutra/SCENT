@@ -33,8 +33,6 @@ fun LoginScreen(
     viewModel      : AuthViewModel = viewModel(factory = AuthViewModelFactory())
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    // rememberSaveable: field email & password bertahan saat rotasi
     var email    by rememberSaveable { mutableStateOf(uiState.loginEmail) }
     var password by rememberSaveable { mutableStateOf(uiState.loginPassword) }
 
@@ -48,8 +46,6 @@ fun LoginScreen(
             .padding(horizontal = 20.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-
-            // ── Logo ──────────────────────────────────────────────────────────
             Spacer(Modifier.height(48.dp))
             Text(
                 text  = "SCENT",
@@ -60,10 +56,7 @@ fun LoginScreen(
                 ),
                 color = ScentWhite
             )
-
             Spacer(Modifier.height(40.dp))
-
-            // ── Judul ─────────────────────────────────────────────────────────
             Text(
                 text  = "Selamat Datang\nKembali",
                 style = MaterialTheme.typography.displayMedium.copy(
@@ -81,10 +74,7 @@ fun LoginScreen(
                     lineHeight = 22.sp
                 )
             )
-
             Spacer(Modifier.height(40.dp))
-
-            // ── Email ─────────────────────────────────────────────────────────
             Text(
                 text  = "ALAMAT EMAIL",
                 style = MaterialTheme.typography.labelSmall.copy(
@@ -124,8 +114,6 @@ fun LoginScreen(
             )
 
             Spacer(Modifier.height(28.dp))
-
-            // ── Password ──────────────────────────────────────────────────────
             Row(
                 modifier              = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -193,8 +181,6 @@ fun LoginScreen(
                 thickness = 0.5.dp,
                 modifier  = Modifier.padding(top = 10.dp)
             )
-
-            // ── Error Message ─────────────────────────────────────────────────
             uiState.errorMessage?.let { error ->
                 Spacer(Modifier.height(12.dp))
                 Text(
@@ -206,8 +192,6 @@ fun LoginScreen(
             }
 
             Spacer(Modifier.height(32.dp))
-
-            // ── Tombol Masuk ──────────────────────────────────────────────────
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -238,8 +222,6 @@ fun LoginScreen(
                 }
             }
         }
-
-        // ── Daftar Sekarang (bawah layar) ─────────────────────────────────────
         Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)

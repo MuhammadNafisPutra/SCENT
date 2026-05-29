@@ -37,16 +37,11 @@ fun ShippingScreen(
 ) {
     val repository    = CartRepository.getInstance()
     val listState     = rememberLazyListState()
-
-    // rememberSaveable: pilihan kurir bertahan saat rotasi
     var selectedId by rememberSaveable { mutableStateOf("jnt") }
-
     val shippingOptions = repository.shippingOptions
     val selectedOption  = shippingOptions.find { it.id == selectedId } ?: shippingOptions.first()
-
-    // Hitung subtotal dari cart
     val cartItems   = repository.cartItems
-    val subtotal    = 1_450_000 // demo value
+    val subtotal    = 1_450_000
     val shippingFee = selectedOption.price
     val total       = subtotal + shippingFee
 
@@ -62,7 +57,6 @@ fun ShippingScreen(
             modifier       = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 120.dp)
         ) {
-            // ── Top Bar ───────────────────────────────────────────────────────
             item(key = "topbar") {
                 Row(
                     modifier = Modifier
@@ -97,8 +91,6 @@ fun ShippingScreen(
                     )
                 }
             }
-
-            // ── Header ────────────────────────────────────────────────────────
             item(key = "header") {
                 Column(
                     modifier = Modifier.padding(
@@ -126,8 +118,6 @@ fun ShippingScreen(
                     )
                 }
             }
-
-            // ── Shipping Options ──────────────────────────────────────────────
             items(
                 count = shippingOptions.size,
                 key   = { shippingOptions[it].id }
@@ -145,7 +135,6 @@ fun ShippingScreen(
                     animationSpec = tween(200),
                     label         = "bg_${option.id}"
                 )
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -157,7 +146,6 @@ fun ShippingScreen(
                         .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // Icon kurir
                     Box(
                         modifier = Modifier
                             .size(44.dp)
@@ -212,8 +200,6 @@ fun ShippingScreen(
                             )
                         )
                     }
-
-                    // Harga + radio
                     Column(horizontalAlignment = Alignment.End) {
                         Text(
                             text  = option.formattedPrice,
@@ -235,8 +221,6 @@ fun ShippingScreen(
                     }
                 }
             }
-
-            // ── Detail Pesanan ────────────────────────────────────────────────
             item(key = "order_detail") {
                 Spacer(Modifier.height(24.dp))
                 HorizontalDivider(color = ScentDivider, thickness = 0.5.dp,
@@ -306,8 +290,6 @@ fun ShippingScreen(
                 }
             }
         }
-
-        // ── Tombol Lanjutkan (sticky bottom) ──────────────────────────────────
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -338,8 +320,6 @@ fun ShippingScreen(
         }
     }
 }
-
-// ── Helper: icon berdasarkan tipe kurir ───────────────────────────────────────
 
 @Composable
 private fun iconForType(type: String): ImageVector = when (type) {

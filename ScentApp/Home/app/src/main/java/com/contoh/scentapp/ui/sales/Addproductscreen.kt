@@ -43,7 +43,6 @@ fun AddProductScreen(
     onBack     : () -> Unit = {},
     onSave     : (SalesProduct) -> Unit = {}
 ) {
-    // rememberSaveable: semua field bertahan saat rotasi
     var namaParfum      by rememberSaveable { mutableStateOf("") }
     var harga           by rememberSaveable { mutableStateOf("") }
     var selectedAroma   by rememberSaveable { mutableStateOf("Woody") }
@@ -67,7 +66,6 @@ fun AddProductScreen(
             modifier       = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 120.dp)
         ) {
-            // ── Top Bar ───────────────────────────────────────────────────────
             item(key = "topbar") {
                 Row(
                     modifier = Modifier
@@ -100,8 +98,6 @@ fun AddProductScreen(
                     )
                 }
             }
-
-            // ── Header ────────────────────────────────────────────────────────
             item(key = "header") {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                     Text(
@@ -120,8 +116,6 @@ fun AddProductScreen(
                     )
                 }
             }
-
-            // ── Upload Gambar ─────────────────────────────────────────────────
             item(key = "upload") {
                 Box(
                     modifier = Modifier
@@ -152,8 +146,6 @@ fun AddProductScreen(
                     }
                 }
             }
-
-            // ── Nama Parfum ───────────────────────────────────────────────────
             item(key = "nama") {
                 ProductFormField(
                     label       = "NAMA PARFUM",
@@ -163,8 +155,6 @@ fun AddProductScreen(
                     modifier    = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
                 )
             }
-
-            // ── Harga ─────────────────────────────────────────────────────────
             item(key = "harga") {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                     Text(
@@ -215,8 +205,6 @@ fun AddProductScreen(
                     }
                 }
             }
-
-            // ── Dropdown Wangi ────────────────────────────────────────────────
             item(key = "wangi") {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                     Text(
@@ -276,8 +264,6 @@ fun AddProductScreen(
                     }
                 }
             }
-
-            // ── Jumlah Stok ───────────────────────────────────────────────────
             item(key = "stok") {
                 ProductFormField(
                     label        = "JUMLAH STOK",
@@ -288,8 +274,6 @@ fun AddProductScreen(
                     modifier     = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
                 )
             }
-
-            // ── Ukuran (ML) ───────────────────────────────────────────────────
             item(key = "ukuran") {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                     Text(
@@ -332,8 +316,6 @@ fun AddProductScreen(
                     }
                 }
             }
-
-            // ── Deskripsi + Aroma Notes ───────────────────────────────────────
             item(key = "deskripsi_section") {
                 Column(
                     modifier = Modifier
@@ -343,7 +325,6 @@ fun AddProductScreen(
                         .background(ScentBlack)
                         .padding(16.dp)
                 ) {
-                    // Deskripsi Wangi
                     Text(
                         text  = "DESKRIPSI WANGI",
                         style = MaterialTheme.typography.labelSmall.copy(
@@ -374,8 +355,6 @@ fun AddProductScreen(
                     )
 
                     Spacer(Modifier.height(20.dp))
-
-                    // Catatan Aroma
                     Text(
                         text  = "CATATAN AROMA UTAMA",
                         style = MaterialTheme.typography.labelSmall.copy(
@@ -383,9 +362,7 @@ fun AddProductScreen(
                         )
                     )
                     Spacer(Modifier.height(12.dp))
-
-                    // Chips aroma yang sudah ditambah
-                    androidx.compose.foundation.layout.FlowRow(
+                    FlowRow(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalArrangement   = Arrangement.spacedBy(8.dp)
                     ) {
@@ -421,8 +398,6 @@ fun AddProductScreen(
                                 }
                             }
                         }
-
-                        // Input chip baru
                         if (showChipInput) {
                             BasicTextField(
                                 value         = newChipInput,
@@ -439,8 +414,6 @@ fun AddProductScreen(
                                     .width(100.dp)
                             )
                         }
-
-                        // Tombol tambah aroma
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(6.dp))
@@ -470,8 +443,6 @@ fun AddProductScreen(
                 }
             }
         }
-
-        // ── Tombol Tambah Produk (sticky bawah) ──────────────────────────────
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -517,8 +488,6 @@ fun AddProductScreen(
         }
     }
 }
-
-// ── Form Field Helper ─────────────────────────────────────────────────────────
 
 @Composable
 private fun ProductFormField(

@@ -175,7 +175,7 @@ class ProductRepository private constructor() {
 
     fun getReviews(productId: Int): List<Review> = listOf(
         Review(
-            id          = 1,
+            id          =  1,
             initials    = "E.H.",
             name        = "Elias H.",
             badge       = "PEMBELI TERVERIFIKASI",

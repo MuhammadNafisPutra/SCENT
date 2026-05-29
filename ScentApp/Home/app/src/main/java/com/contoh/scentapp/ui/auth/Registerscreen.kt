@@ -34,8 +34,6 @@ fun RegisterScreen(
     viewModel         : AuthViewModel = viewModel(factory = AuthViewModelFactory())
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    // rememberSaveable: field form bertahan saat rotasi
     var name     by rememberSaveable { mutableStateOf(uiState.registerName) }
     var email    by rememberSaveable { mutableStateOf(uiState.registerEmail) }
     var password by rememberSaveable { mutableStateOf(uiState.registerPassword) }
@@ -51,8 +49,6 @@ fun RegisterScreen(
             .padding(horizontal = 20.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-
-            // ── Top Bar ───────────────────────────────────────────────────────
             Spacer(Modifier.height(48.dp))
             Row(
                 modifier              = Modifier.fillMaxWidth(),
@@ -91,8 +87,6 @@ fun RegisterScreen(
             }
 
             Spacer(Modifier.height(40.dp))
-
-            // ── Judul ─────────────────────────────────────────────────────────
             Text(
                 text  = "Buat Akun",
                 style = MaterialTheme.typography.displayMedium.copy(
@@ -111,8 +105,6 @@ fun RegisterScreen(
             )
 
             Spacer(Modifier.height(40.dp))
-
-            // ── Nama Lengkap ──────────────────────────────────────────────────
             AuthFormField(
                 label       = "NAMA LENGKAP",
                 value       = name,
@@ -122,8 +114,6 @@ fun RegisterScreen(
             )
 
             Spacer(Modifier.height(24.dp))
-
-            // ── Email ─────────────────────────────────────────────────────────
             AuthFormField(
                 label           = "ALAMAT EMAIL",
                 value           = email,
@@ -134,8 +124,6 @@ fun RegisterScreen(
             )
 
             Spacer(Modifier.height(24.dp))
-
-            // ── Password ──────────────────────────────────────────────────────
             Text(
                 text  = "KATA SANDI",
                 style = MaterialTheme.typography.labelSmall.copy(
@@ -191,8 +179,6 @@ fun RegisterScreen(
                     )
                 }
             }
-
-            // ── Error Message ─────────────────────────────────────────────────
             uiState.errorMessage?.let { error ->
                 Spacer(Modifier.height(12.dp))
                 Text(
@@ -204,8 +190,6 @@ fun RegisterScreen(
             }
 
             Spacer(Modifier.height(32.dp))
-
-            // ── Tombol Daftar ─────────────────────────────────────────────────
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -238,8 +222,6 @@ fun RegisterScreen(
         }
     }
 }
-
-// ── Form Field ────────────────────────────────────────────────────────────────
 
 @Composable
 private fun AuthFormField(

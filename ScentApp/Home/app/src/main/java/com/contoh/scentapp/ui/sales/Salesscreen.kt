@@ -35,7 +35,6 @@ import com.contoh.scentapp.data.model.OrderStatus
 import com.contoh.scentapp.data.model.SalesProduct
 import com.contoh.scentapp.ui.theme.*
 
-// ── Entry Point ───────────────────────────────────────────────────────────────
 
 @Composable
 fun SalesScreen(
@@ -56,7 +55,6 @@ fun SalesScreen(
             modifier       = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 40.dp)
         ) {
-            // ── Top Bar ───────────────────────────────────────────────────────
             item(key = "topbar") {
                 Row(
                     modifier = Modifier
@@ -91,8 +89,6 @@ fun SalesScreen(
                     )
                 }
             }
-
-            // ── Header ────────────────────────────────────────────────────────
             item(key = "header") {
                 Column(
                     modifier = Modifier.padding(
@@ -121,7 +117,6 @@ fun SalesScreen(
                     )
                     Spacer(Modifier.height(20.dp))
 
-                    // Tombol Tambah Produk Baru
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -153,20 +148,17 @@ fun SalesScreen(
                 }
             }
 
-            // ── Stat Cards ────────────────────────────────────────────────────
             item(key = "stats") {
                 Column(
                     modifier            = Modifier.padding(horizontal = 20.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // Pendapatan
                     StatCard(
                         label    = "TOTAL PENDAPATAN",
                         value    = uiState.formattedPendapatan,
                         subLabel = uiState.growthPercent,
                         isLarge  = true
                     )
-                    // Penjualan
                     StatCard(
                         label   = "TOTAL PENJUALAN",
                         value   = "%,d".format(uiState.totalPenjualan).replace(",", "."),
@@ -175,8 +167,6 @@ fun SalesScreen(
                 }
                 Spacer(Modifier.height(28.dp))
             }
-
-            // ── Koleksi Header ────────────────────────────────────────────────
             item(key = "koleksi_header") {
                 Row(
                     modifier              = Modifier
@@ -201,8 +191,6 @@ fun SalesScreen(
                     }
                 }
             }
-
-            // ── Daftar Produk Penjual ─────────────────────────────────────────
             items(
                 items = uiState.products,
                 key   = { "sales_product_${it.id}" }
@@ -219,8 +207,6 @@ fun SalesScreen(
                     modifier  = Modifier.padding(horizontal = 20.dp)
                 )
             }
-
-            // ── Pengiriman Aktif ──────────────────────────────────────────────
             item(key = "pengiriman_header") {
                 Spacer(Modifier.height(28.dp))
                 Text(
@@ -251,8 +237,6 @@ fun SalesScreen(
         }
     }
 }
-
-// ── Stat Card ─────────────────────────────────────────────────────────────────
 
 @Composable
 private fun StatCard(
@@ -306,8 +290,6 @@ private fun StatCard(
     }
 }
 
-// ── Sales Product Item ────────────────────────────────────────────────────────
-
 @Composable
 private fun SalesProductItem(
     product  : SalesProduct,
@@ -321,7 +303,6 @@ private fun SalesProductItem(
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Thumbnail
         Box(
             modifier = Modifier
                 .size(80.dp)
@@ -355,7 +336,6 @@ private fun SalesProductItem(
 
         Spacer(Modifier.width(16.dp))
 
-        // Info
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text  = product.name,
@@ -374,7 +354,6 @@ private fun SalesProductItem(
                 )
             )
             Spacer(Modifier.height(10.dp))
-            // Aksi edit & delete
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 Icon(
                     imageVector        = Icons.Default.Edit,
@@ -396,8 +375,6 @@ private fun SalesProductItem(
         }
     }
 }
-
-// ── Active Order Card ─────────────────────────────────────────────────────────
 
 @Composable
 private fun ActiveOrderCard(
@@ -476,11 +453,9 @@ private fun ActiveOrderCard(
 
         Spacer(Modifier.height(16.dp))
 
-        // Action buttons
         when (order.status) {
             OrderStatus.DALAM_PROSES -> {
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    // TANDAI DIKEMAS
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -500,7 +475,6 @@ private fun ActiveOrderCard(
                             )
                         )
                     }
-                    // TANDAI DIKIRIM
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -524,7 +498,6 @@ private fun ActiveOrderCard(
             }
             OrderStatus.DIKEMAS -> {
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-                    // KIRIM SEKARANG
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -544,7 +517,6 @@ private fun ActiveOrderCard(
                             )
                         )
                     }
-                    // More options
                     Box(
                         modifier = Modifier
                             .size(44.dp)
@@ -573,6 +545,27 @@ private fun ActiveOrderCard(
                 ) {
                     Text(
                         text  = "DALAM PENGIRIMAN",
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize      = 10.sp,
+                            letterSpacing = 1.5.sp,
+                            fontWeight    = FontWeight.Bold,
+                            color         = ScentTextMuted
+                        )
+                    )
+                }
+            }
+
+            else -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(8.dp))
+                        .background(ScentSearchBg)
+                        .padding(vertical = 12.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text  = order.status.label,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize      = 10.sp,
                             letterSpacing = 1.5.sp,

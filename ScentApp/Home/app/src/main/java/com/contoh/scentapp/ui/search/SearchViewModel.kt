@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.contoh.scentapp.data.model.AromaFilter
 import com.contoh.scentapp.data.model.Product
+import com.contoh.scentapp.data.model.SearchUiState
 import com.contoh.scentapp.data.model.UsageFilter
 import com.contoh.scentapp.data.repository.ProductRepository
 import kotlinx.coroutines.FlowPreview
@@ -16,21 +17,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-
-data class SearchUiState(
-    val query                : String           = "",
-    val aromaFilters         : List<AromaFilter> = emptyList(),
-    val usageFilters         : List<UsageFilter>  = emptyList(),
-    val selectedAromaFilters : Set<String>       = emptySet(),
-    val selectedUsage        : String?           = null,
-    val results              : List<Product>     = emptyList(),
-    val isLoading            : Boolean           = false
-) {
-    val resultCount     : Int     get() = results.size
-    val hasActiveFilters: Boolean get() =
-        selectedAromaFilters.isNotEmpty() || selectedUsage != null
-}
 
 @OptIn(FlowPreview::class)
 class SearchViewModel(

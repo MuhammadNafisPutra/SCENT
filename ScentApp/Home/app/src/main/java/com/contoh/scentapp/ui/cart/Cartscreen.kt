@@ -48,15 +48,12 @@ fun CartScreen(
             modifier       = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(bottom = 140.dp)
         ) {
-            // ── Top Bar ───────────────────────────────────────────────────────
             item(key = "topbar") {
                 CartTopBar(
                     itemCount = uiState.totalItems,
                     onBack    = onBack
                 )
             }
-
-            // ── Header ────────────────────────────────────────────────────────
             item(key = "header") {
                 CartHeader(
                     subtitle = uiState.headerSubtitle,
@@ -68,8 +65,6 @@ fun CartScreen(
                     )
                 )
             }
-
-            // ── Cart Items ────────────────────────────────────────────────────
             items(
                 items = uiState.items,
                 key   = { "cart_${it.productId}" }
@@ -90,8 +85,6 @@ fun CartScreen(
                     modifier  = Modifier.padding(horizontal = 20.dp)
                 )
             }
-
-            // ── Summary ───────────────────────────────────────────────────────
             item(key = "summary") {
                 Spacer(Modifier.height(32.dp))
                 CartSummary(
@@ -101,8 +94,6 @@ fun CartScreen(
                 )
             }
         }
-
-        // ── Tombol bawah (sticky) ─────────────────────────────────────────────
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -111,7 +102,6 @@ fun CartScreen(
                 .padding(horizontal = 20.dp, vertical = 16.dp)
                 .navigationBarsPadding()
         ) {
-            // MENGATUR PENGIRIMAN
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -131,10 +121,7 @@ fun CartScreen(
                     )
                 )
             }
-
             Spacer(Modifier.height(12.dp))
-
-            // LANJUT BELANJA
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -157,8 +144,6 @@ fun CartScreen(
         }
     }
 }
-
-// ── Top Bar ───────────────────────────────────────────────────────────────────
 
 @Composable
 private fun CartTopBar(itemCount: Int, onBack: () -> Unit) {

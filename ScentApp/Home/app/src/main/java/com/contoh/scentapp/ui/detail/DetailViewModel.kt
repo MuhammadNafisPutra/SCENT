@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 class DetailViewModel(
     private val productId   : Int,
     private val repository  : ProductRepository = ProductRepository.getInstance(),
-    private val cartRepository: CartRepository  = CartRepository.getInstance()  // ← tambah
+    private val cartRepository: CartRepository  = CartRepository.getInstance()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(DetailUiState())
