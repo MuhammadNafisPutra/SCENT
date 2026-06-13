@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.order
+package com.contoh.scentapp.ui.order
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contoh.scentapp.domain.model.OrderStatus
 import com.contoh.scentapp.ui.theme.*
-
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -122,7 +123,14 @@ fun OrderHistoryScreen(
     onOrderDetailClick : (String) -> Unit,
     viewModel          : OrderHistoryViewModel = viewModel(factory = OrderHistoryViewModelFactory())
 ) {
-    val tabs = listOf("Semua", "Belum Bayar", "Diproses", "Dikirim", "Selesai", "Batal")
+    val tabs = listOf(
+        "Semua" to stringResource(R.string.tab_all),
+        "Belum Bayar" to stringResource(R.string.tab_unpaid),
+        "Diproses" to stringResource(R.string.tab_processing),
+        "Dikirim" to stringResource(R.string.tab_shipped),
+        "Selesai" to stringResource(R.string.tab_completed),
+        "Batal" to stringResource(R.string.tab_cancelled)
+    )
     var selectedTab by remember { mutableStateOf("Semua") }
 
     val orders     by viewModel.orders.collectAsStateWithLifecycle()
@@ -147,10 +155,11 @@ fun OrderHistoryScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Kembali", tint = MaterialTheme.colorScheme.onBackground,
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(24.dp).clickable(onClick = onBack))
-                Text("RIWAYAT PESANAN", style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold, letterSpacing = 2.sp), color = MaterialTheme.colorScheme.onBackground)
+                Text(stringResource(R.string.order_history_title), style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.Bold, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onBackground
+                ))
                 Spacer(Modifier.size(24.dp))
             }
 
@@ -160,9 +169,9 @@ fun OrderHistoryScreen(
                 horizontalArrangement  = Arrangement.spacedBy(8.dp),
                 modifier               = Modifier.padding(bottom = 16.dp)
             ) {
-                items(tabs) { tab ->
-                    val isSelected = tab == selectedTab
-                    val count = when (tab) {
+                items(tabs) { (tabKey, tabDisplay) ->
+                    val isSelected = tabKey == selectedTab
+                    val count = when (tabKey) {
                         "Semua" -> allOrders.size
                         "Belum Bayar" -> allOrders.count { it.status == OrderStatus.WAITING_PAYMENT || it.status == OrderStatus.MENUNGGU_KONFIRMASI }
                         "Diproses"    -> allOrders.count { it.status in listOf(OrderStatus.DALAM_PROSES, OrderStatus.DIKEMAS) }
@@ -175,13 +184,13 @@ fun OrderHistoryScreen(
                         modifier = Modifier.clip(RoundedCornerShape(20.dp))
                             .background(if (isSelected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent)
                             .border(1.dp, if (isSelected) MaterialTheme.colorScheme.outlineVariant else Color.Transparent, RoundedCornerShape(20.dp))
-                            .clickable { selectedTab = tab }
+                            .clickable { selectedTab = tabKey }
                             .padding(horizontal = 14.dp, vertical = 8.dp)
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(tab, color = if (isSelected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+                            Text(tabDisplay, color = if (isSelected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                                 style = MaterialTheme.typography.bodySmall.copy(fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal))
-                            if (count > 0 && tab != "Semua") {
+                            if (count > 0 && tabKey != "Semua") {
                                 Spacer(Modifier.width(4.dp))
                                 Box(modifier = Modifier.size(16.dp).clip(RoundedCornerShape(8.dp)).background(ScentGold.copy(alpha = 0.2f)), contentAlignment = Alignment.Center) {
                                     Text("$count", style = MaterialTheme.typography.labelSmall.copy(fontSize = 8.sp, color = ScentGold))
@@ -202,7 +211,7 @@ fun OrderHistoryScreen(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Icon(Icons.Default.ShoppingBag, null, tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), modifier = Modifier.size(48.dp))
                         Spacer(Modifier.height(16.dp))
-                        Text("Tidak ada pesanan", style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                        Text(stringResource(R.string.order_history_empty), style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                     }
                 }
             } else {
@@ -265,7 +274,7 @@ private fun OrderHistoryCard(order: OrderHistoryDisplay, onClick: () -> Unit) {
         Spacer(Modifier.height(12.dp))
 
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-            Text("Total Pembayaran", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+            Text(stringResource(R.string.order_history_total), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
             Text(order.totalStr, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold))
         }
 
@@ -277,8 +286,8 @@ private fun OrderHistoryCard(order: OrderHistoryDisplay, onClick: () -> Unit) {
                     .background(MaterialTheme.colorScheme.onBackground).padding(vertical = 10.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Text("LIHAT DETAIL & KONFIRMASI", style = MaterialTheme.typography.labelSmall.copy(
-                    fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background))
+                Text(stringResource(R.string.order_history_detail), style = MaterialTheme.typography.labelSmall.copy(
+                    fontSize = 10.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background))
             }
         }
     }

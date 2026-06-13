@@ -63,7 +63,7 @@
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        "Gagal memuat produk",
+                        stringResource(R.string.error_load_products_failed),
                         style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onBackground)
                     )
                     Text(
@@ -107,7 +107,8 @@
                 item(key = "hero") {
                     HeroBannerCard(
                         banner   = banner,
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
+                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+                        onBannerClick = { onProductClick(banner.productId) }
                     )
                 }
             }
@@ -119,7 +120,7 @@
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            "Belum ada produk tersedia",
+                            stringResource(R.string.home_empty_products),
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                             )
@@ -149,22 +150,21 @@
 
     @Composable
     private fun ScentTopBar() {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
-            verticalAlignment     = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+                .padding(horizontal = 20.dp, vertical = 16.dp)
         ) {
             Text(
-                text  = "SCENT",
-                style = MaterialTheme.typography.titleLarge.copy(
+                text     = "SCENT",
+                style    = MaterialTheme.typography.titleLarge.copy(
                     fontWeight    = FontWeight.Bold,
                     letterSpacing = 6.sp,
                     fontSize      = 18.sp
                 ),
-                color = MaterialTheme.colorScheme.onBackground
+                color    = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.align(Alignment.Center)
             )
         }
     }
@@ -198,67 +198,90 @@
     }
 
     @Composable
-    private fun HeroBannerCard(banner: HeroBanner, modifier: Modifier = Modifier) {
+    private fun HeroBannerCard(banner: HeroBanner, modifier: Modifier = Modifier, onBannerClick: () -> Unit = {}) {
         Box(
             modifier = modifier
                 .fillMaxWidth()
                 .height(280.dp)
                 .clip(RoundedCornerShape(16.dp))
+                .clickable(onClick = onBannerClick)
                 .background(
                     Brush.linearGradient(
                         colors = listOf(Color(banner.gradientStart), Color(banner.gradientEnd))
                     )
                 )
         ) {
+            if (banner.imageUrl != null && banner.imageUrl.isNotBlank()) {
+                SubcomposeAsyncImage(
+                    model              = banner.imageUrl,
+                    contentDescription = banner.title,
+                    contentScale       = ContentScale.Crop,
+                    modifier           = Modifier.fillMaxSize(),
+                    loading = {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(
+                                modifier    = Modifier.size(24.dp),
+                                color       = ScentGold,
+                                strokeWidth = 2.dp
+                            )
+                        }
+                    }
+                )
+            }
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Brush.verticalGradient(listOf(Color(0x00000000), Color(0xCC000000))))
             )
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 32.dp)
-                    .width(80.dp)
-                    .height(160.dp)
-            ) {
+            if (banner.imageUrl == null || banner.imageUrl.isBlank()) {
                 Box(
                     modifier = Modifier
-                        .align(Alignment.BottomCenter)
-                        .width(70.dp).height(130.dp)
-                        .clip(RoundedCornerShape(6.dp))
-                        .background(Brush.verticalGradient(listOf(Color(0x884A4A4A), Color(0xCC121212))))
-                        .border(0.5.dp, Color(0xFF666666), RoundedCornerShape(6.dp))
-                )
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .width(30.dp).height(28.dp)
-                        .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                )
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(top = 22.dp)
-                        .width(14.dp).height(18.dp)
-                        .background(MaterialTheme.colorScheme.outline)
-                )
+                        .align(Alignment.CenterEnd)
+                        .padding(end = 32.dp)
+                        .width(80.dp)
+                        .height(160.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .width(70.dp).height(130.dp)
+                            .clip(RoundedCornerShape(6.dp))
+                            .background(Brush.verticalGradient(listOf(Color(0x884A4A4A), Color(0xCC121212))))
+                            .border(0.5.dp, Color(0xFF666666), RoundedCornerShape(6.dp))
+                    )
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .width(30.dp).height(28.dp)
+                            .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                    )
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .padding(top = 22.dp)
+                            .width(14.dp).height(18.dp)
+                            .background(MaterialTheme.colorScheme.outline)
+                    )
+                }
             }
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(20.dp)
             ) {
+                val tagText = if (banner.tag == "NEW_ARRIVAL_TAG") stringResource(R.string.home_banner_new_arrival) else banner.tag
+                val descText = if (banner.description == "DEFAULT_DESC") stringResource(R.string.home_banner_discover) else banner.description
+
                 Text(
-                    text  = banner.tag,
+                    text  = tagText,
                     style = MaterialTheme.typography.labelSmall.copy(letterSpacing = 2.sp, color = ScentGold)
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(text = banner.title, style = MaterialTheme.typography.displayMedium)
                 Spacer(Modifier.height(10.dp))
                 Text(
-                    text     = banner.description,
+                    text     = descText,
                     style    = MaterialTheme.typography.bodySmall.copy(color = ScentTextPrimary, lineHeight = 18.sp),
                     maxLines = 4,
                     overflow = TextOverflow.Ellipsis

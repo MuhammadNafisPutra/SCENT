@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="home_banner_new_arrival">KEDATANGAN BARU</string>
+    <string name="home_banner_discover">Temukan koleksi terbaru kami.</string>
+    <string name="failed">Gagal</string>
+    <string name="ok">OK</string>
     <string name="app_name">ScentApp</string>
 
     <!-- General -->
@@ -56,5 +60,228 @@
     <string name="cart_total">ESTIMASI TOTAL</string>
     <string name="cart_set_shipping">MENGATUR PENGIRIMAN</string>
     <string name="cart_continue">LANJUT BELANJA</string>
+    <!-- Auth Screens -->
+    <string name="login_welcome_back">Selamat Datang\nKembali</string>
+    <string name="login_subtitle">Masukkan kredensial Anda untuk mengakses koleksi Anda.</string>
+    <string name="auth_email">ALAMAT EMAIL</string>
+    <string name="auth_password">KATA SANDI</string>
+    <string name="login_forgot_password">LUPA KATA SANDI</string>
+    <string name="login_button">MASUK</string>
+    <string name="login_new_user">Baru di ASCENT? </string>
+    <string name="login_register_now">Daftar Sekarang</string>
+    <string name="register_login">MASUK</string>
+    <string name="register_title">Buat Akun</string>
+    <string name="register_subtitle">Masukkan detail Anda untuk bergabung dengan atelier digital kami dan jelajahi koleksi eksklusif.</string>
+    <string name="register_fullname">NAMA LENGKAP</string>
+    <string name="register_button">DAFTAR</string>
+
+    <!-- Home & Search -->
+    <string name="error_load_products_failed">Gagal memuat produk</string>
+    <string name="home_empty_products">Belum ada produk tersedia</string>
+    <string name="search_filter_title">Cari &amp; Filter</string>
+    <string name="search_empty_title">Belum ada produk untuk dicari</string>
+    <string name="search_empty_desc">Filter pencarian akan muncul setelah ada produk yang ditambahkan</string>
+    <string name="search_aroma_profile">PROFIL AROMA</string>
+    <string name="search_usage">PENGGUNAAN</string>
+    <string name="search_results_found">HASIL DITEMUKAN</string>
+    <string name="search_product_count">Produk</string>
+    <string name="search_clear_all">HAPUS SEMUA</string>
+    <string name="search_apply_filter">TERAPKAN FILTER</string>
+    <string name="search_results_title">Hasil Pencarian</string>
+    <string name="search_filter_results">HASIL FILTER</string>
+    <string name="search_no_match_title">Tidak ada parfum\nyang cocok</string>
+    <string name="search_no_match_desc">Coba ubah filter Anda</string>
+
+    <!-- Detail Screen -->
+    <string name="detail_product_not_found">Produk tidak ditemukan</string>
+    <string name="detail_added_to_cart">Berhasil ditambahkan ke keranjang</string>
+    <string name="detail_add_to_cart">TAMBAH KE KERANJANG</string>
+    <string name="detail_reviews_title">Refleksi</string>
+    <string name="detail_reviews_count">ULASAN</string>
+    <string name="detail_write_review">TULIS ULASAN</string>
+
+    <!-- Shipping Screen -->
+    <string name="shipping_options_title">Opsi Pengiriman</string>
+    <string name="shipping_options_desc">Pilih layanan kurir dan metode pembayaran untuk pesanan Anda.</string>
+    <string name="shipping_empty_address">Silakan pilih alamat pengiriman terlebih dahulu</string>
+    <string name="shipping_payment_method">METODE PEMBAYARAN</string>
+    <string name="payment_cod">Bayar di Tempat (COD)</string>
+    <string name="payment_cod_desc">Bayar saat pesanan tiba</string>
+    <string name="payment_transfer">Transfer Bank</string>
+    <string name="payment_transfer_desc">Upload bukti transfer</string>
+    <string name="payment_proof_title">Upload Bukti Transfer</string>
+    <string name="payment_proof_subtitle">Pastikan bukti pembayaran terlihat jelas dan nominal sesuai.</string>
+    <string name="payment_proof_account_dest">REKENING TUJUAN TRANSFER</string>
+    <string name="payment_proof_photo">FOTO BUKTI PEMBAYARAN</string>
+    <string name="payment_proof_tap_select">Tap untuk pilih foto</string>
+    <string name="payment_proof_max_size">JPG, PNG — maks 5MB</string>
+    <string name="payment_proof_open_gallery">BUKA GALERI</string>
+    <string name="payment_proof_confirm">KONFIRMASI PEMBAYARAN</string>
+    <string name="shipping_order_detail">DETAIL PESANAN</string>
+    <string name="shipping_subtotal">Subtotal Produk</string>
+    <string name="shipping_fee">Biaya Pengiriman</string>
+    <string name="shipping_total">Total Tagihan</string>
+    <string name="shipping_continue_order">LANJUTKAN PESANAN</string>
+
+    <!-- Order Success Screen -->
+    <string name="close">Tutup</string>
+    <string name="order_success_title">Pesanan Berhasil\nDitempatkan</string>
+    <string name="order_success_transfer_desc">Terima kasih atas pesanan Anda. Tim kami sedang memverifikasi pembayaran Anda. Pesanan akan segera diproses setelah pembayaran terkonfirmasi.</string>
+    <string name="order_success_desc_cod">Terima kasih atas pesanan Anda. Silakan siapkan pembayaran saat kurir mengantarkan paket Anda.</string>
+    <string name="order_success_transfer">TRANSFER BANK</string>
+    <string name="order_success_cod">CASH ON DELIVERY</string>
+    <string name="order_id">ORDER ID</string>
+    <string name="order_estimate">ESTIMASI TIBA</string>
+    <string name="order_success_total_payment">Total Pembayaran</string>
+    <string name="order_success_back_home">KEMBALI KE BERANDA</string>
+
+    <!-- Sales Screen -->
+    <string name="sales_performance">PERFORMA ATELIER</string>
+    <string name="sales_performance_desc">Tinjauan komprehensif kreasi olfaktori dan logistik pesanan Anda.</string>
+    <string name="sales_add_new_product">TAMBAH PRODUK BARU</string>
+    <string name="sales_total_revenue">TOTAL PENDAPATAN</string>
+    <string name="sales_total_sales">TOTAL PENJUALAN</string>
+    <string name="sales_incoming_orders">PESANAN MASUK</string>
+    <string name="sales_no_incoming_orders">Belum ada pesanan masuk</string>
+    <string name="sales_collection">KOLEKSI</string>
+    <string name="sales_search">Cari...</string>
+    <string name="sales_no_products">Belum ada produk</string>
+    <string name="sales_no_products_desc">Tambah produk baru untuk mulai berjualan</string>
+    <string name="sales_orders_count">%d PESANAN</string>
+    <string name="sales_delete_product_title">Hapus Produk</string>
+    <string name="sales_delete_product_desc">Apakah Anda yakin ingin menghapus %s dari koleksi Anda? Tindakan ini tidak dapat dibatalkan.</string>
+    <string name="sales_stock">Stok: %d</string>
+    <string name="sales_price">Harga</string>
+    <string name="sales_edit">Edit</string>
+    <string name="sales_delete">Hapus</string>
+    <string name="sales_view_resi">Lihat Resi Pengiriman</string>
+    <string name="sales_resi_number">Nomor Resi: %s</string>
+    <string name="cancel">Batal</string>
+    
     <string name="cart_delete">Hapus</string>
+
+    <!-- Add Product Screen -->
+    <string name="add_product_choose_photo_source">Pilih Sumber Foto</string>
+    <string name="add_product_gallery">Galeri</string>
+    <string name="add_product_gallery_desc">Pilih foto dari galeri</string>
+    <string name="add_product_camera">Kamera</string>
+    <string name="add_product_camera_desc">Ambil foto baru</string>
+    <string name="add_product_inventory_management">MANAJEMEN INVENTARIS</string>
+    <string name="add_product_edit">Edit Produk</string>
+    <string name="add_product_add_new">Tambah Produk Baru</string>
+    <string name="add_product_change">GANTI</string>
+    <string name="add_product_upload_image">UNGGAH GAMBAR PRODUK</string>
+    <string name="add_product_upload_desc">Ketuk untuk memilih dari galeri atau kamera</string>
+    <string name="add_product_perfume_name">NAMA PARFUM</string>
+    <string name="add_product_brand">BRAND / MEREK</string>
+    <string name="add_product_description">DESKRIPSI PARFUM</string>
+    <string name="add_product_description_hint">Gambarkan karakter dan jiwa dari wewangian ini...</string>
+    <string name="add_product_full_price">HARGA PENUH (RP)</string>
+    <string name="add_product_decant_available">TERSEDIA SEBAGAI DECANT</string>
+    <string name="add_product_decant_desc">Jual dalam ukuran kecil (5ml, 10ml, dst)</string>
+    <string name="add_product_decant_price">HARGA DECANT (RP)</string>
+    <string name="add_product_olfactory">WANGI (OLFACTORY FAMILY)</string>
+    <string name="add_product_notes">CATATAN AROMA (NOTES)</string>
+    <string name="add_product_notes_desc">Tambahkan bahan-bahan aroma utama</string>
+    <string name="add_product_save">SIMPAN</string>
+    <string name="add_product_add_note">+ TAMBAH NOTE</string>
+    <string name="add_product_stock">JUMLAH STOK</string>
+    <string name="add_product_bottle_size">UKURAN BOTOL (ML)</string>
+    <string name="add_product_usage_time">WAKTU PENGGUNAAN</string>
+    <string name="add_product_usage_time_desc">Parfum ini paling cocok digunakan di waktu</string>
+    <string name="add_product_saving">MENYIMPAN...</string>
+    <string name="add_product_uploading">MENGUPLOAD...</string>
+    <string name="add_product_save_changes">SIMPAN PERUBAHAN</string>
+    <string name="add_product_add_product">TAMBAH PRODUK</string>
+    <!-- Shipping Screen Remaining -->
+    <string name="shipping_subtotal_product">Subtotal Produk</string>
+    <string name="shipping_cost">Biaya Pengiriman</string>
+    <string name="shipping_total_bill">Total Tagihan</string>
+
+    <!-- Seller Order Detail & Sales Screen -->
+    <string name="seller_order_detail_title">DETAIL PESANAN MASUK</string>
+    <string name="order_status">Status Pesanan</string>
+    <string name="shipping_address">ALAMAT PENGIRIMAN</string>
+    <string name="ordered_product">PRODUK DIPESAN</string>
+    <string name="total">Total</string>
+    <string name="payment_confirmation">KONFIRMASI PEMBAYARAN</string>
+    <string name="mark_packed">TANDAI DIKEMAS</string>
+    <string name="input_receipt">INPUT RESI</string>
+    <string name="input_receipt_send">INPUT RESI &amp; KIRIM</string>
+    <string name="in_delivery">DALAM PENGIRIMAN</string>
+    <string name="input_receipt_number">Input Nomor Resi</string>
+    <string name="example_receipt">mis. JNE123456789</string>
+    <string name="send">KIRIM</string>
+    <string name="cancel_caps">BATAL</string>
+
+    <!-- Account Detail Screen -->
+    <string name="account_detail_gallery">Pilih dari Galeri</string>
+    <string name="account_detail_camera">Ambil Foto</string>
+    <string name="account_detail_delete">Hapus Foto</string>
+
+    <!-- Order History Screen -->
+    <string name="order_history_title">RIWAYAT PESANAN</string>
+    <string name="order_history_empty">Tidak ada pesanan</string>
+    <string name="order_history_total">Total Pembayaran</string>
+    <string name="order_history_detail">LIHAT DETAIL &amp; KONFIRMASI</string>
+    <string name="account_detail_change_photo_btn">GANTI FOTO</string>
+    <string name="account_detail_security">Keamanan Akun</string>
+    <string name="account_detail_security_desc">Informasi pribadi Anda dienkripsi dengan standar industri atelier yang ketat.</string>
+    <string name="account_detail_change_photo_title">Ganti Foto Profil</string>
+    <string name="account_detail_change_password">Ubah Password</string>
+    <string name="account_detail_current_password">Password Saat Ini</string>
+    <string name="account_detail_new_password">Password Baru</string>
+    <string name="account_detail_confirm_password">Konfirmasi Password Baru</string>
+    <string name="account_detail_password_mismatch">Password tidak cocok</string>
+
+    <!-- Shipping Address Screen -->
+    <string name="shipping_address_title">SHIPPING ADDRESS</string>
+    <string name="shipping_address_info_title">INFORMASI PENGIRIMAN</string>
+    <string name="shipping_address_info_desc">Masukkan detail alamat untuk pengiriman pesanan Anda.</string>
+    <string name="shipping_address_recipient_name">NAMA PENERIMA</string>
+    <string name="shipping_address_recipient_name_hint">Contoh: Adrian Wijaya</string>
+    <string name="shipping_address_phone">NOMOR TELEPON</string>
+    <string name="shipping_address_province">PROVINSI</string>
+    <string name="shipping_address_province_hint">Pilih Provinsi</string>
+    <string name="shipping_address_city">KOTA / KABUPATEN</string>
+    <string name="shipping_address_city_hint">Pilih Kota</string>
+    <string name="shipping_address_postal_code">KODE POS</string>
+    <string name="shipping_address_full">ALAMAT LENGKAP</string>
+    <string name="shipping_address_full_hint">Nama jalan, nomor rumah, blok, atau unit apartemen</string>
+    <string name="shipping_address_label_title">LABEL ALAMAT</string>
+    <string name="shipping_address_label_home">RUMAH</string>
+    <string name="shipping_address_label_office">KANTOR</string>
+    <string name="shipping_address_label_other">LAINNYA</string>
+    <string name="shipping_address_set_main">Jadikan Alamat Utama</string>
+    <string name="shipping_address_save">SIMPAN ALAMAT</string>
+
+    <!-- Order History Screen -->
+    <string name="tab_all">Semua</string>
+    <string name="tab_unpaid">Belum Bayar</string>
+    <string name="tab_processing">Diproses</string>
+    <string name="tab_shipped">Dikirim</string>
+    <string name="tab_completed">Selesai</string>
+    <string name="tab_cancelled">Batal</string>
+
+    <string name="order_number_format">Pesanan #%s</string>
+    <string name="order_caps_format">ORDER #%s</string>
+    <string name="order_buyer_items_format">%1$s • %2$d Item</string>
+    <string name="confirm_payment_caps">KONFIRMASI BAYAR</string>
+    <string name="account_detail_name">NAMA LENGKAP</string>
+    <string name="account_detail_email">EMAIL</string>
+    <string name="account_detail_password">PASSWORD</string>
+    <string name="account_detail_change">GANTI</string>
+    <string name="account_detail_save_btn">SIMPAN</string>
+    
+    <string name="shipping_address_phone_hint">0812 3456 7890</string>
+    <string name="shipping_address_zip">KODE POS</string>
+    <string name="shipping_address_zip_hint">40123</string>
+    <string name="shipping_address_label">LABEL ALAMAT</string>
+
+    <string name="search_usage_siang">☀️ SIANG</string>
+    <string name="search_usage_malam">🌙 MALAM</string>
+    <string name="search_usage_keduanya">✨ KEDUANYA</string>
+    <string name="account_detail_address_hint">Masukkan alamat lengkap, kelurahan, kota...</string>
+    <string name="scent_title">SCENT</string>
+    <string name="shipping_address_incomplete">Harap lengkapi semua data alamat</string>
 </resources>

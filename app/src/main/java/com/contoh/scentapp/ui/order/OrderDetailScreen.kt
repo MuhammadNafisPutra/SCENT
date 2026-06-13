@@ -21,6 +21,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 import com.contoh.scentapp.domain.model.OrderStatus
 import com.contoh.scentapp.ui.theme.*
 
@@ -133,7 +135,7 @@ fun OrderDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack, "Kembali", tint = MaterialTheme.colorScheme.onBackground,
+                    Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(24.dp).clickable(onClick = onBack)
                 )
                 Text(

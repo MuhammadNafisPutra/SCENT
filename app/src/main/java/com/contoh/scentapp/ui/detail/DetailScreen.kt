@@ -38,6 +38,8 @@ import com.contoh.scentapp.domain.model.Product
 import com.contoh.scentapp.domain.model.Review
 import com.contoh.scentapp.domain.model.SizeOption
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 import kotlin.math.roundToInt
 
 @Composable
@@ -148,32 +150,31 @@ fun DetailScreen(
 
 @Composable
 private fun DetailTopBar(onBack: () -> Unit, onCartClick: () -> Unit) {
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        verticalAlignment     = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
         Icon(
             imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Kembali",
+            contentDescription = stringResource(R.string.back),
             tint               = MaterialTheme.colorScheme.onBackground,
-            modifier           = Modifier.size(24.dp).clickable(onClick = onBack)
+            modifier           = Modifier.size(24.dp).clickable(onClick = onBack).align(Alignment.CenterStart)
         )
         Text(
-            text  = "SCENT",
+            text  = stringResource(R.string.scent_title),
             style = MaterialTheme.typography.titleLarge.copy(
                 letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold
             ),
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.Center)
         )
         Icon(
             imageVector        = Icons.Default.ShoppingBag,
-            contentDescription = "Keranjang",
+            contentDescription = stringResource(R.string.nav_cart),
             tint               = MaterialTheme.colorScheme.onBackground,
-            modifier           = Modifier.size(24.dp).clickable(onClick = onCartClick)
+            modifier           = Modifier.size(24.dp).clickable(onClick = onCartClick).align(Alignment.CenterEnd)
         )
     }
 }
@@ -375,7 +376,7 @@ private fun AddToCartButton(onClick: () -> Unit, modifier: Modifier = Modifier) 
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text  = "TAMBAH KE KERANJANG",
+            text  = stringResource(R.string.detail_add_to_cart),
             style = MaterialTheme.typography.labelSmall.copy(
                 fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold,
                 color    = MaterialTheme.colorScheme.background
@@ -389,7 +390,7 @@ private fun AddToCartButton(onClick: () -> Unit, modifier: Modifier = Modifier) 
 @Composable
 private fun ReviewsHeader(product: Product, onWriteReview: () -> Unit = {}, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
-        Text(text = "Refleksi", style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground)
+        Text(text = stringResource(R.string.detail_reviews_title), style = MaterialTheme.typography.titleLarge, color = MaterialTheme.colorScheme.onBackground)
         Spacer(Modifier.height(12.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             repeat(5) { index ->
@@ -402,7 +403,7 @@ private fun ReviewsHeader(product: Product, onWriteReview: () -> Unit = {}, modi
             }
             Spacer(Modifier.width(10.dp))
             Text(
-                text  = "${product.rating} / ${product.reviewCount} ULASAN",
+                text  = "${product.rating} / ${product.reviewCount} ${stringResource(R.string.detail_reviews_count)}",
                 style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
             )
         }
@@ -416,7 +417,7 @@ private fun ReviewsHeader(product: Product, onWriteReview: () -> Unit = {}, modi
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text  = "TULIS ULASAN",
+                text  = stringResource(R.string.detail_write_review),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontSize = 10.sp, letterSpacing = 2.sp,
                     color    = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)

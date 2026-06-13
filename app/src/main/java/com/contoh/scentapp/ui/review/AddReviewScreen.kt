@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.review
+package com.contoh.scentapp.ui.review
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -32,6 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 import coil.compose.AsyncImage
 import com.contoh.scentapp.domain.model.Review
 import com.contoh.scentapp.data.remote.CloudinaryUploader
@@ -385,7 +387,7 @@ fun AddReviewScreen(
             ) {
                 Icon(
                     Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Kembali",
+                    contentDescription = stringResource(R.string.back),
                     tint     = topBarContent,
                     modifier = Modifier
                         .align(Alignment.CenterStart)

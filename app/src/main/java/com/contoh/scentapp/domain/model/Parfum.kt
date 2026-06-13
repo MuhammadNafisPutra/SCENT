@@ -19,7 +19,9 @@ data class Parfum(
     val avgSillage: Float = 0f,
     val avgProjection: Float = 0f,
     val reviewCount: Int = 0,
-    val decantAvailable: Boolean = false,
+    @get:com.google.firebase.firestore.PropertyName("decantAvailable")
+    @set:com.google.firebase.firestore.PropertyName("decantAvailable")
+    var decantAvailable: Boolean = false,
     val limitedDrop: Boolean = false,
     val usage: String = "",          // "SIANG", "MALAM", atau "KEDUANYA"
     val createdAt: Long = 0L

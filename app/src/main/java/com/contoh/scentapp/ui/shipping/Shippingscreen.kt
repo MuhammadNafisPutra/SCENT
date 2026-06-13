@@ -28,6 +28,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 import com.contoh.scentapp.domain.model.ShippingOption
 import com.contoh.scentapp.data.repository.CartRepository
 import com.contoh.scentapp.ui.theme.*
@@ -45,6 +47,7 @@ fun ShippingScreen(
     
     val shippingOptions by viewModel.shippingOptions.collectAsState()
     val isLoading by viewModel.isLoading.collectAsState()
+    val address by viewModel.address.collectAsState()
     
     var selectedId by rememberSaveable { mutableStateOf("jnt") }
     
@@ -69,35 +72,33 @@ fun ShippingScreen(
             contentPadding = PaddingValues(bottom = 120.dp)
         ) {
             item(key = "topbar") {
-                Row(
+                Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .statusBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(horizontal = 20.dp, vertical = 16.dp)
                 ) {
                     // Kiri: tombol back
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Kembali",
+                        contentDescription = stringResource(R.string.back),
                         tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
                             .size(24.dp)
                             .clickable(onClick = onBack)
+                            .align(Alignment.CenterStart)
                     )
                     // Tengah: judul
                     Text(
-                        text = "SCENT",
+                        text = stringResource(R.string.scent_title),
                         style = MaterialTheme.typography.titleLarge.copy(
                             letterSpacing = 6.sp,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold
                         ),
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.align(Alignment.Center)
                     )
-                    // Kanan: spacer penyeimbang sama lebar dengan icon back
-                    Spacer(Modifier.size(24.dp))
                 }
             }
             item(key = "header") {
@@ -107,7 +108,7 @@ fun ShippingScreen(
                     )
                 ) {
                     Text(
-                        text = "Opsi Pengiriman",
+                        text = stringResource(R.string.shipping_options_title),
                         style = MaterialTheme.typography.displayMedium.copy(
                             fontWeight = FontWeight.Bold, fontSize = 28.sp
                         ),
@@ -115,11 +116,38 @@ fun ShippingScreen(
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        text = "Pilih layanan kurir dan metode pembayaran untuk pesanan Anda.",
+                        text = stringResource(R.string.shipping_options_desc),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), lineHeight = 22.sp
                         )
                     )
+                    Spacer(Modifier.height(16.dp))
+                    if (address != null) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(MaterialTheme.colorScheme.secondaryContainer)
+                                .padding(16.dp)
+                        ) {
+                            Column {
+                                Text(
+                                    text = stringResource(R.string.shipping_address_title),
+                                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                )
+                                Spacer(Modifier.height(8.dp))
+                                Text(
+                                    text = address!!,
+                                    style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 20.sp)
+                                )
+                            }
+                        }
+                    } else {
+                        Text(
+                            text = "Silakan atur alamat pengiriman Anda di menu Profil.",
+                            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.error)
+                        )
+                    }
                 }
             }
             if (isLoading) {
@@ -233,7 +261,7 @@ fun ShippingScreen(
             item(key = "payment_method") {
                 Spacer(Modifier.height(24.dp))
                 Text(
-                    text = "METODE PEMBAYARAN",
+                    text = stringResource(R.string.shipping_payment_method),
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 10.sp,
@@ -242,15 +270,15 @@ fun ShippingScreen(
                     )
                 )
                 PaymentOptionRow(
-                    title = "Bayar di Tempat (COD)",
-                    desc = "Bayar saat pesanan tiba",
+                    title = stringResource(R.string.payment_cod),
+                    desc = stringResource(R.string.payment_cod_desc),
                     icon = Icons.Default.Payments,
                     isSelected = !isTransfer,
                     onClick = { isTransfer = false }
                 )
                 PaymentOptionRow(
-                    title = "Transfer Bank",
-                    desc = "Upload bukti transfer",
+                    title = stringResource(R.string.payment_transfer),
+                    desc = stringResource(R.string.payment_transfer_desc),
                     icon = Icons.Default.AccountBalance,
                     isSelected = isTransfer,
                     onClick = { isTransfer = true }
@@ -261,22 +289,22 @@ fun ShippingScreen(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 20.dp))
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 20.dp)) {
                     Text(
-                        text = "DETAIL PESANAN",
+                        text = stringResource(R.string.shipping_order_detail),
                         style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
                     )
                     Spacer(Modifier.height(16.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Subtotal Produk", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                        Text(stringResource(R.string.shipping_subtotal_product), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         Text(formatRp(subtotal), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground))
                     }
                     Spacer(Modifier.height(10.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Biaya Pengiriman", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                        Text(stringResource(R.string.shipping_cost), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         Text(formatRp(shippingFee), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground))
                     }
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(vertical = 16.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text("Total Tagihan", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground))
+                        Text(stringResource(R.string.shipping_total_bill), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground))
                         Text(formatRp(total), style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp, color = MaterialTheme.colorScheme.onBackground))
                     }
                 }
@@ -304,7 +332,7 @@ fun ShippingScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "LANJUTKAN PESANAN",
+                    text = stringResource(R.string.shipping_continue_order),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 12.sp,
                         letterSpacing = 2.sp,

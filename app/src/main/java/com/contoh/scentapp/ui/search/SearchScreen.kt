@@ -41,6 +41,8 @@ import com.contoh.scentapp.domain.model.Product
 import com.contoh.scentapp.domain.model.UsageFilter
 import com.contoh.scentapp.ui.theme.ScentGold
 import com.contoh.scentapp.ui.theme.ScentTextPrimary
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 
 private enum class SearchPhase { FILTER, RESULTS }
 
@@ -133,7 +135,7 @@ private fun FilterPhase(
                     )
                     Spacer(Modifier.height(16.dp))
                     Text(
-                        text      = "Belum ada produk untuk dicari",
+                        text      = stringResource(R.string.search_empty_title),
                         style     = MaterialTheme.typography.titleMedium.copy(
                             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                         ),
@@ -141,7 +143,7 @@ private fun FilterPhase(
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        text      = "Filter pencarian akan muncul setelah ada produk yang ditambahkan",
+                        text      = stringResource(R.string.search_empty_desc),
                         style     = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)),
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center
                     )
@@ -166,7 +168,7 @@ private fun FilterPhase(
             if (uiState.aromaFilters.isNotEmpty()) {
                 item(key = "aroma_header") {
                     FilterSectionLabel(
-                        text     = "PROFIL AROMA",
+                        text     = stringResource(R.string.search_aroma_profile),
                         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 12.dp)
                     )
                 }
@@ -182,7 +184,7 @@ private fun FilterPhase(
             if (uiState.usageFilters.isNotEmpty()) {
                 item(key = "usage_header") {
                     FilterSectionLabel(
-                        text     = "PENGGUNAAN",
+                        text     = stringResource(R.string.search_usage),
                         modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 28.dp, bottom = 12.dp)
                     )
                 }
@@ -236,7 +238,7 @@ private fun ResultsPhase(
             item(key = "results_header") {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)) {
                     Text(
-                        text  = "HASIL FILTER",
+                        text  = stringResource(R.string.search_filter_results),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 10.sp, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                         )
@@ -248,7 +250,7 @@ private fun ResultsPhase(
                         verticalAlignment     = Alignment.CenterVertically
                     ) {
                         Text(
-                            text  = "${uiState.resultCount} Produk",
+                            text  = "${uiState.resultCount} ${stringResource(R.string.search_product_count)}",
                             style = MaterialTheme.typography.displayMedium.copy(fontSize = 28.sp),
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -266,7 +268,15 @@ private fun ResultsPhase(
                         Spacer(Modifier.height(8.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                             uiState.selectedAromaFilters.forEach { aroma -> FilterBadge(label = aroma) }
-                            uiState.selectedUsage?.let { FilterBadge(label = it) }
+                            uiState.selectedUsage?.let { usageId ->
+                                val usageLabel = when(usageId) {
+                                    "SIANG" -> stringResource(R.string.search_usage_siang)
+                                    "MALAM" -> stringResource(R.string.search_usage_malam)
+                                    "KEDUANYA" -> stringResource(R.string.search_usage_keduanya)
+                                    else -> usageId
+                                }
+                                FilterBadge(label = usageLabel)
+                            }
                         }
                     }
                 }
@@ -286,7 +296,7 @@ private fun ResultsPhase(
                             )
                             Spacer(Modifier.height(16.dp))
                             Text(
-                                text      = "Tidak ada parfum\nyang cocok",
+                                text      = stringResource(R.string.search_no_match_title),
                                 style     = MaterialTheme.typography.titleMedium.copy(
                                     color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                                 ),
@@ -294,7 +304,7 @@ private fun ResultsPhase(
                             )
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                text  = "Coba ubah filter Anda",
+                                text  = stringResource(R.string.search_no_match_desc),
                                 style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
                             )
                         }
@@ -462,26 +472,25 @@ private fun SearchProductCard(
 
 @Composable
 private fun SearchTopBar(title: String, onBack: () -> Unit) {
-    Row(
+    Box(
         modifier          = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
         Icon(
             imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Kembali",
+            contentDescription = stringResource(R.string.back),
             tint               = MaterialTheme.colorScheme.onBackground,
-            modifier           = Modifier.size(24.dp).clickable(onClick = onBack)
+            modifier           = Modifier.size(24.dp).clickable(onClick = onBack).align(Alignment.CenterStart)
         )
-        Spacer(Modifier.width(16.dp))
         Text(
-            text  = "SCENT",
+            text  = stringResource(R.string.scent_title),
             style = MaterialTheme.typography.titleLarge.copy(
                 letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold
             ),
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.Center)
         )
     }
 }
@@ -521,7 +530,7 @@ private fun SearchInputField(
                 decorationBox = { inner ->
                     if (query.isEmpty()) {
                         Text(
-                            text  = "Cari esens Anda...",
+                            text  = stringResource(R.string.search_hint),
                             style = MaterialTheme.typography.titleMedium.copy(
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                                 fontSize = 20.sp
@@ -533,7 +542,7 @@ private fun SearchInputField(
             )
             Icon(
                 imageVector        = Icons.Default.Search,
-                contentDescription = "Cari",
+                contentDescription = stringResource(R.string.search),
                 tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                 modifier           = Modifier.size(20.dp)
             )
@@ -625,8 +634,14 @@ private fun UsageButtonGroup(
                     .padding(vertical = 18.dp),
                 contentAlignment = Alignment.Center
             ) {
+                val displayLabel = when(filter.id) {
+                    "SIANG" -> stringResource(R.string.search_usage_siang)
+                    "MALAM" -> stringResource(R.string.search_usage_malam)
+                    "KEDUANYA" -> stringResource(R.string.search_usage_keduanya)
+                    else -> filter.label
+                }
                 Text(
-                    text  = filter.label,
+                    text  = displayLabel,
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize      = 11.sp,
                         letterSpacing = 2.sp,
@@ -648,7 +663,7 @@ private fun ResultsSummary(
 ) {
     Column(modifier = modifier) {
         Text(
-            text  = "HASIL DITEMUKAN",
+            text  = stringResource(R.string.search_results_found),
             style = MaterialTheme.typography.labelSmall.copy(
                 letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), fontSize = 10.sp
             )
@@ -660,7 +675,7 @@ private fun ResultsSummary(
             verticalAlignment     = Alignment.CenterVertically
         ) {
             Text(
-                text  = "$count Produk",
+                text  = "$count ${stringResource(R.string.search_product_count)}",
                 style = MaterialTheme.typography.displayMedium.copy(fontSize = 28.sp),
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -670,7 +685,7 @@ private fun ResultsSummary(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text  = "HAPUS SEMUA",
+                        text  = stringResource(R.string.search_clear_all),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
                         )
@@ -702,7 +717,7 @@ private fun ApplyFilterButton(onClick: () -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text  = "TERAPKAN FILTER",
+            text  = stringResource(R.string.search_apply_filter),
             style = MaterialTheme.typography.labelSmall.copy(
                 fontSize      = 12.sp,
                 letterSpacing = 2.sp,

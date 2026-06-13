@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.SubcomposeAsyncImage
+import androidx.compose.ui.layout.ContentScale
 import com.contoh.scentapp.R
 import com.contoh.scentapp.domain.model.CartItem
 import com.contoh.scentapp.ui.theme.*
@@ -139,28 +141,27 @@ fun CartScreen(
 
 @Composable
 private fun CartTopBar(itemCount: Int, onBack: () -> Unit) {
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        verticalAlignment     = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
         Icon(
             imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = stringResource(R.string.back),
             tint               = MaterialTheme.colorScheme.onBackground,
-            modifier           = Modifier.size(24.dp).clickable(onClick = onBack)
+            modifier           = Modifier.size(24.dp).clickable(onClick = onBack).align(Alignment.CenterStart)
         )
         Text(
             text  = "SCENT",
             style = MaterialTheme.typography.titleLarge.copy(
                 letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold
             ),
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.Center)
         )
-        Box {
+        Box(modifier = Modifier.align(Alignment.CenterEnd)) {
             Icon(
                 imageVector        = Icons.Default.ShoppingBag,
                 contentDescription = stringResource(R.string.nav_cart),
@@ -228,19 +229,53 @@ private fun CartItemCard(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Box(
-                    modifier = Modifier
-                        .width(12.dp).height(8.dp)
-                        .background(Color(item.accentColor).copy(alpha = 0.5f))
+            if (item.imageUrl.isNotBlank()) {
+                SubcomposeAsyncImage(
+                    model              = item.imageUrl,
+                    contentDescription = item.name,
+                    contentScale       = ContentScale.Crop,
+                    modifier           = Modifier.fillMaxSize().clip(RoundedCornerShape(10.dp)),
+                    loading = {
+                        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator(
+                                modifier    = Modifier.size(24.dp),
+                                color       = ScentGold,
+                                strokeWidth = 2.dp
+                            )
+                        }
+                    },
+                    error = {
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Box(
+                                modifier = Modifier
+                                    .width(12.dp).height(8.dp)
+                                    .background(Color(item.accentColor).copy(alpha = 0.5f))
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .width(36.dp).height(60.dp)
+                                    .clip(RoundedCornerShape(4.dp))
+                                    .background(Color(item.accentColor).copy(alpha = 0.2f))
+                                    .border(0.5.dp, Color(item.accentColor).copy(alpha = 0.4f), RoundedCornerShape(4.dp))
+                            )
+                        }
+                    }
                 )
-                Box(
-                    modifier = Modifier
-                        .width(36.dp).height(60.dp)
-                        .clip(RoundedCornerShape(4.dp))
-                        .background(Color(item.accentColor).copy(alpha = 0.2f))
-                        .border(0.5.dp, Color(item.accentColor).copy(alpha = 0.4f), RoundedCornerShape(4.dp))
-                )
+            } else {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Box(
+                        modifier = Modifier
+                            .width(12.dp).height(8.dp)
+                            .background(Color(item.accentColor).copy(alpha = 0.5f))
+                    )
+                    Box(
+                        modifier = Modifier
+                            .width(36.dp).height(60.dp)
+                            .clip(RoundedCornerShape(4.dp))
+                            .background(Color(item.accentColor).copy(alpha = 0.2f))
+                            .border(0.5.dp, Color(item.accentColor).copy(alpha = 0.4f), RoundedCornerShape(4.dp))
+                    )
+                }
             }
         }
         Spacer(Modifier.width(16.dp))

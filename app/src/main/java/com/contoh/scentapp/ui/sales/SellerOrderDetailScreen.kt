@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.sales
+package com.contoh.scentapp.ui.sales
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contoh.scentapp.domain.model.OrderStatus
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 
 @Composable
 fun SellerOrderDetailScreen(
@@ -52,10 +54,10 @@ fun SellerOrderDetailScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Kembali", tint = MaterialTheme.colorScheme.onBackground,
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(24.dp).clickable(onClick = onBack))
-                Text("DETAIL PESANAN MASUK", style = MaterialTheme.typography.titleSmall.copy(
-                    fontWeight = FontWeight.Bold, letterSpacing = 2.sp), color = MaterialTheme.colorScheme.onBackground )
+                Text(stringResource(R.string.seller_order_detail_title), style = MaterialTheme.typography.titleSmall.copy(
+                    fontWeight = FontWeight.Bold, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onBackground ))
                 Box {
                     Icon(Icons.Default.MoreVert, "Opsi", tint = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier.size(24.dp).clickable { showStatusMenu = true })
@@ -102,8 +104,8 @@ fun SellerOrderDetailScreen(
                         Icon(Icons.Default.Circle, null, tint = statusColor, modifier = Modifier.size(10.dp))
                         Spacer(Modifier.width(10.dp))
                         Column {
-                            Text("Status Pesanan", style = MaterialTheme.typography.labelSmall.copy(
-                                fontSize = 10.sp, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                            Text(stringResource(R.string.order_status), style = MaterialTheme.typography.labelSmall.copy(
+                                fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                             Text(status.label, style = MaterialTheme.typography.titleMedium.copy(
                                 fontWeight = FontWeight.Bold, fontSize = 16.sp), color = statusColor)
                         }
@@ -128,7 +130,7 @@ fun SellerOrderDetailScreen(
                 // ── Alamat Pengiriman ─────────────────────────────────────────
                 SellerSectionCard {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("ALAMAT PENGIRIMAN", style = MaterialTheme.typography.labelSmall.copy(
+                        Text(stringResource(R.string.shipping_address), style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                         Icon(Icons.Default.ContentCopy, null, tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), modifier = Modifier.size(16.dp))
                     }
@@ -141,7 +143,7 @@ fun SellerOrderDetailScreen(
 
                 // ── Produk Pesanan ────────────────────────────────────────────
                 SellerSectionCard {
-                    Text("PRODUK DIPESAN", style = MaterialTheme.typography.labelSmall.copy(
+                    Text(stringResource(R.string.ordered_product), style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                     Spacer(Modifier.height(14.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
@@ -153,17 +155,17 @@ fun SellerOrderDetailScreen(
                     }
                     SDivider()
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Subtotal Produk",   style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                        Text(stringResource(R.string.shipping_subtotal_product),   style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         Text("Rp 240.000", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground))
                     }
                     Spacer(Modifier.height(6.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                        Text("Biaya Pengiriman",  style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                        Text(stringResource(R.string.shipping_cost),  style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         Text("Rp 15.000",  style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground))
                     }
                     SDivider()
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Text("Total", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground))
+                        Text(stringResource(R.string.total), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground))
                         Text("Rp 255.000", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground))
                     }
                 }
@@ -202,13 +204,13 @@ fun SellerOrderDetailScreen(
                                 .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(10.dp))
                                 .clickable { status = OrderStatus.DIKEMAS }.padding(vertical = 16.dp),
                             contentAlignment = Alignment.Center
-                        ) { Text("TANDAI DIKEMAS", style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground )) }
+                        ) { Text(stringResource(R.string.mark_packed), style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground )) }
                         Box(
                             modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(10.dp))
                                 .clickable { showResiDialog = true }.padding(vertical = 16.dp),
                             contentAlignment = Alignment.Center
-                        ) { Text("INPUT RESI", style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground )) }
+                        ) { Text(stringResource(R.string.input_receipt), style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground )) }
                     }
                 }
                 OrderStatus.DIKEMAS -> {
@@ -216,14 +218,14 @@ fun SellerOrderDetailScreen(
                         modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp))
                             .background(MaterialTheme.colorScheme.onBackground).clickable { showResiDialog = true }.padding(vertical = 16.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text("INPUT RESI & KIRIM", style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background)) }
+                    ) { Text(stringResource(R.string.input_receipt_send), style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background)) }
                 }
                 OrderStatus.DIKIRIM -> {
                     Box(
                         modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp))
                             .background(MaterialTheme.colorScheme.secondaryContainer).padding(vertical = 16.dp),
                         contentAlignment = Alignment.Center
-                    ) { Text("DALAM PENGIRIMAN", style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))) }
+                    ) { Text(stringResource(R.string.in_delivery), style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))) }
                 }
                 else -> {
                     Box(
@@ -242,7 +244,7 @@ fun SellerOrderDetailScreen(
         AlertDialog(
             onDismissRequest = { showResiDialog = false },
             containerColor = MaterialTheme.colorScheme.surface,
-            title = { Text("Input Nomor Resi", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.onBackground) },
+            title = { Text(stringResource(R.string.input_receipt_number), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.onBackground) },
             text = {
                 Column {
                     Text("Order #SCNT-$orderId", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
@@ -260,7 +262,7 @@ fun SellerOrderDetailScreen(
                             singleLine    = true,
                             modifier      = Modifier.fillMaxWidth(),
                             decorationBox = { inner ->
-                                if (resiInput.isEmpty()) Text("mis. JNE123456789", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                                if (resiInput.isEmpty()) Text(stringResource(R.string.example_receipt), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                                 inner()
                             }
                         )
@@ -274,11 +276,11 @@ fun SellerOrderDetailScreen(
                         status = OrderStatus.DIKIRIM
                         showResiDialog = false
                     }
-                }) { Text("KIRIM", color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp)) }
+                }) { Text(stringResource(R.string.send), color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp)) }
             },
             dismissButton = {
                 TextButton(onClick = { showResiDialog = false }) {
-                    Text("BATAL", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp))
+                    Text(stringResource(R.string.cancel_caps), color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp))
                 }
             }
         )

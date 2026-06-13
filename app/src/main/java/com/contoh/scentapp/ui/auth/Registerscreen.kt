@@ -27,6 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 
 @Composable
 fun RegisterScreen(
@@ -68,10 +70,8 @@ fun RegisterScreen(
             Spacer(Modifier.height(48.dp))
 
             // ── Header ────────────────────────────────────────────────────
-            Row(
-                modifier              = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment     = Alignment.CenterVertically
+            Box(
+                modifier              = Modifier.fillMaxWidth()
             ) {
                 Text(
                     text  = "SCENT",
@@ -80,10 +80,11 @@ fun RegisterScreen(
                         letterSpacing = 6.sp,
                         fontSize      = 20.sp
                     ),
-                    color = onBg
+                    color = onBg,
+                    modifier = Modifier.align(Alignment.Center)
                 )
                 Row(
-                    modifier          = Modifier.clickable(onClick = onLogin),
+                    modifier          = Modifier.clickable(onClick = onLogin).align(Alignment.CenterEnd),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(
@@ -94,7 +95,7 @@ fun RegisterScreen(
                     )
                     Spacer(Modifier.width(6.dp))
                     Text(
-                        text  = "MASUK",
+                        text  = stringResource(R.string.register_login),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize      = 11.sp,
                             letterSpacing = 2.sp,
@@ -108,7 +109,7 @@ fun RegisterScreen(
 
             // ── Judul ─────────────────────────────────────────────────────
             Text(
-                text  = "Buat Akun",
+                text  = stringResource(R.string.register_title),
                 style = MaterialTheme.typography.displayMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize   = 36.sp
@@ -117,7 +118,7 @@ fun RegisterScreen(
             )
             Spacer(Modifier.height(12.dp))
             Text(
-                text  = "Masukkan detail Anda untuk bergabung dengan atelier digital kami dan jelajahi koleksi eksklusif.",
+                text  = stringResource(R.string.register_subtitle),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color      = muted,
                     lineHeight = 22.sp
@@ -128,7 +129,7 @@ fun RegisterScreen(
 
             // ── Field Nama ────────────────────────────────────────────────
             AuthFormField(
-                label       = "NAMA LENGKAP",
+                label       = stringResource(R.string.register_fullname),
                 value       = name,
                 onChange    = { name = it },
                 placeholder = "ALEXANDER VOGUE",
@@ -143,7 +144,7 @@ fun RegisterScreen(
 
             // ── Field Email ───────────────────────────────────────────────
             AuthFormField(
-                label        = "ALAMAT EMAIL",
+                label        = stringResource(R.string.auth_email),
                 value        = email,
                 onChange     = { email = it },
                 placeholder  = "EMAIL@ATELIER.COM",
@@ -159,7 +160,7 @@ fun RegisterScreen(
 
             // ── Field Password ────────────────────────────────────────────
             Text(
-                text  = "KATA SANDI",
+                text  = stringResource(R.string.auth_password),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontSize      = 10.sp,
                     letterSpacing = 2.sp,
@@ -256,7 +257,7 @@ fun RegisterScreen(
                     )
                 } else {
                     Text(
-                        text  = "DAFTAR",
+                        text  = stringResource(R.string.register_button),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize      = 12.sp,
                             letterSpacing = 3.sp,

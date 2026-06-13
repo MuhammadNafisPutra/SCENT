@@ -38,6 +38,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.contoh.scentapp.domain.model.Parfum
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 import java.io.File
 
 private val aromaFamilies = listOf("Woody", "Floral", "Oriental", "Citrus", "Gourmand", "Aquatic")
@@ -179,8 +181,8 @@ fun AddProductScreen(
                     ) {
                         Icon(Icons.Default.PhotoLibrary, null, tint = ScentGold, modifier = Modifier.size(24.dp))
                         Column {
-                            Text("Galeri", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Medium))
-                            Text("Pilih foto dari galeri", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                            Text(stringResource(R.string.add_product_gallery), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Medium))
+                            Text(stringResource(R.string.add_product_gallery_desc), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         }
                     }
                     Row(
@@ -195,8 +197,8 @@ fun AddProductScreen(
                     ) {
                         Icon(Icons.Default.CameraAlt, null, tint = ScentGold, modifier = Modifier.size(24.dp))
                         Column {
-                            Text("Kamera", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Medium))
-                            Text("Ambil foto baru", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                            Text(stringResource(R.string.add_product_camera), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Medium))
+                            Text(stringResource(R.string.add_product_camera_desc), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         }
                     }
                 }
@@ -204,7 +206,7 @@ fun AddProductScreen(
             confirmButton = {},
             dismissButton = {
                 TextButton(onClick = { showPhotoDialog = false }) {
-                    Text("Batal", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
+                    Text(stringResource(R.string.cancel), color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
                 }
             }
         )
@@ -216,11 +218,11 @@ fun AddProductScreen(
         AlertDialog(
             onDismissRequest = { viewModel.resetState() },
             containerColor   = MaterialTheme.colorScheme.surface,
-            title = { Text("Gagal", style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onBackground)) },
+            title = { Text(stringResource(R.string.failed), style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onBackground)) },
             text  = { Text(message, style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground)) },
             confirmButton = {
                 TextButton(onClick = { viewModel.resetState() }) {
-                    Text("OK", color = ScentGold)
+                    Text(stringResource(R.string.ok), color = ScentGold)
                 }
             }
         )
@@ -247,26 +249,26 @@ fun AddProductScreen(
         ) {
 
             // ── Top Bar ───────────────────────────────────────────────────────
-            Row(
-                modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 20.dp, vertical = 16.dp),
-                verticalAlignment     = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            Box(
+                modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
                 Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack, "Kembali",
+                    Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back),
                     tint     = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.size(24.dp).clickable(onClick = onBack)
+                    modifier = Modifier.size(24.dp).clickable(onClick = onBack).align(Alignment.CenterStart)
                 )
-                Text("SCENT", style = MaterialTheme.typography.titleLarge.copy(letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.onBackground)
-                Spacer(Modifier.size(22.dp))
+                Text("SCENT", style = MaterialTheme.typography.titleLarge.copy(letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.align(Alignment.Center))
             }
 
             // ── Header ────────────────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
-                Text("MANAJEMEN INVENTARIS", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                Text(
+                    stringResource(R.string.add_product_inventory_management),
+                    style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
+                )
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    if (isEditMode) "Edit Produk" else "Tambah Produk Baru",
+                    if (isEditMode) stringResource(R.string.add_product_edit) else stringResource(R.string.add_product_add_new),
                     style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold, fontSize = 26.sp),
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -298,25 +300,25 @@ fun AddProductScreen(
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                             Icon(Icons.Default.Edit, null, tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(14.dp))
-                            Text("GANTI", style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onBackground))
+                            Text(stringResource(R.string.add_product_change), style = MaterialTheme.typography.labelSmall.copy(fontSize = 9.sp, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onBackground))
                         }
                     }
                 } else {
                     Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Icon(Icons.Default.AddAPhoto, "Upload", tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), modifier = Modifier.size(40.dp))
-                        Text("UNGGAH GAMBAR PRODUK", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
-                        Text("Ketuk untuk memilih dari galeri atau kamera", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), fontSize = 11.sp))
+                        Text(stringResource(R.string.add_product_upload_image), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                        Text(stringResource(R.string.add_product_upload_desc), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), fontSize = 11.sp))
                     }
                 }
             }
 
             // ── Nama & Brand ──────────────────────────────────────────────────
-            ProductFormField(label = "NAMA PARFUM", value = namaParfum, onChange = { namaParfum = it }, placeholder = "contoh: Noir Éphémère", modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-            ProductFormField(label = "BRAND", value = brandParfum, onChange = { brandParfum = it }, placeholder = "contoh: Atelier V", modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            ProductFormField(label = stringResource(R.string.add_product_perfume_name), value = namaParfum, onChange = { namaParfum = it }, placeholder = "contoh: Noir Éphémère", modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            ProductFormField(label = stringResource(R.string.add_product_brand), value = brandParfum, onChange = { brandParfum = it }, placeholder = "contoh: Atelier V", modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
 
             // ── Deskripsi ─────────────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
-                Text("DESKRIPSI PARFUM", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                Text(stringResource(R.string.add_product_description), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
                 Box(
                     modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
@@ -329,7 +331,7 @@ fun AddProductScreen(
                         cursorBrush = SolidColor(ScentGold), minLines = 4,
                         modifier = Modifier.fillMaxWidth(),
                         decorationBox = { inner ->
-                            if (deskripsi.isEmpty()) Text("Gambarkan karakter dan jiwa dari wewangian ini...", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), lineHeight = 22.sp))
+                            if (deskripsi.isEmpty()) Text(stringResource(R.string.add_product_description_hint), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), lineHeight = 22.sp))
                             inner()
                         }
                     )
@@ -338,7 +340,7 @@ fun AddProductScreen(
 
             // ── Harga Penuh ───────────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
-                Text("HARGA PENUH (RP)", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                Text(stringResource(R.string.add_product_full_price), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
                 Box(
                     modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
@@ -370,9 +372,9 @@ fun AddProductScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text("TERSEDIA SEBAGAI DECANT", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                    Text(stringResource(R.string.add_product_decant_available), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                     Spacer(Modifier.height(2.dp))
-                    Text("Jual dalam ukuran kecil (5ml, 10ml, dst)", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
+                    Text(stringResource(R.string.add_product_decant_desc), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
                 }
                 Switch(
                     checked = isDecantAvail, onCheckedChange = { isDecantAvail = it },
@@ -387,7 +389,7 @@ fun AddProductScreen(
 
             if (isDecantAvail) {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp)) {
-                    Text("HARGA DECANT (RP)", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                    Text(stringResource(R.string.add_product_decant_price), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                     Spacer(Modifier.height(10.dp))
                     Box(
                         modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(8.dp))
@@ -415,7 +417,7 @@ fun AddProductScreen(
 
             // ── Aroma Family ──────────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
-                Text("WANGI (OLFACTORY FAMILY)", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                Text(stringResource(R.string.add_product_olfactory), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
                 ExposedDropdownMenuBox(expanded = expandAromaMenu, onExpandedChange = { expandAromaMenu = it }) {
                     TextField(
@@ -440,9 +442,9 @@ fun AddProductScreen(
                     .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
                     .padding(16.dp)
             ) {
-                Text("CATATAN AROMA (NOTES)", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                Text(stringResource(R.string.add_product_notes), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(4.dp))
-                Text("Tambahkan bahan-bahan aroma utama", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
+                Text(stringResource(R.string.add_product_notes_desc), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
                 Spacer(Modifier.height(12.dp))
                 @OptIn(ExperimentalLayoutApi::class)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.fillMaxWidth()) {
@@ -471,17 +473,17 @@ fun AddProductScreen(
                             }
                             .padding(horizontal = 12.dp, vertical = 6.dp)
                     ) {
-                        Text(if (showChipInput && newChipInput.isNotBlank()) "âœ“ SIMPAN" else "+ TAMBAH NOTE",
+                        Text(if (showChipInput && newChipInput.isNotBlank()) "✓ ${stringResource(R.string.add_product_save)}" else stringResource(R.string.add_product_add_note),
                             style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                     }
                 }
             }
 
             // ── Stok & Ukuran ─────────────────────────────────────────────────
-            ProductFormField(label = "JUMLAH STOK", value = jumlahStok, onChange = { jumlahStok = it }, placeholder = "48", keyboardType = KeyboardType.Number, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            ProductFormField(label = stringResource(R.string.add_product_stock), value = jumlahStok, onChange = { jumlahStok = it }, placeholder = "48", keyboardType = KeyboardType.Number, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
 
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
-                Text("UKURAN BOTOL (ML)", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                Text(stringResource(R.string.add_product_bottle_size), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     sizeOptions.forEach { size ->
@@ -502,9 +504,9 @@ fun AddProductScreen(
 
             // ── Waktu Penggunaan ──────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
-                Text("WAKTU PENGGUNAAN", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
+                Text(stringResource(R.string.add_product_usage_time), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(4.dp))
-                Text("Parfum ini paling cocok digunakan di waktu", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
+                Text(stringResource(R.string.add_product_usage_time_desc), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
                 Spacer(Modifier.height(10.dp))
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     usageOptions.forEach { option ->
@@ -609,13 +611,13 @@ fun AddProductScreen(
                     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                         CircularProgressIndicator(modifier = Modifier.size(18.dp), color = ScentGold, strokeWidth = 2.dp)
                         Text(
-                            if (isEditMode) "MENYIMPAN..." else "MENGUPLOAD...",
+                            if (isEditMode) stringResource(R.string.add_product_saving) else stringResource(R.string.add_product_uploading),
                             style = MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
                         )
                     }
                 } else {
                     Text(
-                        if (isEditMode) "SIMPAN PERUBAHAN" else "TAMBAH PRODUK",
+                        if (isEditMode) stringResource(R.string.add_product_save_changes) else stringResource(R.string.add_product_add_product),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold,
                             color    = if (isFormValid) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)

@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 import com.contoh.scentapp.ui.theme.*
 
 @Composable
@@ -61,18 +63,21 @@ fun LoginScreen(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Spacer(Modifier.height(48.dp))
-            Text(
-                text  = "SCENT",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    fontWeight    = FontWeight.Bold,
-                    letterSpacing = 6.sp,
-                    fontSize      = 20.sp
-                ),
-                color = onBg
-            )
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text  = "SCENT",
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        fontWeight    = FontWeight.Bold,
+                        letterSpacing = 6.sp,
+                        fontSize      = 20.sp
+                    ),
+                    color = onBg,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
             Spacer(Modifier.height(40.dp))
             Text(
-                text  = "Selamat Datang\nKembali",
+                text  = stringResource(R.string.login_welcome_back),
                 style = MaterialTheme.typography.displayMedium.copy(
                     fontWeight = FontWeight.Bold,
                     fontSize   = 36.sp,
@@ -82,7 +87,7 @@ fun LoginScreen(
             )
             Spacer(Modifier.height(12.dp))
             Text(
-                text  = "Masukkan kredensial Anda untuk mengakses koleksi Anda.",
+                text  = stringResource(R.string.login_subtitle),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color      = muted,
                     lineHeight = 22.sp
@@ -90,7 +95,7 @@ fun LoginScreen(
             )
             Spacer(Modifier.height(40.dp))
             Text(
-                text  = "ALAMAT EMAIL",
+                text  = stringResource(R.string.auth_email),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontSize      = 10.sp,
                     letterSpacing = 2.sp,
@@ -134,7 +139,7 @@ fun LoginScreen(
                 verticalAlignment     = Alignment.CenterVertically
             ) {
                 Text(
-                    text  = "KATA SANDI",
+                    text  = stringResource(R.string.auth_password),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize      = 10.sp,
                         letterSpacing = 2.sp,
@@ -142,7 +147,7 @@ fun LoginScreen(
                     )
                 )
                 Text(
-                    text  = "LUPA KATA SANDI",
+                    text  = stringResource(R.string.login_forgot_password),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize      = 10.sp,
                         letterSpacing = 1.5.sp,
@@ -225,7 +230,7 @@ fun LoginScreen(
                     )
                 } else {
                     Text(
-                        text  = "MASUK",
+                        text  = stringResource(R.string.login_button),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize      = 12.sp,
                             letterSpacing = 3.sp,
@@ -243,13 +248,13 @@ fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text  = "Baru di ASCENT? ",
+                text  = stringResource(R.string.login_new_user),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = muted
                 )
             )
             Text(
-                text  = "Daftar Sekarang",
+                text  = stringResource(R.string.login_register_now),
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.Bold,
                     color      = onBg

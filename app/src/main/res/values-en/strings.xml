@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="home_banner_new_arrival">NEW ARRIVAL</string>
+    <string name="home_banner_discover">Discover our newest collection.</string>
+    <string name="failed">Failed</string>
+    <string name="ok">OK</string>
     <string name="app_name">ScentApp</string>
 
     <!-- General -->
@@ -56,5 +60,228 @@
     <string name="cart_total">ESTIMATED TOTAL</string>
     <string name="cart_set_shipping">SET SHIPPING</string>
     <string name="cart_continue">CONTINUE SHOPPING</string>
+    <!-- Auth Screens -->
+    <string name="login_welcome_back">Welcome\nBack</string>
+    <string name="login_subtitle">Enter your credentials to access your collection.</string>
+    <string name="auth_email">EMAIL ADDRESS</string>
+    <string name="auth_password">PASSWORD</string>
+    <string name="login_forgot_password">FORGOT PASSWORD</string>
+    <string name="login_button">LOGIN</string>
+    <string name="login_new_user">New to ASCENT? </string>
+    <string name="login_register_now">Register Now</string>
+    <string name="register_login">LOGIN</string>
+    <string name="register_title">Create Account</string>
+    <string name="register_subtitle">Enter your details to join our digital atelier and explore the exclusive collection.</string>
+    <string name="register_fullname">FULL NAME</string>
+    <string name="register_button">REGISTER</string>
+
+    <!-- Home & Search -->
+    <string name="error_load_products_failed">Failed to load products</string>
+    <string name="home_empty_products">No products available</string>
+    <string name="search_filter_title">Search &amp; Filter</string>
+    <string name="search_empty_title">No products to search</string>
+    <string name="search_empty_desc">Search filters will appear after products are added</string>
+    <string name="search_aroma_profile">AROMA PROFILE</string>
+    <string name="search_usage">USAGE</string>
+    <string name="search_results_found">RESULTS FOUND</string>
+    <string name="search_product_count">Products</string>
+    <string name="search_clear_all">CLEAR ALL</string>
+    <string name="search_apply_filter">APPLY FILTER</string>
+    <string name="search_results_title">Search Results</string>
+    <string name="search_filter_results">FILTER RESULTS</string>
+    <string name="search_no_match_title">No matching\nperfumes</string>
+    <string name="search_no_match_desc">Try changing your filters</string>
+
+    <!-- Detail Screen -->
+    <string name="detail_product_not_found">Product not found</string>
+    <string name="detail_added_to_cart">Successfully added to cart</string>
+    <string name="detail_add_to_cart">ADD TO CART</string>
+    <string name="detail_reviews_title">Reflections</string>
+    <string name="detail_reviews_count">REVIEWS</string>
+    <string name="detail_write_review">WRITE REVIEW</string>
+
+    <!-- Shipping Screen -->
+    <string name="shipping_options_title">Shipping Options</string>
+    <string name="shipping_options_desc">Choose a courier service and payment method for your order.</string>
+    <string name="shipping_empty_address">Please select a shipping address first</string>
+    <string name="shipping_payment_method">PAYMENT METHOD</string>
+    <string name="payment_cod">Cash on Delivery (COD)</string>
+    <string name="payment_cod_desc">Pay when the order arrives</string>
+    <string name="payment_transfer">Bank Transfer</string>
+    <string name="payment_transfer_desc">Upload transfer proof</string>
+    <string name="payment_proof_title">Upload Transfer Proof</string>
+    <string name="payment_proof_subtitle">Ensure the payment proof is clearly visible and the amount is correct.</string>
+    <string name="payment_proof_account_dest">DESTINATION ACCOUNT</string>
+    <string name="payment_proof_photo">PAYMENT PROOF PHOTO</string>
+    <string name="payment_proof_tap_select">Tap to select photo</string>
+    <string name="payment_proof_max_size">JPG, PNG — max 5MB</string>
+    <string name="payment_proof_open_gallery">OPEN GALLERY</string>
+    <string name="payment_proof_confirm">CONFIRM PAYMENT</string>
+    <string name="shipping_order_detail">ORDER DETAIL</string>
+    <string name="shipping_subtotal">Product Subtotal</string>
+    <string name="shipping_fee">Shipping Fee</string>
+    <string name="shipping_total">Total Bill</string>
+    <string name="shipping_continue_order">CONTINUE ORDER</string>
+
+    <!-- Order Success Screen -->
+    <string name="close">Close</string>
+    <string name="order_success_title">Order Successfully\nPlaced</string>
+    <string name="order_success_transfer_desc">Thank you for your order. Our team is verifying your payment. The order will be processed as soon as the payment is confirmed.</string>
+    <string name="order_success_desc_cod">Thank you for your order. Please prepare your payment when the courier delivers your package.</string>
+    <string name="order_success_transfer">BANK TRANSFER</string>
+    <string name="order_success_cod">CASH ON DELIVERY</string>
+    <string name="order_id">ORDER ID</string>
+    <string name="order_estimate">ESTIMATED ARRIVAL</string>
+    <string name="order_success_total_payment">Total Payment</string>
+    <string name="order_success_back_home">BACK TO HOME</string>
+
+    <!-- Sales Screen -->
+    <string name="sales_performance">ATELIER PERFORMANCE</string>
+    <string name="sales_performance_desc">A comprehensive overview of your olfactory creations and order logistics.</string>
+    <string name="sales_add_new_product">ADD NEW PRODUCT</string>
+    <string name="sales_total_revenue">TOTAL REVENUE</string>
+    <string name="sales_total_sales">TOTAL SALES</string>
+    <string name="sales_incoming_orders">INCOMING ORDERS</string>
+    <string name="sales_no_incoming_orders">No incoming orders yet</string>
+    <string name="sales_collection">COLLECTION</string>
+    <string name="sales_search">Search...</string>
+    <string name="sales_no_products">No products yet</string>
+    <string name="sales_no_products_desc">Add a new product to start selling</string>
+    <string name="sales_orders_count">%d ORDERS</string>
+    <string name="sales_delete_product_title">Delete Product</string>
+    <string name="sales_delete_product_desc">Are you sure you want to delete %s from your collection? This action cannot be undone.</string>
+    <string name="sales_stock">Stock: %d</string>
+    <string name="sales_price">Price</string>
+    <string name="sales_edit">Edit</string>
+    <string name="sales_delete">Delete</string>
+    <string name="sales_view_resi">View Tracking Number</string>
+    <string name="sales_resi_number">Tracking Number: %s</string>
+    <string name="cancel">Cancel</string>
+
     <string name="cart_delete">Delete</string>
+
+    <!-- Add Product Screen -->
+    <string name="add_product_choose_photo_source">Choose Photo Source</string>
+    <string name="add_product_gallery">Gallery</string>
+    <string name="add_product_gallery_desc">Choose a photo from gallery</string>
+    <string name="add_product_camera">Camera</string>
+    <string name="add_product_camera_desc">Take a new photo</string>
+    <string name="add_product_inventory_management">INVENTORY MANAGEMENT</string>
+    <string name="add_product_edit">Edit Product</string>
+    <string name="add_product_add_new">Add New Product</string>
+    <string name="add_product_change">CHANGE</string>
+    <string name="add_product_upload_image">UPLOAD PRODUCT IMAGE</string>
+    <string name="add_product_upload_desc">Tap to select from gallery or camera</string>
+    <string name="add_product_perfume_name">PERFUME NAME</string>
+    <string name="add_product_brand">BRAND</string>
+    <string name="add_product_description">PERFUME DESCRIPTION</string>
+    <string name="add_product_description_hint">Describe the character and soul of this fragrance...</string>
+    <string name="add_product_full_price">FULL PRICE (IDR)</string>
+    <string name="add_product_decant_available">AVAILABLE AS DECANT</string>
+    <string name="add_product_decant_desc">Sell in small sizes (5ml, 10ml, etc.)</string>
+    <string name="add_product_decant_price">DECANT PRICE (IDR)</string>
+    <string name="add_product_olfactory">FRAGRANCE (OLFACTORY FAMILY)</string>
+    <string name="add_product_notes">FRAGRANCE NOTES</string>
+    <string name="add_product_notes_desc">Add main fragrance notes</string>
+    <string name="add_product_save">SAVE</string>
+    <string name="add_product_add_note">+ ADD NOTE</string>
+    <string name="add_product_stock">STOCK AMOUNT</string>
+    <string name="add_product_bottle_size">BOTTLE SIZE (ML)</string>
+    <string name="add_product_usage_time">USAGE TIME</string>
+    <string name="add_product_usage_time_desc">This perfume is best used in the</string>
+    <string name="add_product_saving">SAVING...</string>
+    <string name="add_product_uploading">UPLOADING...</string>
+    <string name="add_product_save_changes">SAVE CHANGES</string>
+    <string name="add_product_add_product">ADD PRODUCT</string>
+    <!-- Shipping Screen Remaining -->
+    <string name="shipping_subtotal_product">Product Subtotal</string>
+    <string name="shipping_cost">Shipping Cost</string>
+    <string name="shipping_total_bill">Total Bill</string>
+
+    <!-- Seller Order Detail & Sales Screen -->
+    <string name="seller_order_detail_title">INCOMING ORDER DETAIL</string>
+    <string name="order_status">Order Status</string>
+    <string name="shipping_address">SHIPPING ADDRESS</string>
+    <string name="ordered_product">ORDERED PRODUCT</string>
+    <string name="total">Total</string>
+    <string name="payment_confirmation">PAYMENT CONFIRMATION</string>
+    <string name="mark_packed">MARK PACKED</string>
+    <string name="input_receipt">INPUT RECEIPT</string>
+    <string name="input_receipt_send">INPUT RECEIPT &amp; SEND</string>
+    <string name="in_delivery">IN DELIVERY</string>
+    <string name="input_receipt_number">Input Receipt Number</string>
+    <string name="example_receipt">e.g. JNE123456789</string>
+    <string name="send">SEND</string>
+    <string name="cancel_caps">CANCEL</string>
+
+    <!-- Account Detail Screen -->
+    <string name="account_detail_gallery">Choose from Gallery</string>
+    <string name="account_detail_camera">Take Photo</string>
+    <string name="account_detail_delete">Delete Photo</string>
+
+    <!-- Order History Screen -->
+    <string name="order_history_title">ORDER HISTORY</string>
+    <string name="order_history_empty">No orders</string>
+    <string name="order_history_total">Total Payment</string>
+    <string name="order_history_detail">VIEW DETAIL &amp; CONFIRM</string>
+    <string name="account_detail_change_photo_btn">CHANGE PHOTO</string>
+    <string name="account_detail_security">Account Security</string>
+    <string name="account_detail_security_desc">Your personal information is encrypted with strict atelier industry standards.</string>
+    <string name="account_detail_change_photo_title">Change Profile Photo</string>
+    <string name="account_detail_change_password">Change Password</string>
+    <string name="account_detail_current_password">Current Password</string>
+    <string name="account_detail_new_password">New Password</string>
+    <string name="account_detail_confirm_password">Confirm New Password</string>
+    <string name="account_detail_password_mismatch">Password does not match</string>
+
+    <!-- Shipping Address Screen -->
+    <string name="shipping_address_title">SHIPPING ADDRESS</string>
+    <string name="shipping_address_info_title">SHIPPING INFORMATION</string>
+    <string name="shipping_address_info_desc">Enter your address details for order delivery.</string>
+    <string name="shipping_address_recipient_name">RECIPIENT NAME</string>
+    <string name="shipping_address_recipient_name_hint">Example: Adrian Wijaya</string>
+    <string name="shipping_address_phone">PHONE NUMBER</string>
+    <string name="shipping_address_province">PROVINCE</string>
+    <string name="shipping_address_province_hint">Select Province</string>
+    <string name="shipping_address_city">CITY / REGENCY</string>
+    <string name="shipping_address_city_hint">Select City</string>
+    <string name="shipping_address_postal_code">POSTAL CODE</string>
+    <string name="shipping_address_full">FULL ADDRESS</string>
+    <string name="shipping_address_full_hint">Street name, house number, block, or apartment unit</string>
+    <string name="shipping_address_incomplete">Please complete all address fields</string>
+    <string name="shipping_address_label_title">ADDRESS LABEL</string>
+    <string name="shipping_address_label_home">HOME</string>
+    <string name="shipping_address_label_office">OFFICE</string>
+    <string name="shipping_address_label_other">OTHER</string>
+    <string name="shipping_address_set_main">Set as Main Address</string>
+    <string name="shipping_address_save">SAVE ADDRESS</string>
+
+    <!-- Order History Screen -->
+    <string name="tab_all">All</string>
+    <string name="tab_unpaid">Unpaid</string>
+    <string name="tab_processing">Processing</string>
+    <string name="tab_shipped">Shipped</string>
+    <string name="tab_completed">Completed</string>
+    <string name="tab_cancelled">Cancelled</string>
+
+    <string name="order_number_format">Order #%s</string>
+    <string name="order_caps_format">ORDER #%s</string>
+    <string name="order_buyer_items_format">%1$s • %2$d Item</string>
+    <string name="confirm_payment_caps">CONFIRM PAYMENT</string>
+    <string name="account_detail_name">FULL NAME</string>
+    <string name="account_detail_email">EMAIL</string>
+    <string name="account_detail_password">PASSWORD</string>
+    <string name="account_detail_change">CHANGE</string>
+    <string name="account_detail_save_btn">SAVE</string>
+    
+    <string name="shipping_address_phone_hint">0812 3456 7890</string>
+    <string name="shipping_address_zip">POSTAL CODE</string>
+    <string name="shipping_address_zip_hint">40123</string>
+    <string name="shipping_address_label">ADDRESS LABEL</string>
+
+    <string name="search_usage_siang">☀️ DAY</string>
+    <string name="search_usage_malam">🌙 NIGHT</string>
+    <string name="search_usage_keduanya">✨ BOTH</string>
+    <string name="account_detail_address_hint">Enter full address, district, city...</string>
+    <string name="scent_title">SCENT</string>
 </resources>

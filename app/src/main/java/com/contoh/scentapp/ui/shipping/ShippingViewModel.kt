@@ -23,8 +23,35 @@ class ShippingViewModel(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
+    private val _address = MutableStateFlow<String?>(null)
+    val address: StateFlow<String?> = _address.asStateFlow()
+
     init {
         fetchDynamicShippingCosts()
+        fetchAddress()
+    }
+
+    private fun fetchAddress() {
+        viewModelScope.launch {
+            val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
+            com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("users").document(uid)
+                .get()
+                .addOnSuccessListener { doc ->
+                    if (doc.exists()) {
+                        val obj = doc.get("defaultAddressObj") as? Map<String, Any>
+                        if (obj != null) {
+                            val nama = obj["nama"] as? String ?: ""
+                            val telepon = obj["telepon"] as? String ?: ""
+                            val alamat = obj["alamat"] as? String ?: ""
+                            val cityName = obj["cityName"] as? String ?: ""
+                            val provName = obj["provName"] as? String ?: ""
+                            _address.value = "$nama - $telepon\n$alamat, $cityName, $provName"
+                        } else {
+                            _address.value = doc.getString("defaultAddress")
+                        }
+                    }
+                }
+        }
     }
 
     private fun fetchDynamicShippingCosts() {

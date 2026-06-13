@@ -34,6 +34,8 @@ import com.contoh.scentapp.domain.model.ActiveOrder
 import com.contoh.scentapp.domain.model.OrderStatus
 import com.contoh.scentapp.domain.model.SalesProduct
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 
 @Composable
 fun SalesScreen(
@@ -61,28 +63,27 @@ fun SalesScreen(
             contentPadding = PaddingValues(bottom = 40.dp)
         ) {
             item(key = "topbar") {
-                Row(
+                Box(
                     modifier = Modifier.fillMaxWidth().statusBarsPadding()
-                        .padding(horizontal = 20.dp, vertical = 16.dp),
-                    verticalAlignment     = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(horizontal = 20.dp, vertical = 16.dp)
                 ) {
                     Icon(
-                        Icons.AutoMirrored.Filled.ArrowBack, "Kembali",
+                        Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back),
                         tint     = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp).clickable(onClick = onBack)
+                        modifier = Modifier.size(24.dp).clickable(onClick = onBack).align(Alignment.CenterStart)
                     )
                     Text(
                         "SCENT",
                         style = MaterialTheme.typography.titleLarge.copy(
                             letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold
                         ),
-                        color = MaterialTheme.colorScheme.onBackground
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.align(Alignment.Center)
                     )
                     Icon(
                         Icons.Default.ShoppingBag, null,
                         tint     = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp).align(Alignment.CenterEnd)
                     )
                 }
             }
@@ -90,7 +91,7 @@ fun SalesScreen(
             item(key = "header") {
                 Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 20.dp)) {
                     Text(
-                        "PERFORMA ATELIER",
+                        stringResource(R.string.sales_performance),
                         style = MaterialTheme.typography.displayMedium.copy(
                             fontWeight = FontWeight.Bold, fontSize = 28.sp, lineHeight = 34.sp
                         ),
@@ -98,7 +99,7 @@ fun SalesScreen(
                     )
                     Spacer(Modifier.height(6.dp))
                     Text(
-                        "Tinjauan komprehensif kreasi olfaktori dan logistik pesanan Anda.",
+                        stringResource(R.string.sales_performance_desc),
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                             lineHeight = 18.sp
@@ -115,7 +116,7 @@ fun SalesScreen(
                             Icon(Icons.Default.Add, null, tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
                             Text(
-                                "TAMBAH PRODUK BARU",
+                                stringResource(R.string.sales_add_new_product),
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontSize = 12.sp, letterSpacing = 2.sp,
                                     fontWeight = FontWeight.Bold,
@@ -129,8 +130,8 @@ fun SalesScreen(
 
             item(key = "stats") {
                 Column(modifier = Modifier.padding(horizontal = 20.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    StatCard(label = "TOTAL PENDAPATAN", value = uiState.formattedPendapatan, subLabel = uiState.growthPercent, isLarge = true)
-                    StatCard(label = "TOTAL PENJUALAN",  value = "%,d".format(uiState.totalPenjualan).replace(",", "."), isLarge = false)
+                    StatCard(label = stringResource(R.string.sales_total_revenue), value = uiState.formattedPendapatan, subLabel = uiState.growthPercent, isLarge = true)
+                    StatCard(label = stringResource(R.string.sales_total_sales),  value = "%,d".format(uiState.totalPenjualan).replace(",", "."), isLarge = false)
                 }
                 Spacer(Modifier.height(28.dp))
             }
@@ -142,7 +143,7 @@ fun SalesScreen(
                     verticalAlignment     = Alignment.CenterVertically
                 ) {
                     Text(
-                        "PESANAN MASUK",
+                        stringResource(R.string.sales_incoming_orders),
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp),
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -152,7 +153,7 @@ fun SalesScreen(
                             .padding(horizontal = 10.dp, vertical = 4.dp)
                     ) {
                         Text(
-                            "${uiState.activeOrders.size} PESANAN",
+                            stringResource(R.string.sales_orders_count, uiState.activeOrders.size),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontSize = 9.sp, letterSpacing = 1.sp,
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
@@ -190,7 +191,7 @@ fun SalesScreen(
                             )
                             Spacer(Modifier.height(10.dp))
                             Text(
-                                "Belum ada pesanan masuk",
+                                stringResource(R.string.sales_no_incoming_orders),
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f)
                                 )
@@ -210,7 +211,7 @@ fun SalesScreen(
                     verticalAlignment     = Alignment.CenterVertically
                 ) {
                     Text(
-                        "KOLEKSI",
+                        stringResource(R.string.sales_collection),
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp),
                         color = MaterialTheme.colorScheme.onBackground
                     )
@@ -228,7 +229,7 @@ fun SalesScreen(
                                     .background(MaterialTheme.colorScheme.surfaceVariant)
                                     .padding(horizontal = 8.dp, vertical = 4.dp),
                                 decorationBox = { inner ->
-                                    if (searchQuery.isEmpty()) Text("Cari...", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                                    if (searchQuery.isEmpty()) Text(stringResource(R.string.sales_search), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                                     inner()
                                 }
                             )
@@ -266,14 +267,14 @@ fun SalesScreen(
                             )
                             Spacer(Modifier.height(12.dp))
                             Text(
-                                "Belum ada produk",
+                                stringResource(R.string.sales_no_products),
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.45f)
                                 )
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                "Tambah produk baru untuk mulai berjualan",
+                                stringResource(R.string.sales_no_products_desc),
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.35f)
                                 )
@@ -317,14 +318,14 @@ fun SalesScreen(
             containerColor   = MaterialTheme.colorScheme.surface,
             title = {
                 Text(
-                    "Hapus Produk",
+                    stringResource(R.string.sales_delete_product_title),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onBackground
                 )
             },
             text = {
                 Text(
-                    "Apakah kamu yakin ingin menghapus \"$deleteConfirmProductName\"? Tindakan ini tidak dapat dibatalkan.",
+                    stringResource(R.string.sales_delete_product_desc, deleteConfirmProductName),
                     style = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
                     )
@@ -336,7 +337,7 @@ fun SalesScreen(
                     deleteConfirmProductId = null
                 }) {
                     Text(
-                        "HAPUS",
+                        stringResource(R.string.sales_delete),
                         color = Color(0xFFE57373),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Bold, letterSpacing = 1.sp
@@ -347,7 +348,7 @@ fun SalesScreen(
             dismissButton = {
                 TextButton(onClick = { deleteConfirmProductId = null }) {
                     Text(
-                        "BATAL",
+                        stringResource(R.string.cancel),
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Bold, letterSpacing = 1.sp
@@ -369,7 +370,7 @@ private fun ResiInputDialog(orderId: String, onConfirm: (String) -> Unit, onDism
         containerColor   = MaterialTheme.colorScheme.surface,
         title = {
             Text(
-                "Input Nomor Resi",
+                stringResource(R.string.input_receipt_number),
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -377,7 +378,7 @@ private fun ResiInputDialog(orderId: String, onConfirm: (String) -> Unit, onDism
         text = {
             Column {
                 Text(
-                    "Pesanan #$orderId",
+                    stringResource(R.string.order_number_format, orderId),
                     style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
                 )
                 Spacer(Modifier.height(16.dp))
@@ -398,7 +399,7 @@ private fun ResiInputDialog(orderId: String, onConfirm: (String) -> Unit, onDism
                         modifier    = Modifier.fillMaxWidth(),
                         decorationBox = { inner ->
                             if (noResi.isEmpty()) Text(
-                                "mis. JNE123456789",
+                                stringResource(R.string.example_receipt),
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
                                 )
@@ -412,7 +413,7 @@ private fun ResiInputDialog(orderId: String, onConfirm: (String) -> Unit, onDism
         confirmButton = {
             TextButton(onClick = { if (noResi.isNotBlank()) onConfirm(noResi) }) {
                 Text(
-                    "KIRIM",
+                    stringResource(R.string.send),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                 )
@@ -421,7 +422,7 @@ private fun ResiInputDialog(orderId: String, onConfirm: (String) -> Unit, onDism
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(
-                    "BATAL",
+                    stringResource(R.string.cancel_caps),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                     style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                 )
@@ -540,12 +541,12 @@ private fun SalesProductItem(
             Spacer(Modifier.height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 Icon(
-                    Icons.Default.Edit, "Edit",
+                    Icons.Default.Edit, stringResource(R.string.sales_edit),
                     tint     = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                     modifier = Modifier.size(20.dp).clickable(onClick = onEdit)
                 )
                 Icon(
-                    Icons.Default.Delete, "Hapus",
+                    Icons.Default.Delete, stringResource(R.string.sales_delete),
                     tint     = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                     modifier = Modifier.size(20.dp).clickable(onClick = onDelete)
                 )
@@ -607,7 +608,7 @@ private fun ActiveOrderCard(
         ) {
             Column {
                 Text(
-                    "ORDER #${order.orderId}",
+                    stringResource(R.string.order_caps_format, order.orderId),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 10.sp, letterSpacing = 1.5.sp,
                         color    = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
@@ -615,7 +616,7 @@ private fun ActiveOrderCard(
                 )
                 Spacer(Modifier.height(4.dp))
                 Text(
-                    "${order.buyerName} • ${order.itemCount} Item",
+                    stringResource(R.string.order_buyer_items_format, order.buyerName, order.itemCount),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 16.sp),
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -644,7 +645,7 @@ private fun ActiveOrderCard(
             )
             Spacer(Modifier.width(6.dp))
             Text(
-                if (order.paymentMethod == "Transfer") "Transfer Bank" else "COD",
+                if (order.paymentMethod == "Transfer") stringResource(R.string.payment_transfer) else "COD",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp
                 )
@@ -669,7 +670,7 @@ private fun ActiveOrderCard(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        "KONFIRMASI BAYAR",
+                        stringResource(R.string.confirm_payment_caps),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 9.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = ScentGold
                         )
@@ -684,9 +685,9 @@ private fun ActiveOrderCard(
                             .clickable(onClick = onMarkPacked).padding(vertical = 12.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("TANDAI DIKEMAS", style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 9.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold,
-                            color    = MaterialTheme.colorScheme.onBackground))
+                        Text(stringResource(R.string.mark_packed), style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 10.sp, letterSpacing = 1.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground
+                        ))
                     }
                     Box(
                         modifier = Modifier.weight(1f).clip(RoundedCornerShape(8.dp))
@@ -694,9 +695,9 @@ private fun ActiveOrderCard(
                             .clickable(onClick = onMarkShipped).padding(vertical = 12.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("INPUT RESI", style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 9.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold,
-                            color    = MaterialTheme.colorScheme.onBackground))
+                        Text(stringResource(R.string.input_receipt), style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 10.sp, letterSpacing = 1.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground
+                        ))
                     }
                 }
             }
@@ -707,9 +708,9 @@ private fun ActiveOrderCard(
                         .clickable(onClick = onMarkShipped).padding(vertical = 12.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("INPUT RESI & KIRIM", style = MaterialTheme.typography.labelSmall.copy(
-                        fontSize = 9.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold,
-                        color    = MaterialTheme.colorScheme.background))
+                    Text(stringResource(R.string.input_receipt_send), style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background
+                    ))
                 }
             }
             OrderStatus.DIKIRIM -> {
@@ -718,9 +719,9 @@ private fun ActiveOrderCard(
                         .background(MaterialTheme.colorScheme.secondaryContainer).padding(vertical = 12.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("DALAM PENGIRIMAN", style = MaterialTheme.typography.labelSmall.copy(
-                        fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold,
-                        color    = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                    Text(stringResource(R.string.in_delivery), style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                    ))
                 }
             }
             else -> {

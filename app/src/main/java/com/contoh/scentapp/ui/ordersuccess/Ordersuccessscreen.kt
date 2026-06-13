@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.ordersuccess
+package com.contoh.scentapp.ui.ordersuccess
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material.icons.filled.Money
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.contoh.scentapp.data.repository.CartRepository
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 
 @Composable
 fun OrderSuccessScreen(
@@ -44,12 +47,12 @@ fun OrderSuccessScreen(
     }
 
     val instruksiText = if (isTransfer) {
-        "Terima kasih atas pesanan Anda. Pembayaran transfer Anda sedang diproses dan akan segera dikonfirmasi."
+        stringResource(R.string.order_success_transfer_desc)
     } else {
-        "Terima kasih atas pesanan Anda. Silakan siapkan pembayaran saat kurir mengantarkan paket Anda."
+        stringResource(R.string.order_success_desc_cod)
     }
 
-    val metodeText = if (isTransfer) "Transfer Bank" else "Bayar di Tempat (COD)"
+    val metodeText = if (isTransfer) stringResource(R.string.order_success_transfer) else stringResource(R.string.order_success_cod)
     val metodeIcon = if (isTransfer) Icons.Default.AccountBalance else Icons.Default.Money
 
     Box(
@@ -59,25 +62,23 @@ fun OrderSuccessScreen(
             modifier = Modifier.fillMaxSize().padding(horizontal = 20.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(vertical = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            Box(
+                modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(vertical = 16.dp)
             ) {
                 Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Tutup",
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
                     tint = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.size(24.dp).clickable(onClick = onBackHome)
+                    modifier = Modifier.size(24.dp).clickable(onClick = onBackHome).align(Alignment.CenterStart)
                 )
                 Text(
                     text = "SCENT",
                     style = MaterialTheme.typography.titleLarge.copy(
                         letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold
                     ),
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.align(Alignment.Center)
                 )
-                Spacer(Modifier.size(24.dp))
             }
             Spacer(Modifier.height(32.dp))
             Box(
@@ -86,14 +87,14 @@ fun OrderSuccessScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    contentDescription = "Berhasil",
+                    contentDescription = stringResource(R.string.ok),
                     tint = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.size(56.dp)
                 )
             }
             Spacer(Modifier.height(28.dp))
             Text(
-                text = "Pesanan Berhasil\nDitempatkan",
+                text = stringResource(R.string.order_success_title),
                 style = MaterialTheme.typography.displayMedium.copy(
                     fontWeight = FontWeight.Bold, fontSize = 28.sp, lineHeight = 36.sp
                 ),
@@ -112,7 +113,7 @@ fun OrderSuccessScreen(
             Column(
                 modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(MaterialTheme.colorScheme.surface).padding(20.dp)
             ) {
-                OrderDetailRow(label = "ORDER ID", value = orderId, isLabelSmall = true)
+                OrderDetailRow(label = stringResource(R.string.order_id), value = orderId, isLabelSmall = true)
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(vertical = 16.dp))
                 Column {
                     Text(
@@ -141,7 +142,7 @@ fun OrderSuccessScreen(
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(vertical = 16.dp))
                 Column {
                     Text(
-                        text = "ESTIMASI TIBA",
+                        text = stringResource(R.string.order_estimate),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                         )
@@ -170,7 +171,7 @@ fun OrderSuccessScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Total Pembayaran",
+                        text = stringResource(R.string.order_success_total_payment),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
                     )
                     Text(
@@ -188,7 +189,7 @@ fun OrderSuccessScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = "KEMBALI KE BERANDA",
+                    text = stringResource(R.string.order_success_back_home),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background
                     )

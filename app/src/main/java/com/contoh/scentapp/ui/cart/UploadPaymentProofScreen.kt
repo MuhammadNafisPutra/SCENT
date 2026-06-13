@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.cart
+package com.contoh.scentapp.ui.cart
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -25,6 +25,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 
 @Composable
 fun UploadPaymentProofScreen(
@@ -43,24 +45,22 @@ fun UploadPaymentProofScreen(
                 .padding(bottom = 110.dp)
         ) {
             // ── Top Bar ───────────────────────────────────────────────────────
-            Row(
+            Box(
                 modifier = Modifier.fillMaxWidth().statusBarsPadding()
-                    .padding(horizontal = 20.dp, vertical = 16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
-                Icon(Icons.AutoMirrored.Filled.ArrowBack, "Kembali", tint = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.size(24.dp).clickable(onClick = onBack))
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.size(24.dp).clickable(onClick = onBack).align(Alignment.CenterStart))
                 Text("SCENT", style = MaterialTheme.typography.titleLarge.copy(
-                    letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.onBackground)
-                Spacer(Modifier.size(24.dp))
+                    letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.align(Alignment.Center))
             }
 
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                Text("Upload Bukti Transfer", style = MaterialTheme.typography.displayMedium.copy(
+                Text(stringResource(R.string.payment_proof_title), style = MaterialTheme.typography.displayMedium.copy(
                     fontWeight = FontWeight.Bold, fontSize = 28.sp), color = MaterialTheme.colorScheme.onBackground)
                 Spacer(Modifier.height(8.dp))
-                Text("Pastikan bukti pembayaran terlihat jelas dan nominal sesuai.", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), lineHeight = 22.sp))
+                Text(stringResource(R.string.payment_proof_subtitle), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), lineHeight = 22.sp))
 
                 Spacer(Modifier.height(28.dp))
 
@@ -70,7 +70,7 @@ fun UploadPaymentProofScreen(
                         .background(MaterialTheme.colorScheme.surface).border(0.5.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
                         .padding(16.dp)
                 ) {
-                    Text("REKENING TUJUAN TRANSFER", style = MaterialTheme.typography.labelSmall.copy(
+                    Text(stringResource(R.string.payment_proof_account_dest), style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                     Spacer(Modifier.height(16.dp))
 
@@ -82,7 +82,7 @@ fun UploadPaymentProofScreen(
                 Spacer(Modifier.height(24.dp))
 
                 // ── Upload Area ───────────────────────────────────────────────
-                Text("FOTO BUKTI PEMBAYARAN", style = MaterialTheme.typography.labelSmall.copy(
+                Text(stringResource(R.string.payment_proof_photo), style = MaterialTheme.typography.labelSmall.copy(
                     fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
 
@@ -126,10 +126,10 @@ fun UploadPaymentProofScreen(
                                 Icon(Icons.Default.CloudUpload, null, tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), modifier = Modifier.size(28.dp))
                             }
                             Spacer(Modifier.height(14.dp))
-                            Text("Tap untuk pilih foto", style = MaterialTheme.typography.bodyMedium.copy(
+                            Text(stringResource(R.string.payment_proof_tap_select), style = MaterialTheme.typography.bodyMedium.copy(
                                 color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Medium))
                             Spacer(Modifier.height(4.dp))
-                            Text("JPG, PNG — maks 5MB", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                            Text(stringResource(R.string.payment_proof_max_size), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         }
                     }
                 }
@@ -147,7 +147,7 @@ fun UploadPaymentProofScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Default.Photo, null, tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
-                            Text("BUKA GALERI", style = MaterialTheme.typography.labelSmall.copy(
+                            Text(stringResource(R.string.payment_proof_open_gallery), style = MaterialTheme.typography.labelSmall.copy(
                                 fontSize = 11.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         }
                     }
@@ -173,7 +173,7 @@ fun UploadPaymentProofScreen(
                         Spacer(Modifier.width(8.dp))
                     }
                     Text(
-                        text  = "KONFIRMASI PEMBAYARAN",
+                        text  = stringResource(R.string.payment_proof_confirm),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold,
                             color    = if (imageUri != null) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)

@@ -37,6 +37,8 @@ import coil.compose.AsyncImage
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 
 @Composable
 fun AccountDetailScreen(
@@ -126,7 +128,7 @@ fun AccountDetailScreen(
                     ) {
                         Icon(
                             imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Kembali",
+                            contentDescription = stringResource(R.string.back),
                             tint               = MaterialTheme.colorScheme.onBackground,
                             modifier           = Modifier
                                 .size(24.dp)
@@ -134,7 +136,7 @@ fun AccountDetailScreen(
                         )
                         Spacer(Modifier.width(16.dp))
                         Text(
-                            text  = "Detail Akun",
+                            text  = stringResource(R.string.profile_account_detail),
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Bold,
                                 fontSize   = 20.sp
@@ -197,7 +199,7 @@ fun AccountDetailScreen(
                             ) {
                                 Icon(
                                     imageVector        = Icons.Default.Edit,
-                                    contentDescription = "Ganti foto",
+                                    contentDescription = stringResource(R.string.account_detail_change_photo_btn),
                                     tint               = MaterialTheme.colorScheme.background,
                                     modifier           = Modifier.size(18.dp)
                                 )
@@ -205,7 +207,7 @@ fun AccountDetailScreen(
                         }
                         Spacer(Modifier.height(12.dp))
                         Text(
-                            text  = "GANTI FOTO",
+                            text  = stringResource(R.string.account_detail_change_photo_btn),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontSize      = 10.sp,
                                 letterSpacing = 2.sp,
@@ -215,10 +217,9 @@ fun AccountDetailScreen(
                     }
                 }
 
-                // ── Nama ──────────────────────────────────────────────────────
                 item(key = "nama") {
                     AccountFormField(
-                        label    = "NAMA LENGKAP",
+                        label    = stringResource(R.string.account_detail_name),
                         value    = name,
                         onChange = { name = it },
                         modifier = Modifier.padding(horizontal = 20.dp)
@@ -230,10 +231,9 @@ fun AccountDetailScreen(
                     )
                 }
 
-                // ── Email ─────────────────────────────────────────────────────
                 item(key = "email") {
                     AccountFormField(
-                        label        = "EMAIL",
+                        label        = stringResource(R.string.account_detail_email),
                         value        = email,
                         onChange     = { email = it },
                         keyboardType = KeyboardType.Email,
@@ -246,7 +246,6 @@ fun AccountDetailScreen(
                     )
                 }
 
-                // ── Password ──────────────────────────────────────────────────
                 item(key = "password") {
                     Row(
                         modifier = Modifier
@@ -257,7 +256,7 @@ fun AccountDetailScreen(
                     ) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text(
-                                text  = "PASSWORD",
+                                text  = stringResource(R.string.account_detail_password),
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontSize      = 10.sp,
                                     letterSpacing = 1.5.sp,
@@ -282,7 +281,7 @@ fun AccountDetailScreen(
                                 .padding(horizontal = 12.dp, vertical = 8.dp)
                         ) {
                             Text(
-                                text  = "GANTI",
+                                text  = stringResource(R.string.account_detail_change),
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontSize      = 10.sp,
                                     letterSpacing = 1.5.sp,
@@ -299,7 +298,6 @@ fun AccountDetailScreen(
                     )
                 }
 
-                // ── Alamat ────────────────────────────────────────────────────
                 item(key = "alamat") {
                     AddressFormField(
                         value    = address,
@@ -313,7 +311,6 @@ fun AccountDetailScreen(
                     )
                 }
 
-                // ── Security note ─────────────────────────────────────────────
                 item(key = "security") {
                     Spacer(Modifier.height(24.dp))
                     Row(
@@ -339,7 +336,7 @@ fun AccountDetailScreen(
                         Spacer(Modifier.width(12.dp))
                         Column {
                             Text(
-                                text  = "Keamanan Akun",
+                                text  = stringResource(R.string.account_detail_security),
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     fontWeight = FontWeight.Bold
                                 ),
@@ -347,7 +344,7 @@ fun AccountDetailScreen(
                             )
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                text  = "Informasi pribadi Anda dienkripsi dengan standar industri atelier yang ketat.",
+                                text  = stringResource(R.string.account_detail_security_desc),
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     color      = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                                     lineHeight = 18.sp
@@ -359,7 +356,6 @@ fun AccountDetailScreen(
                 }
             }
 
-            // ── Tombol Simpan ─────────────────────────────────────────────────
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
@@ -373,7 +369,6 @@ fun AccountDetailScreen(
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(10.dp))
                         .background(MaterialTheme.colorScheme.onBackground)
-                        // ✅ FIX: onBack() DIHAPUS — navigasi dihandle LaunchedEffect
                         .clickable {
                             viewModel.updateProfileWithPhoto(
                                 fullName = name,
@@ -386,7 +381,7 @@ fun AccountDetailScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text  = "SIMPAN PERUBAHAN",
+                        text  = stringResource(R.string.account_detail_save_btn),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize      = 12.sp,
                             letterSpacing = 2.sp,
@@ -399,7 +394,6 @@ fun AccountDetailScreen(
         }
     }
 
-    // ── Dialog Update Password ────────────────────────────────────────────
     if (showUpdatePasswordDialog) {
         UpdatePasswordDialog(
             updatePasswordState = updatePasswordState,
@@ -413,14 +407,13 @@ fun AccountDetailScreen(
         )
     }
 
-    // ── Dialog Pilih Foto ──────────────────────────────────────────────────
     if (showPhotoDialog) {
         AlertDialog(
             onDismissRequest = { showPhotoDialog = false },
             containerColor   = MaterialTheme.colorScheme.surface,
             title = {
                 Text(
-                    "Ganti Foto Profil",
+                    stringResource(R.string.account_detail_change_photo_title),
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onBackground
                 )
@@ -441,7 +434,7 @@ fun AccountDetailScreen(
                     ) {
                         Icon(Icons.Default.PhotoLibrary, null, tint = ScentGold, modifier = Modifier.size(22.dp))
                         Spacer(Modifier.width(12.dp))
-                        Text("Pilih dari Galeri", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground))
+                        Text(stringResource(R.string.account_detail_gallery), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground))
                     }
                     Row(
                         modifier = Modifier
@@ -464,7 +457,7 @@ fun AccountDetailScreen(
                     ) {
                         Icon(Icons.Default.CameraAlt, null, tint = ScentGold, modifier = Modifier.size(22.dp))
                         Spacer(Modifier.width(12.dp))
-                        Text("Ambil Foto", style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground))
+                        Text(stringResource(R.string.account_detail_camera), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground))
                     }
                     if (photoUri != null) {
                         Row(
@@ -478,7 +471,7 @@ fun AccountDetailScreen(
                         ) {
                             Icon(Icons.Default.DeleteOutline, null, tint = Color(0xFFCF6679), modifier = Modifier.size(22.dp))
                             Spacer(Modifier.width(12.dp))
-                            Text("Hapus Foto", style = MaterialTheme.typography.bodyMedium.copy(color = Color(0xFFCF6679)))
+                            Text(stringResource(R.string.account_detail_delete), style = MaterialTheme.typography.bodyMedium.copy(color = Color(0xFFCF6679)))
                         }
                     }
                 }
@@ -487,7 +480,7 @@ fun AccountDetailScreen(
             dismissButton = {
                 TextButton(onClick = { showPhotoDialog = false }) {
                     Text(
-                        "BATAL",
+                        stringResource(R.string.cancel),
                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp)
                     )
@@ -497,7 +490,6 @@ fun AccountDetailScreen(
     }
 }
 
-// ── Dialog Update Password ─────────────────────────────────────────────────────
 @Composable
 private fun UpdatePasswordDialog(
     updatePasswordState : UpdatePasswordState,
@@ -518,7 +510,7 @@ private fun UpdatePasswordDialog(
         containerColor   = MaterialTheme.colorScheme.surface,
         title = {
             Text(
-                text  = "Ubah Password",
+                text  = stringResource(R.string.account_detail_change_password),
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onBackground
             )
@@ -529,7 +521,7 @@ private fun UpdatePasswordDialog(
                 modifier            = Modifier.fillMaxWidth()
             ) {
                 PasswordInputField(
-                    label         = "Password Saat Ini",
+                    label         = stringResource(R.string.account_detail_current_password),
                     value         = currentPassword,
                     onValueChange = { currentPassword = it },
                     isVisible     = showCurrentPassword,
@@ -537,7 +529,7 @@ private fun UpdatePasswordDialog(
                     enabled       = !isLoading
                 )
                 PasswordInputField(
-                    label         = "Password Baru",
+                    label         = stringResource(R.string.account_detail_new_password),
                     value         = newPassword,
                     onValueChange = { newPassword = it },
                     isVisible     = showNewPassword,
@@ -545,13 +537,13 @@ private fun UpdatePasswordDialog(
                     enabled       = !isLoading
                 )
                 PasswordInputField(
-                    label         = "Konfirmasi Password Baru",
+                    label         = stringResource(R.string.account_detail_confirm_password),
                     value         = confirmPassword,
                     onValueChange = { confirmPassword = it },
                     isVisible     = showConfirmPassword,
                     onToggle      = { showConfirmPassword = !showConfirmPassword },
                     isError       = confirmPassword.isNotEmpty() && newPassword != confirmPassword,
-                    errorMessage  = "Password tidak cocok",
+                    errorMessage  = stringResource(R.string.account_detail_password_mismatch),
                     enabled       = !isLoading
                 )
                 if (updatePasswordState is UpdatePasswordState.Error) {
@@ -575,7 +567,7 @@ private fun UpdatePasswordDialog(
                 enabled = !isLoading
             ) {
                 Text(
-                    text  = "SIMPAN",
+                    text  = stringResource(R.string.account_detail_save_btn),
                     color = ScentGold,
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold, letterSpacing = 1.sp
@@ -589,7 +581,7 @@ private fun UpdatePasswordDialog(
                 enabled = !isLoading
             ) {
                 Text(
-                    text  = "BATAL",
+                    text  = stringResource(R.string.cancel),
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontWeight = FontWeight.Bold, letterSpacing = 1.sp
@@ -688,7 +680,7 @@ private fun AddressFormField(
             )
             Spacer(Modifier.width(4.dp))
             Text(
-                text  = "ALAMAT PENGIRIMAN",
+                text  = stringResource(R.string.profile_address),
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontSize      = 10.sp,
                     letterSpacing = 1.5.sp,
@@ -712,7 +704,7 @@ private fun AddressFormField(
                 Box {
                     if (value.isEmpty()) {
                         Text(
-                            text  = "Masukkan alamat lengkap, kelurahan, kota...",
+                            text  = stringResource(R.string.account_detail_address_hint),
                             style = MaterialTheme.typography.bodyMedium.copy(
                                 color      = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                                 fontSize   = 16.sp,

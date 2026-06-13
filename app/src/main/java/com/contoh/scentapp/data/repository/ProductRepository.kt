@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.data.repository
+package com.contoh.scentapp.data.repository
 
 import com.contoh.scentapp.domain.model.AromaFilter
 import com.contoh.scentapp.domain.model.HeroBanner
@@ -24,6 +24,7 @@ class ProductRepository private constructor() {
     }
 
     val heroBanner = HeroBanner(
+        productId     = "",
         tag           = "RILIS TERBATAS",
         title         = "NOIR\nABSOLU",
         description   = "Perpaduan etereal dari kayu oud asap, amber beludru, " +

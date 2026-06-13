@@ -26,8 +26,12 @@ class ShippingAddressViewModel(
     private val _isLoadingCities = MutableStateFlow(false)
     val isLoadingCities: StateFlow<Boolean> = _isLoadingCities.asStateFlow()
 
+    private val _savedAddressObj = MutableStateFlow<Map<String, Any>?>(null)
+    val savedAddressObj: StateFlow<Map<String, Any>?> = _savedAddressObj.asStateFlow()
+
     init {
         fetchProvinces()
+        fetchSavedAddress()
     }
 
     private fun fetchProvinces() {
@@ -58,11 +62,41 @@ class ShippingAddressViewModel(
         shippingRepository.selectedDestinationCityId = "city_$cityId"
     }
 
-    fun saveFullAddress(fullAddress: String) {
+    fun saveStructuredAddress(nama: String, telepon: String, alamat: String, kodePos: String, provId: String, provName: String, cityId: String, cityName: String, label: String, isUtama: Boolean) {
+        viewModelScope.launch {
+            val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
+            val fullAddress = "$nama - $telepon\n$alamat, $cityName, $provName"
+            val addressObj = mapOf(
+                "nama" to nama,
+                "telepon" to telepon,
+                "alamat" to alamat,
+                "kodePos" to kodePos,
+                "provId" to provId,
+                "provName" to provName,
+                "cityId" to cityId,
+                "cityName" to cityName,
+                "label" to label,
+                "isUtama" to isUtama
+            )
+            com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("users").document(uid)
+                .set(mapOf(
+                    "defaultAddress" to fullAddress,
+                    "defaultAddressObj" to addressObj
+                ), com.google.firebase.firestore.SetOptions.merge())
+        }
+    }
+
+    private fun fetchSavedAddress() {
         viewModelScope.launch {
             val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
             com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("users").document(uid)
-                .update("defaultAddress", fullAddress)
+                .get()
+                .addOnSuccessListener { doc ->
+                    if (doc.exists()) {
+                        val obj = doc.get("defaultAddressObj") as? Map<String, Any>
+                        _savedAddressObj.value = obj
+                    }
+                }
         }
     }
 }

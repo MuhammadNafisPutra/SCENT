@@ -28,6 +28,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.contoh.scentapp.data.remote.dto.CityDto
 import com.contoh.scentapp.data.remote.dto.ProvinceDto
 import com.contoh.scentapp.ui.theme.*
+import androidx.compose.ui.res.stringResource
+import com.contoh.scentapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,15 +46,45 @@ fun ShippingAddressScreen(
     
     val provinces by viewModel.provinces.collectAsState()
     val cities by viewModel.cities.collectAsState()
+    val savedAddressObj by viewModel.savedAddressObj.collectAsState()
     
     var selectedProvince by remember { mutableStateOf<ProvinceDto?>(null) }
     var selectedCity by remember { mutableStateOf<CityDto?>(null) }
+
+    LaunchedEffect(savedAddressObj) {
+        savedAddressObj?.let { obj ->
+            namaPenerima = obj["nama"] as? String ?: ""
+            noTelepon = obj["telepon"] as? String ?: ""
+            alamatLengkap = obj["alamat"] as? String ?: ""
+            kodePos = obj["kodePos"] as? String ?: ""
+            labelAlamat = obj["label"] as? String ?: "RUMAH"
+            isAlamatUtama = obj["isUtama"] as? Boolean ?: false
+            
+            val pId = obj["provId"] as? String
+            val pName = obj["provName"] as? String
+            val cId = obj["cityId"] as? String
+            val cName = obj["cityName"] as? String
+            
+            if (pId != null && pName != null) {
+                selectedProvince = ProvinceDto(pId, pName)
+                viewModel.fetchCities(pId)
+            }
+            if (cId != null && cName != null) {
+                selectedCity = CityDto(cId, pId ?: "", cName)
+            }
+        }
+    }
     
     var expandedProvince by remember { mutableStateOf(false) }
     var expandedCity by remember { mutableStateOf(false) }
 
     val listState       = rememberLazyListState()
-    val labelOptions = listOf("RUMAH", "KANTOR", "LAINNYA")
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val labelOptions = listOf(
+        context.getString(R.string.shipping_address_label_home), 
+        context.getString(R.string.shipping_address_label_office), 
+        context.getString(R.string.shipping_address_label_other)
+    )
 
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -82,7 +114,7 @@ fun ShippingAddressScreen(
                 ) {
                     Icon(
                         imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Kembali",
+                        contentDescription = stringResource(R.string.back),
                         tint = MaterialTheme.colorScheme.onBackground,
                         modifier           = Modifier
                             .size(24.dp)
@@ -90,7 +122,7 @@ fun ShippingAddressScreen(
                     )
                     Spacer(Modifier.width(16.dp))
                     Text(
-                        text  = "SHIPPING ADDRESS",
+                        text  = stringResource(R.string.shipping_address_title),
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight    = FontWeight.Bold,
                             fontSize      = 14.sp,
@@ -110,7 +142,7 @@ fun ShippingAddressScreen(
                     )
                 ) {
                     Text(
-                        text  = "INFORMASI PENGIRIMAN",
+                        text  = stringResource(R.string.shipping_address_info_title),
                         style = MaterialTheme.typography.displayMedium.copy(
                             fontWeight = FontWeight.Bold,
                             fontSize   = 26.sp,
@@ -120,7 +152,7 @@ fun ShippingAddressScreen(
                     )
                     Spacer(Modifier.height(8.dp))
                     Text(
-                        text  = "Masukkan detail alamat untuk pengiriman pesanan Anda.",
+                        text  = stringResource(R.string.shipping_address_info_desc),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                             lineHeight = 22.sp
@@ -130,19 +162,19 @@ fun ShippingAddressScreen(
             }
             item(key = "nama") {
                 AddressFormField(
-                    label       = "NAMA PENERIMA",
+                    label       = stringResource(R.string.shipping_address_recipient_name),
                     value       = namaPenerima,
                     onChange    = { namaPenerima = it },
-                    placeholder = "Contoh: Adrian Wijaya",
+                    placeholder = stringResource(R.string.shipping_address_recipient_name_hint),
                     modifier    = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
                 )
             }
             item(key = "telepon") {
                 AddressFormField(
-                    label           = "NOMOR TELEPON",
+                    label           = stringResource(R.string.shipping_address_phone),
                     value           = noTelepon,
                     onChange        = { noTelepon = it },
-                    placeholder     = "0812 3456 7890",
+                    placeholder     = stringResource(R.string.shipping_address_phone_hint),
                     keyboardType    = KeyboardType.Phone,
                     modifier        = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
                 )
@@ -152,7 +184,7 @@ fun ShippingAddressScreen(
             item(key = "provinsi") {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                     Text(
-                        text  = "PROVINSI",
+                        text  = stringResource(R.string.shipping_address_province),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize      = 10.sp,
                             letterSpacing = 1.5.sp,
@@ -165,7 +197,7 @@ fun ShippingAddressScreen(
                         onExpandedChange = { expandedProvince = !expandedProvince }
                     ) {
                         OutlinedTextField(
-                            value = selectedProvince?.name ?: "Pilih Provinsi",
+                            value = selectedProvince?.name ?: stringResource(R.string.shipping_address_province_hint),
                             onValueChange = {},
                             readOnly = true,
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedProvince) },
@@ -204,7 +236,7 @@ fun ShippingAddressScreen(
                 ) {
                     Column(modifier = Modifier.weight(1.5f)) {
                         Text(
-                            text  = "KOTA / KABUPATEN",
+                            text  = stringResource(R.string.shipping_address_city),
                             style = MaterialTheme.typography.labelSmall.copy(
                                 fontSize      = 10.sp,
                                 letterSpacing = 1.5.sp,
@@ -217,7 +249,7 @@ fun ShippingAddressScreen(
                             onExpandedChange = { if(cities.isNotEmpty()) expandedCity = !expandedCity }
                         ) {
                             OutlinedTextField(
-                                value = selectedCity?.name ?: "Pilih Kota",
+                                value = selectedCity?.name ?: stringResource(R.string.shipping_address_city_hint),
                                 onValueChange = {},
                                 readOnly = true,
                                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedCity) },
@@ -245,10 +277,10 @@ fun ShippingAddressScreen(
                         }
                     }
                     AddressFormField(
-                        label       = "KODE POS",
+                        label       = stringResource(R.string.shipping_address_zip),
                         value       = kodePos,
                         onChange    = { kodePos = it },
-                        placeholder = "40123",
+                        placeholder = stringResource(R.string.shipping_address_zip_hint),
                         keyboardType = KeyboardType.Number,
                         modifier    = Modifier.weight(1f)
                     )
@@ -260,7 +292,7 @@ fun ShippingAddressScreen(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
                 ) {
                     Text(
-                        text  = "ALAMAT LENGKAP",
+                        text  = stringResource(R.string.shipping_address_full),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize      = 10.sp,
                             letterSpacing = 1.5.sp,
@@ -287,7 +319,7 @@ fun ShippingAddressScreen(
                             decorationBox = { inner ->
                                 if (alamatLengkap.isEmpty()) {
                                     Text(
-                                        text  = "Nama jalan, nomor rumah, blok, atau unit apartemen",
+                                        text  = stringResource(R.string.shipping_address_full_hint),
                                         style = MaterialTheme.typography.bodyMedium.copy(
                                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                                             lineHeight = 22.sp
@@ -305,7 +337,7 @@ fun ShippingAddressScreen(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 16.dp)
                 ) {
                     Text(
-                        text  = "LABEL ALAMAT",
+                        text  = stringResource(R.string.shipping_address_label),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontSize      = 10.sp,
                             letterSpacing = 1.5.sp,
@@ -361,7 +393,7 @@ fun ShippingAddressScreen(
                     )
                     Spacer(Modifier.width(8.dp))
                     Text(
-                        text  = "Jadikan Alamat Utama",
+                        text  = stringResource(R.string.shipping_address_set_main),
                         style = MaterialTheme.typography.bodyMedium.copy(
                             color = MaterialTheme.colorScheme.onBackground
                         )
@@ -385,12 +417,22 @@ fun ShippingAddressScreen(
                     .clickable { 
                         if (namaPenerima.isBlank() || noTelepon.isBlank() || selectedCity == null || selectedProvince == null || alamatLengkap.isBlank()) {
                             coroutineScope.launch {
-                                snackbarHostState.showSnackbar("Harap lengkapi semua data alamat")
+                                snackbarHostState.showSnackbar(context.getString(R.string.shipping_address_incomplete))
                             }
                         } else {
-                            val fullAddress = "$namaPenerima - $noTelepon\n$alamatLengkap, ${selectedCity?.name}, ${selectedProvince?.name}"
                             viewModel.saveDestinationCity(selectedCity!!.id)
-                            viewModel.saveFullAddress(fullAddress)
+                            viewModel.saveStructuredAddress(
+                                nama = namaPenerima,
+                                telepon = noTelepon,
+                                alamat = alamatLengkap,
+                                kodePos = kodePos,
+                                provId = selectedProvince!!.id,
+                                provName = selectedProvince!!.name,
+                                cityId = selectedCity!!.id,
+                                cityName = selectedCity!!.name,
+                                label = labelAlamat,
+                                isUtama = isAlamatUtama
+                            )
                             onBack() 
                         }
                     }
@@ -398,7 +440,7 @@ fun ShippingAddressScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text  = "SIMPAN ALAMAT",
+                    text  = stringResource(R.string.shipping_address_save),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize      = 12.sp,
                         letterSpacing = 2.sp,

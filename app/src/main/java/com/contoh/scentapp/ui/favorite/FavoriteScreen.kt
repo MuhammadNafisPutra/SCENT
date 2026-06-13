@@ -98,28 +98,26 @@ fun FavoriteScreen(
 
 @Composable
 private fun FavoriteTopBar(onBack: () -> Unit) {
-    Row(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .statusBarsPadding()
-            .padding(horizontal = 20.dp, vertical = 16.dp),
-        verticalAlignment     = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(horizontal = 20.dp, vertical = 16.dp)
     ) {
         Icon(
             imageVector        = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = stringResource(R.string.back),
             tint               = MaterialTheme.colorScheme.onBackground,
-            modifier           = Modifier.size(24.dp).clickable(onClick = onBack)
+            modifier           = Modifier.size(24.dp).clickable(onClick = onBack).align(Alignment.CenterStart)
         )
         Text(
             text  = "SCENT",
             style = MaterialTheme.typography.titleLarge.copy(
                 letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold
             ),
-            color = MaterialTheme.colorScheme.onBackground
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.Center)
         )
-        Spacer(Modifier.size(24.dp))
     }
 }
 

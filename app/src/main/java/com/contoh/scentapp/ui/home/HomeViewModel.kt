@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.home
+package com.contoh.scentapp.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -34,10 +34,23 @@ class HomeViewModel(
                     _uiState.update { it.copy(isLoading = false, errorMessage = e.message) }
                 }
                 .collect { products ->
+                    val dynamicBanner = if (products.isNotEmpty()) {
+                        val first = products.first()
+                        HeroBanner(
+                            productId     = first.firestoreId,
+                            tag           = "NEW_ARRIVAL_TAG",
+                            title         = first.name.uppercase(),
+                            description   = first.description.ifBlank { "DEFAULT_DESC" },
+                            imageUrl      = first.imageUrl,
+                            gradientStart = first.cardColor,
+                            gradientEnd   = first.accentColor
+                        )
+                    } else null
+
                     _uiState.update {
                         it.copy(
                             isLoading  = false,
-                            heroBanner = heroBanner,
+                            heroBanner = dynamicBanner,
                             products   = products
                         )
                     }
@@ -54,18 +67,7 @@ class HomeViewModel(
             )
         }
     }
-
-    private val heroBanner = HeroBanner(
-        tag           = "RILIS TERBATAS",
-        title         = "NOIR\nABSOLU",
-        description   = "Perpaduan etereal dari kayu oud asap, amber beludru, " +
-                "dan melati tengah malam. Keahlian dalam setiap tetes.",
-        gradientStart = 0xFF2A2A2A,
-        gradientEnd   = 0xFF0A0A0A
-    )
-}
-
-class HomeViewModelFactory(
+}class HomeViewModelFactory(
     private val getHomeProductsUseCase: GetHomeProductsUseCase,
     private val toggleFavoriteUseCase: ToggleFavoriteUseCase
 ) : ViewModelProvider.Factory {
