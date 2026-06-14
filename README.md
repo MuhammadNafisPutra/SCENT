@@ -43,7 +43,7 @@ Aplikasi ini dibangun menggunakan pola **Clean Architecture** yang dikombinasika
 ## 🚀 Cara Instalasi
 1. *Clone* repository ini ke komputer lokal Anda:
    ```bash
-   git clone https://github.com/USERNAME/ScentApp.git
+   git clone https://github.com/MuhammadNafisPutra/SCENT.git
    ```
 2. Buka proyek tersebut menggunakan **Android Studio** (disarankan versi terbaru yang mendukung Jetpack Compose dan Gradle 8+).
 3. Tunggu hingga proses *Gradle Sync* selesai.
