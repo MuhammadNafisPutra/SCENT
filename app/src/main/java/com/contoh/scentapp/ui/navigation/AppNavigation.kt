@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.navigation
+package com.contoh.scentapp.ui.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -95,7 +95,7 @@ fun AppNavigation(startLoggedIn: Boolean = false) {
                 val initialStatus = if (isTransfer) {
                     OrderStatus.MENUNGGU_KONFIRMASI
                 } else {
-                    OrderStatus.WAITING_PAYMENT
+                    OrderStatus.MENUNGGU_KONFIRMASI
                 }
                 val paymentMethodLabel = if (isTransfer) "Transfer" else "COD"
                 val itemsBySeller = items.groupBy { it.sellerId }

@@ -3,6 +3,7 @@ package com.contoh.scentapp.domain.model
 data class Order(
     val id              : String          = "",
     val buyerId         : String          = "",
+    val buyerName       : String          = "",
     val sellerId        : String          = "",
     val items           : List<CartItem>  = emptyList(),
     val totalPrice      : Long            = 0L,
@@ -12,7 +13,8 @@ data class Order(
     val paymentMethod   : String          = "",
     val status          : OrderStatus     = OrderStatus.WAITING_PAYMENT,
     val noResi          : String          = "",
-    val createdAt       : Long            = 0L
+    val createdAt       : Long            = 0L,
+    var deletedBySeller : Boolean         = false
 )
 
 

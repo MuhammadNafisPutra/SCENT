@@ -40,7 +40,6 @@
         android:localeConfig="@xml/locales_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.ScentApp" >
         <activity
             android:name="com.contoh.scentapp.MainActivity"

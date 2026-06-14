@@ -41,11 +41,20 @@ class OrderRepositoryImpl(
             val buyerId = auth.currentUser?.uid
                 ?: return Result.failure(Exception("User belum login"))
 
+            val userDoc = firestore.collection("users").document(buyerId).get().await()
+            val defaultName = userDoc.getString("namaLengkap") ?: "Pembeli"
+            val addressObj = userDoc.get("defaultAddressObj") as? Map<String, Any>
+            val nameFromAddress = addressObj?.get("nama") as? String
+            val finalBuyerName = nameFromAddress ?: defaultName
+            val fullAddress = userDoc.getString("defaultAddress") ?: ""
+
             val docRef = firestore.collection(COLLECTION).document()
             val newOrder = order.copy(
-                id        = docRef.id,
-                buyerId   = buyerId,
-                createdAt = if (order.createdAt > 0L) order.createdAt else System.currentTimeMillis()
+                id              = docRef.id,
+                buyerId         = buyerId,
+                buyerName       = finalBuyerName,
+                shippingAddress = if (order.shippingAddress.isBlank()) fullAddress else order.shippingAddress,
+                createdAt       = if (order.createdAt > 0L) order.createdAt else System.currentTimeMillis()
             )
             docRef.set(newOrder).await()
             Result.success(docRef.id)
@@ -91,6 +100,7 @@ class OrderRepositoryImpl(
                 }
                 val list = snapshot?.documents
                     ?.mapNotNull { it.toObject(Order::class.java) }
+                    ?.filter { !it.deletedBySeller }
                     ?.sortedByDescending { it.createdAt }
                     ?: emptyList()
                 trySend(list)
@@ -132,6 +142,18 @@ class OrderRepositoryImpl(
             val order = doc.toObject(Order::class.java)
                 ?: return Result.failure(Exception("Pesanan tidak ditemukan"))
             Result.success(order)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun deleteOrderBySeller(orderId: String): Result<Unit> {
+        return try {
+            firestore.collection(COLLECTION)
+                .document(orderId)
+                .update("deletedBySeller", true)
+                .await()
+            Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }

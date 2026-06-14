@@ -1,15 +1,28 @@
-*.iml
-.gradle
-/local.properties
+# Konfigurasi lokal Android Studio
+.idea/workspace.xml
+.idea/misc.xml
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
-/.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
-/build
+*.iml
+
+# Folder Build dan Artifact
+/build/
+app/build/
+.gradle
 /captures
 .externalNativeBuild
 .cxx
+*.apk
+*.aab
+
+# File Sensitif (Firebase, API Keys, Local SDK)
+google-services.json
 local.properties
+secrets.properties
+api_keys.properties
+
+# OS Files
+.DS_Store

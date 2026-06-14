@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.sales
+package com.contoh.scentapp.ui.sales
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -168,6 +168,7 @@ fun SalesScreen(
                     onKonfirmasiPembayaran = { viewModel.konfirmasiPembayaran(order.orderId) },
                     onMarkPacked          = { viewModel.markAsPacked(order.orderId) },
                     onMarkShipped         = { viewModel.markAsShipped(order.orderId) },
+                    onDeleteOrder         = { viewModel.deleteOrder(order.orderId) },
                     modifier              = Modifier.padding(horizontal = 20.dp, vertical = 6.dp)
                 )
             }
@@ -568,6 +569,7 @@ private fun ActiveOrderCard(
     onKonfirmasiPembayaran : () -> Unit,
     onMarkPacked           : () -> Unit,
     onMarkShipped          : () -> Unit,
+    onDeleteOrder          : () -> Unit,
     modifier               : Modifier = Modifier
 ) {
     val statusColor = when (order.status) {
@@ -707,6 +709,29 @@ private fun ActiveOrderCard(
                     Text(stringResource(R.string.in_delivery), style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
                     ))
+                }
+            }
+            OrderStatus.SELESAI, OrderStatus.TIDAK_SAMPAI -> {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.secondaryContainer).padding(vertical = 12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(order.status.label, style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 10.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold,
+                            color    = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                    }
+                    Box(
+                        modifier = Modifier.weight(1f).clip(RoundedCornerShape(8.dp))
+                            .border(1.dp, Color(0xFFCF6679).copy(alpha = 0.5f), RoundedCornerShape(8.dp))
+                            .clickable(onClick = onDeleteOrder).padding(vertical = 12.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(stringResource(R.string.sales_delete), style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 10.sp, letterSpacing = 1.sp, fontWeight = FontWeight.Bold, color = Color(0xFFCF6679)
+                        ))
+                    }
                 }
             }
             else -> {

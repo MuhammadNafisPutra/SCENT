@@ -258,7 +258,7 @@ fun OrderDetailScreen(
                                         },
                                         style = MaterialTheme.typography.bodySmall.copy(
                                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
-                                        )
+                                            )
                                     )
                                 }
                                 Spacer(Modifier.width(12.dp))

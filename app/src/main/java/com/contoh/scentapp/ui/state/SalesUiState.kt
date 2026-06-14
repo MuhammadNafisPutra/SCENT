@@ -10,9 +10,7 @@ data class SalesUiState(
 ) {
     private fun isCounted(order: ActiveOrder): Boolean {
         return order.status in listOf(
-            OrderStatus.PEMBAYARAN_DIKONFIRMASI, OrderStatus.SIAP_DIKIRIM, 
-            OrderStatus.DIKIRIM, OrderStatus.SELESAI, OrderStatus.DELIVERED,
-            OrderStatus.DALAM_PROSES, OrderStatus.DIKEMAS, OrderStatus.PAID
+            OrderStatus.SELESAI, OrderStatus.DELIVERED
         )
     }
 

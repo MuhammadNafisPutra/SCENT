@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.shipping
+package com.contoh.scentapp.ui.shipping
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,7 +27,6 @@ class ShippingViewModel(
     val address: StateFlow<String?> = _address.asStateFlow()
 
     init {
-        fetchDynamicShippingCosts()
         fetchAddress()
     }
 
@@ -46,10 +45,19 @@ class ShippingViewModel(
                             val cityName = obj["cityName"] as? String ?: ""
                             val provName = obj["provName"] as? String ?: ""
                             _address.value = "$nama - $telepon\n$alamat, $cityName, $provName"
+                            
+                            val cityId = obj["cityId"] as? String ?: ""
+                            if (cityId.isNotBlank()) {
+                                shippingRepository.selectedDestinationCityId = "city_$cityId"
+                            }
                         } else {
                             _address.value = doc.getString("defaultAddress")
                         }
                     }
+                    fetchDynamicShippingCosts()
+                }
+                .addOnFailureListener {
+                    fetchDynamicShippingCosts()
                 }
         }
     }

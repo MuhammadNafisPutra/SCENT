@@ -46,6 +46,7 @@ interface OrderRepository {
     suspend fun createOrder(order: Order): Result<String>
     suspend fun updateOrderStatus(orderId: String, status: OrderStatus): Result<Unit>
     suspend fun updateOrderStatusAndResi(orderId: String, status: OrderStatus, noResi: String): Result<Unit>
+    suspend fun deleteOrderBySeller(orderId: String): Result<Unit>
 }
 
 interface UserRepository {

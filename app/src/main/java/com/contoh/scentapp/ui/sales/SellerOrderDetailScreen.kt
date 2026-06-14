@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.sales
+package com.contoh.scentapp.ui.sales
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,19 +28,37 @@ import com.contoh.scentapp.domain.model.OrderStatus
 import com.contoh.scentapp.ui.theme.*
 import androidx.compose.ui.res.stringResource
 import com.contoh.scentapp.R
+import com.contoh.scentapp.domain.model.Order
+import kotlinx.coroutines.launch
+
+private fun Long.toRupiah() = "Rp${"%,d".format(this).replace(',', '.')}"
 
 @Composable
 fun SellerOrderDetailScreen(
     orderId : String,
-    onBack  : () -> Unit
+    onBack  : () -> Unit,
+    orderRepository: com.contoh.scentapp.data.repository.OrderRepositoryImpl = com.contoh.scentapp.data.repository.OrderRepositoryImpl()
 ) {
+    var order          by remember { mutableStateOf<Order?>(null) }
     var status         by rememberSaveable { mutableStateOf(OrderStatus.MENUNGGU_KONFIRMASI) }
     var noResi         by rememberSaveable { mutableStateOf("") }
     var showResiDialog by rememberSaveable { mutableStateOf(false) }
     var showStatusMenu by rememberSaveable { mutableStateOf(false) }
-    val paymentMethod  = "Transfer Bank"
-    val buyerName      = "Julianne V."
-    val buyerAddress   = "Jl. Melati No. 12, Banjarmasin Selatan, Kalsel 70113"
+
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(orderId) {
+        orderRepository.getOrderById(orderId).onSuccess { o ->
+            order = o
+            status = o.status
+            noResi = o.noResi
+        }
+    }
+
+    val paymentMethod  = order?.paymentMethod?.let { if (it.equals("transfer", ignoreCase = true)) "Transfer Bank" else it.uppercase() } ?: "-"
+    val buyerName      = order?.buyerName ?: "-"
+    val buyerAddress   = order?.shippingAddress ?: "-"
+    val orderDate      = java.text.SimpleDateFormat("dd MMM yyyy, HH:mm", java.util.Locale("id", "ID")).format(java.util.Date(order?.createdAt ?: System.currentTimeMillis()))
 
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 120.dp)) {
@@ -72,7 +90,10 @@ fun SellerOrderDetailScreen(
                         ).forEach { (s, label) ->
                             DropdownMenuItem(
                                 text = { Text(label, style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground)) },
-                                onClick = { status = s; showStatusMenu = false }
+                                onClick = { 
+                                    status = s; showStatusMenu = false
+                                    scope.launch { orderRepository.updateOrderStatus(orderId, s) }
+                                }
                             )
                         }
                     }
@@ -114,7 +135,7 @@ fun SellerOrderDetailScreen(
                     SDivider()
                     SellerInfoRow(label = "METODE BAYAR",   value = paymentMethod)
                     SDivider()
-                    SellerInfoRow(label = "TANGGAL PESAN",  value = "10 Juni 2026, 14:32")
+                    SellerInfoRow(label = "TANGGAL PESAN",  value = orderDate)
                 }
 
                 Spacer(Modifier.height(16.dp))
@@ -134,27 +155,34 @@ fun SellerOrderDetailScreen(
                     Text(stringResource(R.string.ordered_product), style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                     Spacer(Modifier.height(14.dp))
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text("NOIR OBSCUR", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp), color = MaterialTheme.colorScheme.onBackground)
-                            Text("BOUTIQUE SERIES • 50ML • 1 pcs", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                    
+                    order?.items?.forEachIndexed { index, item ->
+                        if (index > 0) Spacer(Modifier.height(12.dp))
+                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(item.name.uppercase(), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp), color = MaterialTheme.colorScheme.onBackground)
+                                Text("${item.volume} • ${item.quantity} pcs", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                            }
+                            Text((item.pricePerItem.toLong() * item.quantity).toRupiah(), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground))
                         }
-                        Text("Rp 240.000", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground))
                     }
                     SDivider()
+                    val subtotal = order?.totalPrice ?: 0L
+                    val shipping = order?.shippingCost ?: 0L
+                    val total = subtotal + shipping
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(stringResource(R.string.shipping_subtotal_product),   style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
-                        Text("Rp 240.000", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground))
+                        Text(subtotal.toRupiah(), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground))
                     }
                     Spacer(Modifier.height(6.dp))
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(stringResource(R.string.shipping_cost),  style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
-                        Text("Rp 15.000",  style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground))
+                        Text(shipping.toRupiah(),  style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onBackground))
                     }
                     SDivider()
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                         Text(stringResource(R.string.total), style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground))
-                        Text("Rp 255.000", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground))
+                        Text(total.toRupiah(), style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold, fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground))
                     }
                 }
 
@@ -172,14 +200,20 @@ fun SellerOrderDetailScreen(
         ) {
             when (status) {
                 OrderStatus.MENUNGGU_KONFIRMASI -> {
+                    val isCOD = paymentMethod.equals("COD", ignoreCase = true)
+                    val buttonText = if (isCOD) "KONFIRMASI PESANAN" else "KONFIRMASI PEMBAYARAN"
+                    val nextStatus = if (isCOD) OrderStatus.DALAM_PROSES else OrderStatus.PEMBAYARAN_DIKONFIRMASI
                     Box(
                         modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp))
                             .background(ScentGold.copy(alpha = 0.15f))
                             .border(1.dp, ScentGold.copy(alpha = 0.5f), RoundedCornerShape(10.dp))
-                            .clickable { status = OrderStatus.PEMBAYARAN_DIKONFIRMASI }.padding(vertical = 16.dp),
+                            .clickable { 
+                                status = nextStatus 
+                                scope.launch { orderRepository.updateOrderStatus(orderId, nextStatus) }
+                            }.padding(vertical = 16.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("KONFIRMASI PEMBAYARAN", style = MaterialTheme.typography.labelSmall.copy(
+                        Text(buttonText, style = MaterialTheme.typography.labelSmall.copy(
                             fontSize = 12.sp, letterSpacing = 2.sp, fontWeight = FontWeight.Bold, color = ScentGold))
                     }
                 }
@@ -188,7 +222,10 @@ fun SellerOrderDetailScreen(
                         Box(
                             modifier = Modifier.weight(1f).clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(10.dp))
-                                .clickable { status = OrderStatus.DIKEMAS }.padding(vertical = 16.dp),
+                                .clickable { 
+                                    status = OrderStatus.DIKEMAS 
+                                    scope.launch { orderRepository.updateOrderStatus(orderId, OrderStatus.DIKEMAS) }
+                                }.padding(vertical = 16.dp),
                             contentAlignment = Alignment.Center
                         ) { Text(stringResource(R.string.mark_packed), style = MaterialTheme.typography.labelSmall.copy(fontSize = 11.sp, letterSpacing = 1.5.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground )) }
                         Box(
@@ -259,6 +296,7 @@ fun SellerOrderDetailScreen(
                         noResi = resiInput
                         status = OrderStatus.DIKIRIM
                         showResiDialog = false
+                        scope.launch { orderRepository.updateOrderStatusAndResi(orderId, OrderStatus.DIKIRIM, resiInput) }
                     }
                 }) { Text(stringResource(R.string.send), color = MaterialTheme.colorScheme.onBackground, style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold, letterSpacing = 1.sp)) }
             },

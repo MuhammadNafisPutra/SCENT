@@ -78,7 +78,7 @@ class SalesViewModel(
                             val activeOrders = orders.map { 
                                 ActiveOrder(
                                     orderId = it.id, 
-                                    buyerName = "Pembeli #${it.buyerId.take(5)}", 
+                                    buyerName = it.buyerName.ifBlank { "Pembeli #${it.buyerId.take(5)}" }, 
                                     itemCount = it.items.size, 
                                     totalPrice = it.totalPrice, 
                                     status = it.status,
@@ -141,6 +141,12 @@ class SalesViewModel(
                     if (it.orderId == orderId) it.copy(status = status) else it
                 }
             )
+        }
+    }
+
+    fun deleteOrder(orderId: String) {
+        viewModelScope.launch {
+            orderRepository.deleteOrderBySeller(orderId)
         }
     }
 
