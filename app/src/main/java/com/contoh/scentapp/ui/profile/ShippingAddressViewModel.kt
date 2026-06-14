@@ -10,6 +10,19 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+data class SavedAddressState(
+    val nama: String = "",
+    val telepon: String = "",
+    val alamat: String = "",
+    val kodePos: String = "",
+    val provId: String = "",
+    val provName: String = "",
+    val cityId: String = "",
+    val cityName: String = "",
+    val label: String = "",
+    val isUtama: Boolean = false
+)
+
 class ShippingAddressViewModel(
     private val shippingRepository: ShippingRepository = ShippingRepository.getInstance()
 ) : ViewModel() {
@@ -26,11 +39,14 @@ class ShippingAddressViewModel(
     private val _isLoadingCities = MutableStateFlow(false)
     val isLoadingCities: StateFlow<Boolean> = _isLoadingCities.asStateFlow()
 
-    private val _savedAddressObj = MutableStateFlow<Map<String, Any>?>(null)
-    val savedAddressObj: StateFlow<Map<String, Any>?> = _savedAddressObj.asStateFlow()
+    private val _savedAddress = MutableStateFlow<SavedAddressState?>(null)
+    val savedAddress: StateFlow<SavedAddressState?> = _savedAddress.asStateFlow()
 
     private val _isSaved = MutableStateFlow(false)
     val isSaved: StateFlow<Boolean> = _isSaved.asStateFlow()
+
+    private val _isLoadingAddress = MutableStateFlow(true)
+    val isLoadingAddress: StateFlow<Boolean> = _isLoadingAddress.asStateFlow()
 
     init {
         fetchProvinces()
@@ -42,7 +58,6 @@ class ShippingAddressViewModel(
             _isLoadingProvinces.value = true
             shippingRepository.getProvinces().onSuccess {
                 _provinces.value = it
-            }.onFailure {
             }
             _isLoadingProvinces.value = false
         }
@@ -53,7 +68,6 @@ class ShippingAddressViewModel(
             _isLoadingCities.value = true
             shippingRepository.getCities(provinceId).onSuccess {
                 _cities.value = it
-            }.onFailure {
             }
             _isLoadingCities.value = false
         }
@@ -63,28 +77,43 @@ class ShippingAddressViewModel(
         shippingRepository.selectedDestinationCityId = "city_$cityId"
     }
 
-    fun saveStructuredAddress(nama: String, telepon: String, alamat: String, kodePos: String, provId: String, provName: String, cityId: String, cityName: String, label: String, isUtama: Boolean) {
+    fun saveStructuredAddress(
+        nama: String, telepon: String, alamat: String, kodePos: String,
+        provId: String, provName: String, cityId: String, cityName: String,
+        label: String, isUtama: Boolean
+    ) {
         viewModelScope.launch {
-            val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
+            val uid = com.google.firebase.auth.FirebaseAuth.getInstance()
+                .currentUser?.uid ?: return@launch
+
             val fullAddress = "$nama - $telepon\n$alamat, $cityName, $provName"
             val addressObj = mapOf(
-                "nama" to nama,
-                "telepon" to telepon,
-                "alamat" to alamat,
-                "kodePos" to kodePos,
-                "provId" to provId,
+                "nama"     to nama,
+                "telepon"  to telepon,
+                "alamat"   to alamat,
+                "kodePos"  to kodePos,
+                "provId"   to provId,
                 "provName" to provName,
-                "cityId" to cityId,
+                "cityId"   to cityId,
                 "cityName" to cityName,
-                "label" to label,
-                "isUtama" to isUtama
+                "label"    to label,
+                "isUtama"  to isUtama
             )
-            com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("users").document(uid)
-                .set(mapOf(
-                    "defaultAddress" to fullAddress,
-                    "defaultAddressObj" to addressObj
-                ), com.google.firebase.firestore.SetOptions.merge())
+
+            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("users").document(uid)
+                .set(
+                    mapOf(
+                        "defaultAddress"    to fullAddress,
+                        "defaultAddressObj" to addressObj
+                    ),
+                    com.google.firebase.firestore.SetOptions.merge()
+                )
                 .addOnSuccessListener {
+                    _savedAddress.value = SavedAddressState(
+                        nama, telepon, alamat, kodePos,
+                        provId, provName, cityId, cityName, label, isUtama
+                    )
                     _isSaved.value = true
                 }
         }
@@ -92,16 +121,48 @@ class ShippingAddressViewModel(
 
     private fun fetchSavedAddress() {
         viewModelScope.launch {
-            val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid ?: return@launch
-            com.google.firebase.firestore.FirebaseFirestore.getInstance().collection("users").document(uid)
+            _isLoadingAddress.value = true
+            val uid = com.google.firebase.auth.FirebaseAuth.getInstance()
+                .currentUser?.uid ?: run {
+                _isLoadingAddress.value = false
+                return@launch
+            }
+
+            com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                .collection("users").document(uid)
                 .get()
                 .addOnSuccessListener { doc ->
                     if (doc.exists()) {
+                        @Suppress("UNCHECKED_CAST")
                         val obj = doc.get("defaultAddressObj") as? Map<String, Any>
-                        _savedAddressObj.value = obj
+                        if (obj != null) {
+                            _savedAddress.value = SavedAddressState(
+                                nama     = obj["nama"]     as? String ?: "",
+                                telepon  = obj["telepon"]  as? String ?: "",
+                                alamat   = obj["alamat"]   as? String ?: "",
+                                kodePos  = obj["kodePos"]  as? String ?: "",
+                                provId   = obj["provId"]   as? String ?: "",
+                                provName = obj["provName"] as? String ?: "",
+                                cityId   = obj["cityId"]   as? String ?: "",
+                                cityName = obj["cityName"] as? String ?: "",
+                                label    = obj["label"]    as? String ?: "",
+                                isUtama  = obj["isUtama"]  as? Boolean ?: false
+                            )
+                            val cityId = obj["cityId"] as? String ?: ""
+                            if (cityId.isNotBlank()) {
+                                shippingRepository.selectedDestinationCityId = "city_$cityId"
+                            }
+                        }
                     }
+                    _isLoadingAddress.value = false
+                }
+                .addOnFailureListener {
+                    _isLoadingAddress.value = false
                 }
         }
     }
-}
 
+    fun resetSaved() {
+        _isSaved.value = false
+    }
+}

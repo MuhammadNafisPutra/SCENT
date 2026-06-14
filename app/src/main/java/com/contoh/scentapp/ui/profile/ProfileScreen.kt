@@ -52,15 +52,19 @@ fun ProfileScreen(
     onLogout         : () -> Unit = {},
     onDeleteSuccess  : () -> Unit = {}
 ) {
-    val context        = LocalContext.current
-    val application    = context.applicationContext as Application
+    val context       = LocalContext.current
+    val application   = context.applicationContext as Application
     val viewModel: ProfileViewModel = viewModel(
         factory = com.contoh.scentapp.di.ViewModelFactory.profileFactory(application)
     )
-    val uiState        by viewModel.uiState.collectAsStateWithLifecycle()
-    val listState       = rememberLazyListState()
-    val sessionManager  = remember { SessionManager.getInstance(context) }
-    val isDarkMode     by sessionManager.isDarkMode.collectAsState()
+    val uiState       by viewModel.uiState.collectAsStateWithLifecycle()
+    val listState      = rememberLazyListState()
+    val sessionManager = remember { SessionManager.getInstance(context) }
+    val isDarkMode    by sessionManager.isDarkMode.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.refreshUser()
+    }
 
     val deleteAccountState by viewModel.deleteAccountState.collectAsStateWithLifecycle()
     LaunchedEffect(deleteAccountState) {
@@ -140,12 +144,10 @@ fun ProfileScreen(
                             ),
                         contentAlignment = Alignment.Center
                     ) {
-                        val profileImageUrl = uiState.profileImageUrl
-
-                        if (profileImageUrl.isNotBlank()) {
+                        if (uiState.profileImageUrl.isNotBlank()) {
                             AsyncImage(
                                 model = ImageRequest.Builder(context)
-                                    .data(profileImageUrl)
+                                    .data(uiState.profileImageUrl)
                                     .crossfade(true)
                                     .diskCachePolicy(CachePolicy.DISABLED)
                                     .memoryCachePolicy(CachePolicy.DISABLED)
@@ -163,10 +165,12 @@ fun ProfileScreen(
                             )
                         }
                     }
+
                     Spacer(Modifier.width(16.dp))
+
                     Column {
                         Text(
-                            text = uiState.fullName,
+                            text  = uiState.fullName,
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontSize   = 22.sp,
                                 fontWeight = FontWeight.Bold
@@ -180,11 +184,40 @@ fun ProfileScreen(
                                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
                             )
                         )
+                        if (uiState.address.isNotBlank()) {
+                            Spacer(Modifier.height(6.dp))
+                            Row(verticalAlignment = Alignment.Top) {
+                                Icon(
+                                    imageVector        = Icons.Default.LocationOn,
+                                    contentDescription = null,
+                                    tint               = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                                    modifier           = Modifier
+                                        .size(12.dp)
+                                        .padding(top = 1.dp)
+                                )
+                                Spacer(Modifier.width(3.dp))
+                                Text(
+                                    text     = uiState.address,
+                                    style    = MaterialTheme.typography.bodySmall.copy(
+                                        fontSize   = 10.sp,
+                                        lineHeight = 15.sp,
+                                        color      = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                                    ),
+                                    maxLines = 2
+                                )
+                            }
+                        }
+
                         Spacer(Modifier.height(12.dp))
+
                         Box(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(6.dp))
-                                .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), RoundedCornerShape(6.dp))
+                                .border(
+                                    1.dp,
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+                                    RoundedCornerShape(6.dp)
+                                )
                                 .clickable(onClick = onDetailAkun)
                                 .padding(horizontal = 16.dp, vertical = 8.dp)
                         ) {
@@ -212,21 +245,35 @@ fun ProfileScreen(
                     text     = stringResource(R.string.profile_personal_info),
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                     style    = MaterialTheme.typography.labelSmall.copy(
-                        fontSize = 10.sp, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                        fontSize      = 10.sp,
+                        letterSpacing = 2.sp,
+                        color         = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                     )
                 )
             }
             item(key = "detail_akun") {
                 MenuItem(Icons.Default.Person, stringResource(R.string.profile_account_detail), onDetailAkun)
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 20.dp))
+                HorizontalDivider(
+                    color     = MaterialTheme.colorScheme.outlineVariant,
+                    thickness = 0.5.dp,
+                    modifier  = Modifier.padding(horizontal = 20.dp)
+                )
             }
             item(key = "alamat") {
                 MenuItem(Icons.Default.LocationOn, stringResource(R.string.profile_address), onAlamat)
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 20.dp))
+                HorizontalDivider(
+                    color     = MaterialTheme.colorScheme.outlineVariant,
+                    thickness = 0.5.dp,
+                    modifier  = Modifier.padding(horizontal = 20.dp)
+                )
             }
             item(key = "pesanan_saya") {
                 MenuItem(Icons.Default.ListAlt, stringResource(R.string.profile_orders), onRiwayatPesanan)
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 20.dp))
+                HorizontalDivider(
+                    color     = MaterialTheme.colorScheme.outlineVariant,
+                    thickness = 0.5.dp,
+                    modifier  = Modifier.padding(horizontal = 20.dp)
+                )
             }
 
             item(key = "section_pref") {
@@ -235,7 +282,9 @@ fun ProfileScreen(
                     text     = stringResource(R.string.profile_preferences),
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
                     style    = MaterialTheme.typography.labelSmall.copy(
-                        fontSize = 10.sp, letterSpacing = 2.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                        fontSize      = 10.sp,
+                        letterSpacing = 2.sp,
+                        color         = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
                     )
                 )
             }
@@ -245,7 +294,11 @@ fun ProfileScreen(
                     label   = stringResource(R.string.profile_language),
                     onClick = onBahasa
                 )
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 20.dp))
+                HorizontalDivider(
+                    color     = MaterialTheme.colorScheme.outlineVariant,
+                    thickness = 0.5.dp,
+                    modifier  = Modifier.padding(horizontal = 20.dp)
+                )
             }
             item(key = "dark_mode") {
                 MenuItemWithToggle(
@@ -256,11 +309,19 @@ fun ProfileScreen(
                     MainActivity.isDarkModeState = !MainActivity.isDarkModeState
                     viewModel.toggleDarkMode()
                 }
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 20.dp))
+                HorizontalDivider(
+                    color     = MaterialTheme.colorScheme.outlineVariant,
+                    thickness = 0.5.dp,
+                    modifier  = Modifier.padding(horizontal = 20.dp)
+                )
             }
             item(key = "penjualan") {
                 MenuItem(Icons.Default.Store, stringResource(R.string.profile_sales), onPenjualan)
-                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(horizontal = 20.dp))
+                HorizontalDivider(
+                    color     = MaterialTheme.colorScheme.outlineVariant,
+                    thickness = 0.5.dp,
+                    modifier  = Modifier.padding(horizontal = 20.dp)
+                )
             }
 
             item(key = "delete") {
@@ -287,11 +348,10 @@ fun ProfileScreen(
                 }
             }
         }
-
         if (uiState.showDeleteDialog) {
             AlertDialog(
                 onDismissRequest = { viewModel.hideDeleteDialog() },
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor   = MaterialTheme.colorScheme.surface,
                 title = {
                     Text(
                         text  = stringResource(R.string.profile_delete_account),
@@ -302,7 +362,9 @@ fun ProfileScreen(
                 text = {
                     Text(
                         text  = stringResource(R.string.profile_delete_confirm),
-                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                        )
                     )
                 },
                 confirmButton = {
