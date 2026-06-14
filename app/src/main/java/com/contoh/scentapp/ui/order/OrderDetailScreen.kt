@@ -23,32 +23,51 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import com.contoh.scentapp.R
+import com.contoh.scentapp.domain.model.Order
 import com.contoh.scentapp.domain.model.OrderStatus
 import com.contoh.scentapp.ui.theme.*
 import kotlinx.coroutines.launch
 
+private fun Long.toRupiah() = "Rp${"%,d".format(this).replace(',', '.')}"
+private fun Number.toRupiah() = this.toLong().toRupiah()
+
+
 @Composable
 fun OrderDetailScreen(
-    orderId : String,
-    onBack  : () -> Unit,
-    orderRepository: com.contoh.scentapp.data.repository.OrderRepositoryImpl = com.contoh.scentapp.data.repository.OrderRepositoryImpl()
+    orderId         : String,
+    onBack          : () -> Unit,
+    orderRepository : com.contoh.scentapp.data.repository.OrderRepositoryImpl =
+        com.contoh.scentapp.data.repository.OrderRepositoryImpl()
 ) {
-    var status         by rememberSaveable { mutableStateOf(OrderStatus.DIKIRIM) }
+    var status         by rememberSaveable { mutableStateOf(OrderStatus.WAITING_PAYMENT) }
     var noResiValue    by rememberSaveable { mutableStateOf("") }
+    var order          by remember { mutableStateOf<Order?>(null) }
+    var isLoading      by remember { mutableStateOf(true) }
     var showKonfirmasi by rememberSaveable { mutableStateOf(false) }
     var showLaporan    by rememberSaveable { mutableStateOf(false) }
     val scope          = rememberCoroutineScope()
 
     LaunchedEffect(orderId) {
-        orderRepository.getOrderById(orderId).onSuccess { order ->
-            status = order.status
-            noResiValue = order.noResi
+        orderRepository.getOrderById(orderId).onSuccess { o ->
+            order       = o
+            status      = o.status
+            noResiValue = o.noResi
         }
+        isLoading = false
     }
 
-    val isTransfer    = orderId.endsWith("T")
-    val paymentMethod = if (isTransfer) "Transfer Bank" else "COD"
-    val noResi        = if (status in listOf(OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI) && noResiValue.isNotEmpty()) noResiValue else ""
+    // Ambil dari data order, bukan dari orderId
+    val paymentMethod = order?.paymentMethod?.let {
+        if (it.equals("transfer", ignoreCase = true)) "Transfer Bank" else it.uppercase()
+    } ?: "-"
+
+    val noResi = if (
+        status in listOf(OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI)
+        && noResiValue.isNotEmpty()
+    ) noResiValue else ""
+
+    // Hitung total dari data aktual
+    val totalPembayaran = (order?.totalPrice ?: 0L) + (order?.shippingCost ?: 0L)
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -75,7 +94,8 @@ fun OrderDetailScreen(
                                 "KONFIRMASI TERIMA",
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontSize = 12.sp, letterSpacing = 2.sp,
-                                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.background
                                 )
                             )
                         }
@@ -119,7 +139,8 @@ fun OrderDetailScreen(
                                 "✓ PESANAN SELESAI",
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontSize = 12.sp, letterSpacing = 2.sp,
-                                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
                                 )
                             )
                         }
@@ -132,9 +153,11 @@ fun OrderDetailScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                // padding bawah dari bottomBar saja, bukan atas
+                .padding(bottom = innerPadding.calculateBottomPadding())
                 .verticalScroll(rememberScrollState())
-                .padding(innerPadding)
         ) {
+            // Header — mulai dari statusBarsPadding, bukan innerPadding
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -144,8 +167,12 @@ fun OrderDetailScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Icon(
-                    Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back), tint = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.size(24.dp).clickable(onClick = onBack)
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back),
+                    tint = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable(onClick = onBack)
                 )
                 Text(
                     "DETAIL PESANAN",
@@ -157,89 +184,154 @@ fun OrderDetailScreen(
                 Spacer(Modifier.size(24.dp))
             }
 
-            Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-                OrderStatusSection(orderId = orderId, status = status)
-
-                Spacer(Modifier.height(20.dp))
-
-                OrderProgressTracker(status = status)
-
-                Spacer(Modifier.height(20.dp))
-
-                SectionCard {
-                    OrderInfoRow(label = "ORDER ID",          value = "#SCNT-$orderId")
-                    DividerLine()
-                    OrderInfoRow(label = "METODE PEMBAYARAN", value = paymentMethod)
-                    if (noResi.isNotEmpty()) {
-                        DividerLine()
-                        OrderInfoRow(label = "NOMOR RESI",    value = noResi)
-                    }
-                    DividerLine()
-                    OrderInfoRow(label = "ESTIMASI TIBA",     value = "2-3 Hari Kerja")
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator(color = ScentGold)
                 }
+            } else {
+                Column(modifier = Modifier.padding(horizontal = 20.dp)) {
 
-                Spacer(Modifier.height(16.dp))
+                    OrderStatusSection(orderId = orderId, status = status)
 
-                SectionCard {
-                    Text(
-                        "PRODUK",
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                    Spacer(Modifier.height(16.dp))
+
+                    OrderProgressTracker(status = status)
+
+                    Spacer(Modifier.height(16.dp))
+
+                    // Info Order
+                    SectionCard {
+                        OrderInfoRow(label = "ORDER ID", value = "#SCNT-$orderId")
+                        DividerLine()
+                        OrderInfoRow(label = "METODE PEMBAYARAN", value = paymentMethod)
+                        if (noResi.isNotEmpty()) {
+                            DividerLine()
+                            OrderInfoRow(label = "NOMOR RESI", value = noResi)
+                        }
+                        DividerLine()
+                        OrderInfoRow(label = "ESTIMASI TIBA", value = "2-3 Hari Kerja")
+                        if (!order?.shippingAddress.isNullOrEmpty()) {
+                            DividerLine()
+                            OrderInfoRow(label = "ALAMAT PENGIRIMAN", value = order!!.shippingAddress)
+                        }
+                    }
+
+                    Spacer(Modifier.height(16.dp))
+
+                    // Produk — data dinamis dari Firestore
+                    SectionCard {
+                        Text(
+                            "PRODUK",
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontSize = 10.sp,
+                                letterSpacing = 1.5.sp,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                            )
                         )
-                    )
-                    Spacer(Modifier.height(14.dp))
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Column {
+                        Spacer(Modifier.height(14.dp))
+
+                        order?.items?.forEachIndexed { index, item ->
+                            if (index > 0) Spacer(Modifier.height(12.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.Top
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        item.name.uppercase(),
+                                        style = MaterialTheme.typography.titleMedium.copy(
+                                            fontWeight = FontWeight.Bold, fontSize = 14.sp
+                                        ),
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    )
+                                    Spacer(Modifier.height(2.dp))
+                                    Text(
+                                        buildString {
+                                            if (item.volume.isNotEmpty()) append("${item.volume} • ")
+                                            append("Qty ${item.quantity}")
+                                        },
+                                        style = MaterialTheme.typography.bodySmall.copy(
+                                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                                        )
+                                    )
+                                }
+                                Spacer(Modifier.width(12.dp))
+                                Text(
+                                    (item.pricePerItem.toLong() * item.quantity.toLong()).toRupiah(),
+                                    style = MaterialTheme.typography.titleMedium.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 14.sp,
+                                        color = MaterialTheme.colorScheme.onBackground
+                                    )
+                                )
+                            }
+                        }
+
+                        // Ongkir (jika ada)
+                        val ongkir = order?.shippingCost ?: 0L
+                        if (ongkir > 0L) {
+                            Spacer(Modifier.height(10.dp))
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    "Ongkos Kirim",
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                                    )
+                                )
+                                Text(
+                                    ongkir.toRupiah(),
+                                    style = MaterialTheme.typography.bodySmall.copy(
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                                    )
+                                )
+                            }
+                        }
+
+                        DividerLine()
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Text(
-                                "NOIR OBSCUR",
+                                "Total Pembayaran",
                                 style = MaterialTheme.typography.titleMedium.copy(
-                                    fontWeight = FontWeight.Bold, fontSize = 15.sp
-                                ),
-                                color = MaterialTheme.colorScheme.onBackground
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
                             )
                             Text(
-                                "BOUTIQUE SERIES • 50ML",
-                                style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
+                                totalPembayaran.toRupiah(),
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 18.sp,
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
                             )
                         }
-                        Text(
-                            "Rp 240.000",
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground
-                            )
-                        )
                     }
-                    DividerLine()
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            "Total Pembayaran",
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground
-                            )
-                        )
-                        Text(
-                            "Rp 255.000",
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold, fontSize = 18.sp, color = MaterialTheme.colorScheme.onBackground
-                            )
-                        )
-                    }
-                }
 
-                Spacer(Modifier.height(16.dp))
+                    Spacer(Modifier.height(24.dp))
+                }
             }
         }
     }
+
+    // Dialog Konfirmasi Terima
     if (showKonfirmasi) {
         AlertDialog(
             onDismissRequest = { showKonfirmasi = false },
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor   = MaterialTheme.colorScheme.surface,
             title = {
                 Text(
                     "Konfirmasi Penerimaan",
@@ -250,19 +342,20 @@ fun OrderDetailScreen(
             text = {
                 Text(
                     "Apakah pesanan sudah kamu terima dalam kondisi baik?",
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                    )
                 )
             },
             confirmButton = {
                 TextButton(onClick = {
                     status = OrderStatus.SELESAI
                     showKonfirmasi = false
-                    scope.launch {
-                        orderRepository.updateOrderStatus(orderId, OrderStatus.SELESAI)
-                    }
+                    scope.launch { orderRepository.updateOrderStatus(orderId, OrderStatus.SELESAI) }
                 }) {
                     Text(
-                        "YA, SUDAH TERIMA", color = MaterialTheme.colorScheme.onBackground,
+                        "YA, SUDAH TERIMA",
+                        color = MaterialTheme.colorScheme.onBackground,
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Bold, letterSpacing = 1.sp
                         )
@@ -272,7 +365,8 @@ fun OrderDetailScreen(
             dismissButton = {
                 TextButton(onClick = { showKonfirmasi = false }) {
                     Text(
-                        "BATAL", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+                        "BATAL",
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Bold, letterSpacing = 1.sp
                         )
@@ -281,10 +375,12 @@ fun OrderDetailScreen(
             }
         )
     }
+
+    // Dialog Laporan Tidak Sampai
     if (showLaporan) {
         AlertDialog(
             onDismissRequest = { showLaporan = false },
-            containerColor = MaterialTheme.colorScheme.surface,
+            containerColor   = MaterialTheme.colorScheme.surface,
             title = {
                 Text(
                     "Laporan Pesanan",
@@ -295,19 +391,20 @@ fun OrderDetailScreen(
             text = {
                 Text(
                     "Laporkan bahwa pesanan ini tidak sampai? Tim kami akan menghubungi kamu dalam 1x24 jam.",
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                    )
                 )
             },
             confirmButton = {
                 TextButton(onClick = {
                     status = OrderStatus.TIDAK_SAMPAI
                     showLaporan = false
-                    scope.launch {
-                        orderRepository.updateOrderStatus(orderId, OrderStatus.TIDAK_SAMPAI)
-                    }
+                    scope.launch { orderRepository.updateOrderStatus(orderId, OrderStatus.TIDAK_SAMPAI) }
                 }) {
                     Text(
-                        "YA, LAPORKAN", color = Color(0xFFCF6679),
+                        "YA, LAPORKAN",
+                        color = Color(0xFFCF6679),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Bold, letterSpacing = 1.sp
                         )
@@ -317,7 +414,8 @@ fun OrderDetailScreen(
             dismissButton = {
                 TextButton(onClick = { showLaporan = false }) {
                     Text(
-                        "BATAL", color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+                        "BATAL",
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
                         style = MaterialTheme.typography.labelSmall.copy(
                             fontWeight = FontWeight.Bold, letterSpacing = 1.sp
                         )
@@ -328,21 +426,31 @@ fun OrderDetailScreen(
     }
 }
 
+// ── Komponen pendukung (tidak berubah dari versi sebelumnya) ──────────────────
+
 @Composable
 private fun OrderStatusSection(orderId: String, status: OrderStatus) {
     val (statusColor, statusBg) = when (status) {
+        OrderStatus.WAITING_PAYMENT,
         OrderStatus.MENUNGGU_KONFIRMASI            -> Pair(Color(0xFFD4A853), Color(0xFFD4A853).copy(alpha = 0.1f))
-        OrderStatus.DIKIRIM                        -> Pair(Color(0xFF2196F3), Color(0xFF2196F3).copy(alpha = 0.1f))
+        OrderStatus.DALAM_PROSES,
+        OrderStatus.DIKEMAS                        -> Pair(Color(0xFF2196F3), Color(0xFF2196F3).copy(alpha = 0.1f))
+        OrderStatus.DIKIRIM                        -> Pair(Color(0xFF9C27B0), Color(0xFF9C27B0).copy(alpha = 0.1f))
         OrderStatus.DELIVERED, OrderStatus.SELESAI -> Pair(Color(0xFF4CAF50), Color(0xFF4CAF50).copy(alpha = 0.1f))
+        OrderStatus.CANCELLED,
         OrderStatus.TIDAK_SAMPAI                   -> Pair(Color(0xFFCF6679), Color(0xFFCF6679).copy(alpha = 0.1f))
-        else -> Pair(Color(0xFFA0A0A0), Color(0xFF1E1E1E))
+        else                                       -> Pair(Color(0xFFA0A0A0), Color(0xFF1E1E1E))
     }
-    val statusIcon = when (status) {
+    val statusIcon: ImageVector = when (status) {
+        OrderStatus.WAITING_PAYMENT,
         OrderStatus.MENUNGGU_KONFIRMASI            -> Icons.Default.HourglassEmpty
+        OrderStatus.DALAM_PROSES,
+        OrderStatus.DIKEMAS                        -> Icons.Default.Inventory
         OrderStatus.DIKIRIM                        -> Icons.Default.LocalShipping
         OrderStatus.DELIVERED, OrderStatus.SELESAI -> Icons.Default.CheckCircle
-        OrderStatus.TIDAK_SAMPAI                   -> Icons.Default.Warning
-        else                                       -> Icons.Default.Inventory
+        OrderStatus.CANCELLED,
+        OrderStatus.TIDAK_SAMPAI                   -> Icons.Default.Cancel
+        else                                       -> Icons.Default.ShoppingBag
     }
 
     Box(
@@ -366,7 +474,9 @@ private fun OrderStatusSection(orderId: String, status: OrderStatus) {
                 )
                 Text(
                     "ORDER #SCNT-$orderId",
-                    style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                    )
                 )
             }
         }
@@ -376,10 +486,10 @@ private fun OrderStatusSection(orderId: String, status: OrderStatus) {
 @Composable
 private fun OrderProgressTracker(status: OrderStatus) {
     val steps = listOf(
-        Triple("Pesanan", Icons.Default.ShoppingBag,   listOf(OrderStatus.DALAM_PROSES, OrderStatus.DIKEMAS, OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI)),
-        Triple("Dikemas", Icons.Default.Inventory,     listOf(OrderStatus.DIKEMAS, OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI)),
-        Triple("Dikirim", Icons.Default.LocalShipping, listOf(OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI)),
-        Triple("Diterima",Icons.Default.CheckCircle,   listOf(OrderStatus.DELIVERED, OrderStatus.SELESAI))
+        Triple("Pesanan",  Icons.Default.ShoppingBag,   listOf(OrderStatus.DALAM_PROSES, OrderStatus.DIKEMAS, OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI)),
+        Triple("Dikemas",  Icons.Default.Inventory,     listOf(OrderStatus.DIKEMAS, OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI)),
+        Triple("Dikirim",  Icons.Default.LocalShipping, listOf(OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI)),
+        Triple("Diterima", Icons.Default.CheckCircle,   listOf(OrderStatus.DELIVERED, OrderStatus.SELESAI))
     )
 
     Box(
@@ -395,7 +505,7 @@ private fun OrderProgressTracker(status: OrderStatus) {
                 val isDone = status in activeStatuses
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.weight(1f)
+                    modifier            = Modifier.weight(1f)
                 ) {
                     Box(
                         modifier = Modifier
@@ -405,25 +515,32 @@ private fun OrderProgressTracker(status: OrderStatus) {
                             .border(1.dp, if (isDone) ScentGold else MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp)),
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(icon, null, tint = if (isDone) ScentGold else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f), modifier = Modifier.size(18.dp))
+                        Icon(
+                            icon, null,
+                            tint     = if (isDone) ScentGold else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                            modifier = Modifier.size(18.dp)
+                        )
                     }
                     Spacer(Modifier.height(6.dp))
                     Text(
                         label,
                         style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 9.sp, letterSpacing = 0.5.sp,
-                            color = if (isDone) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
-                            fontWeight = if (isDone) FontWeight.Bold else FontWeight.Normal
+                            fontSize     = 9.sp,
+                            letterSpacing = 0.5.sp,
+                            color        = if (isDone) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
+                            fontWeight   = if (isDone) FontWeight.Bold else FontWeight.Normal
                         )
                     )
                 }
                 if (index < steps.size - 1) {
-                    val lineIsDone = status in steps[index + 1].third
                     Box(
                         modifier = Modifier
                             .weight(0.3f)
                             .height(1.dp)
-                            .background(if (lineIsDone) ScentGold.copy(alpha = 0.5f) else MaterialTheme.colorScheme.outlineVariant)
+                            .background(
+                                if (status in steps[index + 1].third) ScentGold.copy(alpha = 0.5f)
+                                else MaterialTheme.colorScheme.outlineVariant
+                            )
                     )
                 }
             }
@@ -450,16 +567,27 @@ private fun OrderInfoRow(label: String, value: String) {
         Text(
             label,
             style = MaterialTheme.typography.labelSmall.copy(
-                fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
+                fontSize      = 10.sp,
+                letterSpacing = 1.5.sp,
+                color         = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)
             )
         )
         Spacer(Modifier.height(6.dp))
-        Text(value, style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Medium))
+        Text(
+            value,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color      = MaterialTheme.colorScheme.onBackground,
+                fontWeight = FontWeight.Medium
+            )
+        )
     }
 }
 
 @Composable
 private fun DividerLine() {
-    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(vertical = 14.dp))
+    HorizontalDivider(
+        color     = MaterialTheme.colorScheme.outlineVariant,
+        thickness = 0.5.dp,
+        modifier  = Modifier.padding(vertical = 14.dp)
+    )
 }
-
