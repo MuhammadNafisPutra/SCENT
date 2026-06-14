@@ -704,6 +704,7 @@ drawable ic_launcher_foreground
 drawable ic_other_sign_in
 drawable ic_passkey
 drawable ic_password
+drawable logoscent
 drawable notification_action_background
 drawable notification_bg
 drawable notification_bg_low

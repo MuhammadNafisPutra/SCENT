@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.domain
+package com.contoh.scentapp.domain
 
 import com.contoh.scentapp.domain.model.CartItem
 import com.contoh.scentapp.domain.model.Order
@@ -45,6 +45,7 @@ interface OrderRepository {
     fun getSellerOrders(sellerId: String): Flow<List<Order>>
     suspend fun createOrder(order: Order): Result<String>
     suspend fun updateOrderStatus(orderId: String, status: OrderStatus): Result<Unit>
+    suspend fun updateOrderStatusAndResi(orderId: String, status: OrderStatus, noResi: String): Result<Unit>
 }
 
 interface UserRepository {

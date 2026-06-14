@@ -9,15 +9,11 @@ data class SalesUiState(
     val errorMessage   : String?            = null
 ) {
     private fun isCounted(order: ActiveOrder): Boolean {
-        return if (order.paymentMethod.equals("COD", ignoreCase = true) || order.paymentMethod.contains("Cash on Delivery", ignoreCase = true)) {
-            order.status == OrderStatus.SELESAI || order.status == OrderStatus.DELIVERED
-        } else {
-            order.status in listOf(
-                OrderStatus.PEMBAYARAN_DIKONFIRMASI, OrderStatus.SIAP_DIKIRIM, 
-                OrderStatus.DIKIRIM, OrderStatus.SELESAI, OrderStatus.DELIVERED,
-                OrderStatus.DALAM_PROSES, OrderStatus.DIKEMAS, OrderStatus.PAID
-            )
-        }
+        return order.status in listOf(
+            OrderStatus.PEMBAYARAN_DIKONFIRMASI, OrderStatus.SIAP_DIKIRIM, 
+            OrderStatus.DIKIRIM, OrderStatus.SELESAI, OrderStatus.DELIVERED,
+            OrderStatus.DALAM_PROSES, OrderStatus.DIKEMAS, OrderStatus.PAID
+        )
     }
 
     val totalPendapatan: Long

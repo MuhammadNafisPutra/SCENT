@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.data.repository
+package com.contoh.scentapp.data.repository
 
 import com.contoh.scentapp.domain.model.Order
 import com.contoh.scentapp.domain.model.OrderStatus
@@ -103,6 +103,21 @@ class OrderRepositoryImpl(
             firestore.collection(COLLECTION)
                 .document(orderId)
                 .update("status", status.name)
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun updateOrderStatusAndResi(orderId: String, status: OrderStatus, noResi: String): Result<Unit> {
+        return try {
+            firestore.collection(COLLECTION)
+                .document(orderId)
+                .update(
+                    "status", status.name,
+                    "noResi", noResi
+                )
                 .await()
             Result.success(Unit)
         } catch (e: Exception) {

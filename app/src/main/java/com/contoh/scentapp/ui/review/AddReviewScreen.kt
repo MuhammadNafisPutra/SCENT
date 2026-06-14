@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.review
+package com.contoh.scentapp.ui.review
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -408,7 +408,7 @@ fun AddReviewScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            "âœ¦",
+                            "✦",
                             style = MaterialTheme.typography.titleLarge.copy(
                                 color    = ScentGold,
                                 fontSize = 20.sp
@@ -472,11 +472,11 @@ fun AddReviewScreen(
                         Spacer(Modifier.height(10.dp))
                         Text(
                             when (starRating) {
-                                1    -> "Ã°Å¸ËœÅ¾  Mengecewakan"
-                                2    -> "Ã°Å¸ËœÂ  Biasa saja"
-                                3    -> "Ã°Å¸â„¢â€š  Cukup baik"
-                                4    -> "Ã°Å¸ËœÅ   Bagus"
-                                else -> "Ã°Å¸Â¤Â©  Luar biasa!"
+                                1    -> "😞  Mengecewakan"
+                                2    -> "😐  Biasa saja"
+                                3    -> "🙂  Cukup baik"
+                                4    -> "😊  Bagus"
+                                else -> "🤩  Luar biasa!"
                             },
                             style     = MaterialTheme.typography.bodySmall.copy(
                                 color      = ScentGold,
@@ -579,7 +579,7 @@ fun AddReviewScreen(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Opsional â€” bantu pembeli lain dengan ulasan kamu",
+                        "Opsional - bantu pembeli lain dengan ulasan kamu",
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = onSurface.copy(alpha = 0.45f)
                         )
@@ -641,7 +641,7 @@ fun AddReviewScreen(
                                 )
                             )
                             Text(
-                                "Opsional â€” maks. 5 foto",
+                                "Opsional - maks. 5 foto",
                                 style = MaterialTheme.typography.bodySmall.copy(
                                     color = onSurface.copy(alpha = 0.45f)
                                 )
@@ -707,7 +707,7 @@ fun AddReviewScreen(
             onDismissRequest = {},
             title = {
                 Text(
-                    "Ulasan Terkirim! âœ¦",
+                    "Ulasan Terkirim! ✦",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                 )
             },

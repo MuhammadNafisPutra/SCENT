@@ -83,7 +83,7 @@ class SalesViewModel(
                                     totalPrice = it.totalPrice, 
                                     status = it.status,
                                     paymentMethod = it.paymentMethod,
-                                    noResi = ""
+                                    noResi = it.noResi
                                 )
                             }
                             _uiState.update { it.copy(activeOrders = activeOrders) }
@@ -104,23 +104,14 @@ class SalesViewModel(
     }
 
     fun konfirmasiPembayaran(orderId: String) {
-        _uiState.update { state ->
-            state.copy(
-                activeOrders = state.activeOrders.map {
-                    if (it.orderId == orderId) it.copy(status = OrderStatus.PEMBAYARAN_DIKONFIRMASI)
-                    else it
-                }
-            )
+        viewModelScope.launch {
+            orderRepository.updateOrderStatus(orderId, OrderStatus.PEMBAYARAN_DIKONFIRMASI)
         }
     }
 
     fun markAsPacked(orderId: String) {
-        _uiState.update { state ->
-            state.copy(
-                activeOrders = state.activeOrders.map {
-                    if (it.orderId == orderId) it.copy(status = OrderStatus.DIKEMAS) else it
-                }
-            )
+        viewModelScope.launch {
+            orderRepository.updateOrderStatus(orderId, OrderStatus.DIKEMAS)
         }
     }
 
@@ -137,13 +128,8 @@ class SalesViewModel(
     }
 
     fun inputResiDanKirim(orderId: String, noResi: String) {
-        _uiState.update { state ->
-            state.copy(
-                activeOrders = state.activeOrders.map {
-                    if (it.orderId == orderId) it.copy(status = OrderStatus.DIKIRIM, noResi = noResi)
-                    else it
-                }
-            )
+        viewModelScope.launch {
+            orderRepository.updateOrderStatusAndResi(orderId, OrderStatus.DIKIRIM, noResi)
         }
         _resiDialogOrderId.value = null
     }

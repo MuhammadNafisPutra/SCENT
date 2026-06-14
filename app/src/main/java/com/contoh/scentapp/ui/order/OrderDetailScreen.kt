@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.order
+package com.contoh.scentapp.ui.order
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,19 +25,30 @@ import androidx.compose.ui.res.stringResource
 import com.contoh.scentapp.R
 import com.contoh.scentapp.domain.model.OrderStatus
 import com.contoh.scentapp.ui.theme.*
+import kotlinx.coroutines.launch
 
 @Composable
 fun OrderDetailScreen(
     orderId : String,
-    onBack  : () -> Unit
+    onBack  : () -> Unit,
+    orderRepository: com.contoh.scentapp.data.repository.OrderRepositoryImpl = com.contoh.scentapp.data.repository.OrderRepositoryImpl()
 ) {
     var status         by rememberSaveable { mutableStateOf(OrderStatus.DIKIRIM) }
+    var noResiValue    by rememberSaveable { mutableStateOf("") }
     var showKonfirmasi by rememberSaveable { mutableStateOf(false) }
     var showLaporan    by rememberSaveable { mutableStateOf(false) }
+    val scope          = rememberCoroutineScope()
+
+    LaunchedEffect(orderId) {
+        orderRepository.getOrderById(orderId).onSuccess { order ->
+            status = order.status
+            noResiValue = order.noResi
+        }
+    }
 
     val isTransfer    = orderId.endsWith("T")
     val paymentMethod = if (isTransfer) "Transfer Bank" else "COD"
-    val noResi        = if (status in listOf(OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI)) "JNE123456789" else ""
+    val noResi        = if (status in listOf(OrderStatus.DIKIRIM, OrderStatus.DELIVERED, OrderStatus.SELESAI) && noResiValue.isNotEmpty()) noResiValue else ""
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
@@ -105,7 +116,7 @@ fun OrderDetailScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                "Ã¢Å“â€œ PESANAN SELESAI",
+                                "✓ PESANAN SELESAI",
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontSize = 12.sp, letterSpacing = 2.sp,
                                     fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
@@ -244,8 +255,11 @@ fun OrderDetailScreen(
             },
             confirmButton = {
                 TextButton(onClick = {
-                    status = OrderStatus.DELIVERED
+                    status = OrderStatus.SELESAI
                     showKonfirmasi = false
+                    scope.launch {
+                        orderRepository.updateOrderStatus(orderId, OrderStatus.SELESAI)
+                    }
                 }) {
                     Text(
                         "YA, SUDAH TERIMA", color = MaterialTheme.colorScheme.onBackground,
@@ -288,6 +302,9 @@ fun OrderDetailScreen(
                 TextButton(onClick = {
                     status = OrderStatus.TIDAK_SAMPAI
                     showLaporan = false
+                    scope.launch {
+                        orderRepository.updateOrderStatus(orderId, OrderStatus.TIDAK_SAMPAI)
+                    }
                 }) {
                     Text(
                         "YA, LAPORKAN", color = Color(0xFFCF6679),

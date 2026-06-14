@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.domain.model
+package com.contoh.scentapp.domain.model
 
 data class Order(
     val id              : String          = "",
@@ -11,6 +11,7 @@ data class Order(
     val courier         : String          = "",
     val paymentMethod   : String          = "",
     val status          : OrderStatus     = OrderStatus.WAITING_PAYMENT,
+    val noResi          : String          = "",
     val createdAt       : Long            = 0L
 )
 

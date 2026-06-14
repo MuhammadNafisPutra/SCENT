@@ -1,4 +1,4 @@
-﻿package com.contoh.scentapp.ui.detail
+package com.contoh.scentapp.ui.detail
 
 import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
@@ -468,7 +468,31 @@ private fun ReviewCard(review: Review, modifier: Modifier = Modifier) {
                 color      = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.75f)
             )
         )
-        if (review.imageCount > 0) {
+        if (review.photoUrls.isNotEmpty()) {
+            Spacer(Modifier.height(12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                review.photoUrls.forEach { url ->
+                    SubcomposeAsyncImage(
+                        model = url,
+                        contentDescription = "Review photo",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.surfaceVariant),
+                        loading = {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(24.dp),
+                                    color = ScentGold,
+                                    strokeWidth = 2.dp
+                                )
+                            }
+                        }
+                    )
+                }
+            }
+        } else if (review.imageCount > 0) {
             Spacer(Modifier.height(12.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 repeat(review.imageCount) {
