@@ -4,18 +4,54 @@ ScentApp adalah aplikasi *e-commerce* berbasis Android yang didesain khusus untu
 
 ## 📸 Screenshot Aplikasi
 
-*(Letakkan screenshot aplikasi Anda di dalam folder `docs/` lalu ubah link di bawah ini)*
+### Halaman Utama
 
-| Home | Detail Produk | Keranjang | Profil |
-|:---:|:---:|:---:|:---:|
-| ![Home](docs/home.jpg) | ![Detail](docs/detail.jpg) | ![Cart](docs/cart.jpg) | ![Profile](docs/profile.jpg) |
+| Beranda | Beranda Mode Terang | Beranda Horizontal |
+|:---:|:---:|:---:|
+| ![Beranda](docs/Beranda.png) | ![Beranda Mode Terang](docs/Beranda%20Mode%20Terang.png) | ![Beranda Horizontal](docs/Beranda%20Horizontal.png) |
+
+### Produk
+
+| Detail Produk Mode Terang | Edit Produk | Favorit |
+|:---:|:---:|:---:|
+| ![Detail Produk](docs/Detail%20Produk%20Mode%20Terang.png) | ![Edit Produk](docs/Edit%20Produk.png) | ![Favorit](docs/Favorit.png) |
+
+### Pencarian & Filter
+
+| Filter Mode Terang | Pencarian Mode Terang |
+|:---:|:---:|
+| ![Filter](docs/Filter%20Mode%20Terang.png) | ![Pencarian](docs/Pencarian%20Mode%20Terang.png) |
+
+### Transaksi & Keranjang
+
+| Keranjang | Konfirmasi Pembayaran | Konfirmasi Pembayaran Bank |
+|:---:|:---:|:---:|
+| ![Keranjang](docs/Keranjang.png) | ![Konfirmasi Pembayaran](docs/Konfirmasi%20Pembayaran.png) | ![Konfirmasi Pembayaran Bank](docs/Konfirmasi%20Pembayaran%20Bank.png) |
+
+### Penjual & Pengiriman
+
+| Halaman Penjualan | Halaman Pengiriman | Memberikan Ulasan |
+|:---:|:---:|:---:|
+| ![Halaman Penjualan](docs/Halaman%20Penjualan.png) | ![Halaman Pengiriman](docs/Halaman%20Pengiriman.png) | ![Memberikan Ulasan](docs/Memberikan%20Ulasan%20Mode%20Terang.png) |
+
+### Profil & Akun
+
+| Profile | Halaman Detail Profile | Login |
+|:---:|:---:|:---:|
+| ![Profile](docs/Profile.png) | ![Halaman Detail Profile](docs/Halaman%20Detail%20Profile.png) | ![Login](docs/Login.png) |
+
+### Pengaturan
+
+| Halaman Alamat | Halaman Bahasa |
+|:---:|:---:|
+| ![Halaman Alamat](docs/Halaman%20Alamat.png) | ![Halaman Bahasa](docs/Halaman%20Bahasa.png) |
 
 ## ✨ Penjelasan Fitur
 
 ### Fitur Wajib (Core Features)
 1. **Daftar/Data (BREAD):**
-   - *Browse/Read:* Menelusuri katalog parfum (Home) dan melihat detail produk.
-   - *Edit/Add/Delete:* Menambah/mengubah/menghapus parfum di keranjang, menambah produk toko (penjual), dan menulis ulasan.
+    - *Browse/Read:* Menelusuri katalog parfum (Home) dan melihat detail produk.
+    - *Edit/Add/Delete:* Menambah/mengubah/menghapus parfum di keranjang, menambah produk toko (penjual), dan menulis ulasan.
 2. **Koneksi API Pihak Ketiga:** Integrasi dengan API eksternal (BinderByte & Cloudinary).
 3. **Database Lokal (Room):** Penyimpanan riwayat pencarian (*Search History*) dan keranjang belanja (*Cart*) agar aplikasi tetap cepat.
 4. **Clean Architecture:** Pembagian struktur kode menjadi `data`, `domain`, dan `ui` untuk skalabilitas.
