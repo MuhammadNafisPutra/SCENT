@@ -218,5 +218,6 @@ Aplikasi ini dibangun menggunakan pola **Clean Architecture** yang dikombinasika
 ## 👨‍💻 Developer
 **Muhammad Ghazi Rakhmadi**
 - GitHub: [@MuhammadGhaziRakhmadi](https://github.com/muh-ghazii)
-  **Muhammad Nafis Putra**
+
+**Muhammad Nafis Putra**
 - GitHub: [@MuhammadNafisPutra](https://github.com/MuhammadNafisPutra)
