@@ -257,7 +257,7 @@ private fun OrderHistoryCard(order: OrderHistoryDisplay, onClick: () -> Unit) {
                 Text("#SCNT-${order.id}", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(3.dp))
                 Text(order.productName, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp), color = MaterialTheme.colorScheme.onBackground)
-                Text("${order.volume} â€¢ ${order.paymentMethod}", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
+                Text("${order.volume} • ${order.paymentMethod}", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
             }
         }
 
@@ -300,4 +300,5 @@ private fun statusIcon(status: OrderStatus): ImageVector = when (status) {
     OrderStatus.CANCELLED, OrderStatus.TIDAK_SAMPAI             -> Icons.Default.Cancel
     else                                                         -> Icons.Default.ShoppingBag
 }
+
 

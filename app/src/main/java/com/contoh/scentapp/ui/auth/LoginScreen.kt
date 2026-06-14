@@ -177,7 +177,7 @@ fun LoginScreen(
                     decorationBox        = { inner ->
                         if (password.isEmpty()) {
                             Text(
-                                text  = "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢",
+                                text  = "••••••••",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = muted, fontSize = 16.sp
                                 )
@@ -354,3 +354,4 @@ fun LoginScreen(
         )
     }
 }
+

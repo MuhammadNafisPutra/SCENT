@@ -190,7 +190,7 @@ fun OrderDetailScreen(
                                 color = MaterialTheme.colorScheme.onBackground
                             )
                             Text(
-                                "BOUTIQUE SERIES â€¢ 50ML",
+                                "BOUTIQUE SERIES • 50ML",
                                 style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
                             )
                         }
@@ -445,3 +445,4 @@ private fun OrderInfoRow(label: String, value: String) {
 private fun DividerLine() {
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(vertical = 14.dp))
 }
+

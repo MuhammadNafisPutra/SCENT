@@ -293,7 +293,7 @@ private fun CartItemCard(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text  = "${item.aromaProfile} â€¢ ${item.volume}",
+                        text  = "${item.aromaProfile} • ${item.volume}",
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), lineHeight = 18.sp
                         )
@@ -401,3 +401,4 @@ private fun CartSummary(subtotal: String, total: String, modifier: Modifier = Mo
         }
     }
 }
+

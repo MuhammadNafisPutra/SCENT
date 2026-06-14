@@ -252,7 +252,7 @@ fun AccountDetailScreen(
                             )
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                text  = "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢",
+                                text  = "••••••••••••",
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     color      = MaterialTheme.colorScheme.onBackground,
                                     fontSize   = 18.sp,
@@ -706,3 +706,4 @@ private fun AddressFormField(
         )
     }
 }
+

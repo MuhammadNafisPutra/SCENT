@@ -519,7 +519,7 @@ private fun SalesProductItem(
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                "${product.aromaFamily} â€¢ ${product.volume} â€¢ ${product.stockStatus}",
+                "${product.aromaFamily} • ${product.volume} • ${product.stockStatus}",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = if (product.stockStatus == "STOK MENIPIS")
                         Color(0xFFD4A853)
@@ -723,3 +723,4 @@ private fun ActiveOrderCard(
         }
     }
 }
+
