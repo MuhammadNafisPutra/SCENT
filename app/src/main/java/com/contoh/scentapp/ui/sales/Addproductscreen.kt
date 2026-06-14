@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.sales
+﻿package com.contoh.scentapp.ui.sales
 
 import android.Manifest
 import android.net.Uri
@@ -49,8 +49,8 @@ private val bankOptions   = listOf("BCA", "BNI", "BRI", "Mandiri", "BSI", "Perma
 private val walletOptions = listOf("GoPay", "OVO", "DANA", "ShopeePay", "LinkAja", "Lainnya")
 
 /**
- * [firestoreId] = null  → mode TAMBAH PRODUK BARU
- * [firestoreId] = "xyz" → mode EDIT, form akan di-prefill dengan data produk
+ * [firestoreId] = null  â†’ mode TAMBAH PRODUK BARU
+ * [firestoreId] = "xyz" â†’ mode EDIT, form akan di-prefill dengan data produk
  */
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -67,8 +67,6 @@ fun AddProductScreen(
     val scrollState    = rememberScrollState()
 
     val isEditMode = firestoreId != null
-
-    // ── Form state ─────────────────────────────────────────────────────────
     var namaParfum       by rememberSaveable { mutableStateOf("") }
     var brandParfum      by rememberSaveable { mutableStateOf("") }
     var deskripsi        by rememberSaveable { mutableStateOf("") }
@@ -93,11 +91,7 @@ fun AddProductScreen(
     var nomorWallet      by rememberSaveable { mutableStateOf("") }
     var selectedWallet   by rememberSaveable { mutableStateOf("") }
     var cameraUri        by remember { mutableStateOf<Uri?>(null) }
-
-    // Tandai apakah form sudah di-prefill dari data existing
     var prefilled by rememberSaveable { mutableStateOf(false) }
-
-    // ── Prefill form saat mode Edit dan data sudah di-load ─────────────────
     LaunchedEffect(existingParfum) {
         val p = existingParfum
         if (isEditMode && p != null && !prefilled) {
@@ -119,26 +113,18 @@ fun AddProductScreen(
             prefilled = true
         }
     }
-
-    // Kembali otomatis saat sukses
     LaunchedEffect(state) {
         if (state is AddProductState.Success) {
             viewModel.resetState()
             onBack()
         }
     }
-
-    // Gallery picker
     val galleryLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? -> uri?.let { imageUri = it.toString() } }
-
-    // Camera picker
     val cameraLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { success -> if (success) cameraUri?.let { imageUri = it.toString() } }
-
-    // Permission launcher untuk kamera
     val cameraPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -155,8 +141,6 @@ fun AddProductScreen(
     fun launchCamera() {
         cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
     }
-
-    // Dialog pilih sumber foto
     if (showPhotoDialog) {
         AlertDialog(
             onDismissRequest = { showPhotoDialog = false },
@@ -211,8 +195,6 @@ fun AddProductScreen(
             }
         )
     }
-
-    // Error Dialog
     if (state is AddProductState.Error) {
         val message = (state as AddProductState.Error).message
         AlertDialog(
@@ -229,8 +211,6 @@ fun AddProductScreen(
     }
 
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
-
-        // Loading overlay saat data edit sedang dimuat
         if (isEditMode && !prefilled && state is AddProductState.Loading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -247,8 +227,6 @@ fun AddProductScreen(
                 .verticalScroll(scrollState)
                 .padding(bottom = 120.dp)
         ) {
-
-            // ── Top Bar ───────────────────────────────────────────────────────
             Box(
                 modifier = Modifier.fillMaxWidth().statusBarsPadding().padding(horizontal = 20.dp, vertical = 16.dp)
             ) {
@@ -259,8 +237,6 @@ fun AddProductScreen(
                 )
                 Text("SCENT", style = MaterialTheme.typography.titleLarge.copy(letterSpacing = 6.sp, fontSize = 18.sp, fontWeight = FontWeight.Bold), color = MaterialTheme.colorScheme.onBackground, modifier = Modifier.align(Alignment.Center))
             }
-
-            // ── Header ────────────────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                 Text(
                     stringResource(R.string.add_product_inventory_management),
@@ -273,8 +249,6 @@ fun AddProductScreen(
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
-
-            // ── Upload Foto ───────────────────────────────────────────────────
             Box(
                 modifier = Modifier
                     .padding(horizontal = 20.dp, vertical = 12.dp)
@@ -311,12 +285,8 @@ fun AddProductScreen(
                     }
                 }
             }
-
-            // ── Nama & Brand ──────────────────────────────────────────────────
-            ProductFormField(label = stringResource(R.string.add_product_perfume_name), value = namaParfum, onChange = { namaParfum = it }, placeholder = "contoh: Noir Éphémère", modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
+            ProductFormField(label = stringResource(R.string.add_product_perfume_name), value = namaParfum, onChange = { namaParfum = it }, placeholder = "contoh: Noir Ã‰phÃ©mÃ¨re", modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
             ProductFormField(label = stringResource(R.string.add_product_brand), value = brandParfum, onChange = { brandParfum = it }, placeholder = "contoh: Atelier V", modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
-
-            // ── Deskripsi ─────────────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                 Text(stringResource(R.string.add_product_description), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
@@ -337,8 +307,6 @@ fun AddProductScreen(
                     )
                 }
             }
-
-            // ── Harga Penuh ───────────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                 Text(stringResource(R.string.add_product_full_price), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
@@ -364,8 +332,6 @@ fun AddProductScreen(
                     }
                 }
             }
-
-            // ── Decant Toggle ─────────────────────────────────────────────────
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp),
                 verticalAlignment     = Alignment.CenterVertically,
@@ -414,8 +380,6 @@ fun AddProductScreen(
                     }
                 }
             }
-
-            // ── Aroma Family ──────────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                 Text(stringResource(R.string.add_product_olfactory), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
@@ -434,8 +398,6 @@ fun AddProductScreen(
                     }
                 }
             }
-
-            // ── Notes Aroma ───────────────────────────────────────────────────
             Column(
                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp).fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
@@ -473,13 +435,11 @@ fun AddProductScreen(
                             }
                             .padding(horizontal = 12.dp, vertical = 6.dp)
                     ) {
-                        Text(if (showChipInput && newChipInput.isNotBlank()) "✓ ${stringResource(R.string.add_product_save)}" else stringResource(R.string.add_product_add_note),
+                        Text(if (showChipInput && newChipInput.isNotBlank()) "âœ“ ${stringResource(R.string.add_product_save)}" else stringResource(R.string.add_product_add_note),
                             style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                     }
                 }
             }
-
-            // ── Stok & Ukuran ─────────────────────────────────────────────────
             ProductFormField(label = stringResource(R.string.add_product_stock), value = jumlahStok, onChange = { jumlahStok = it }, placeholder = "48", keyboardType = KeyboardType.Number, modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp))
 
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
@@ -500,9 +460,6 @@ fun AddProductScreen(
                     }
                 }
             }
-
-
-            // ── Waktu Penggunaan ──────────────────────────────────────────────
             Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                 Text(stringResource(R.string.add_product_usage_time), style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(4.dp))
@@ -544,8 +501,6 @@ fun AddProductScreen(
 
             Spacer(Modifier.height(8.dp))
         }
-
-        // ── Tombol Simpan / Loading ────────────────────────────────────────────
         Box(
             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background)
@@ -567,7 +522,6 @@ fun AddProductScreen(
                     )
                     .clickable(enabled = isFormValid && !isLoading) {
                         val newImageUri = imageUri?.let { uriStr ->
-                            // Hanya kirim sebagai Uri baru jika bukan URL http (bukan URL lama)
                             if (!uriStr.startsWith("http")) Uri.parse(uriStr) else null
                         }
                         val existingUrl = existingParfum?.imageUrl ?: ""
@@ -660,3 +614,4 @@ private fun ProductFormField(
         }
     }
 }
+

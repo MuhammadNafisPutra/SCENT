@@ -7,7 +7,7 @@ object Routes {
     const val FAVORITE = "favorite"
     const val CART     = "cart"
     const val PROFILE  = "profile"
-    const val DETAIL = "detail/{firestoreId}"          // ← ganti productId → firestoreId
+    const val DETAIL = "detail/{firestoreId}"
     const val SEARCH = "search?query={query}"
     const val SHIPPING      = "shipping"
     const val UPLOAD_BUKTI  = "upload_bukti"
@@ -26,7 +26,7 @@ object Routes {
 
     const val ADD_REVIEW = "add_review/{orderId}"
 
-    fun detailRoute(firestoreId: String) = "detail/$firestoreId"  // ← ganti Int → String
+    fun detailRoute(firestoreId: String) = "detail/$firestoreId"
 
     fun editProductRoute(firestoreId: String) = "edit_product/$firestoreId"
 
@@ -40,3 +40,4 @@ object Routes {
 
     fun addReviewRoute(orderId: String) = "add_review/$orderId"
 }
+

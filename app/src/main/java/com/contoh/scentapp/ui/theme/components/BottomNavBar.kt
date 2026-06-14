@@ -21,7 +21,7 @@ import com.contoh.scentapp.R
 
 private data class NavItem(
     val route    : String,
-    val labelRes : Int,          // ✅ Ganti dari String ke resource ID
+    val labelRes : Int,
     val iconOn   : ImageVector,
     val iconOff  : ImageVector
 )
@@ -84,7 +84,7 @@ private fun NavBarItem(
         label         = "navLabelColor_${item.route}"
     )
 
-    val label = stringResource(item.labelRes) // ✅ Ambil string dari resource
+    val label = stringResource(item.labelRes)
 
     Column(
         modifier            = modifier.clickable(onClick = onClick),
@@ -99,7 +99,7 @@ private fun NavBarItem(
         )
         Spacer(Modifier.height(3.dp))
         Text(
-            text  = label, // ✅ Pakai label dari stringResource
+            text  = label,
             style = MaterialTheme.typography.labelSmall.copy(
                 fontSize      = 9.sp,
                 letterSpacing = 0.8.sp,

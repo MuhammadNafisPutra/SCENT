@@ -8,8 +8,6 @@ import kotlinx.coroutines.flow.StateFlow
 class SessionManager private constructor(context: Context) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("ScentPrefs", Context.MODE_PRIVATE)
-
-    // ── Dark Mode ──────────────────────────────────────────────
     private val _isDarkMode = MutableStateFlow(sharedPreferences.getBoolean("KEY_DARK_MODE", true))
     val isDarkMode: StateFlow<Boolean> = _isDarkMode
 
@@ -17,8 +15,6 @@ class SessionManager private constructor(context: Context) {
         sharedPreferences.edit().putBoolean("KEY_DARK_MODE", enabled).apply()
         _isDarkMode.value = enabled
     }
-
-    // ── Session / Login ────────────────────────────────────────
     fun saveSession(email: String) {
         sharedPreferences.edit()
             .putString("KEY_EMAIL", email)
@@ -35,7 +31,6 @@ class SessionManager private constructor(context: Context) {
     }
 
     fun clearSession() {
-        // Hanya hapus data sesi login, bukan preferensi seperti dark mode
         sharedPreferences.edit()
             .remove("KEY_EMAIL")
             .remove("KEY_IS_LOGGED_IN")

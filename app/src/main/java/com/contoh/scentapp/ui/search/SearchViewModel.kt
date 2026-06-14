@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.search
+﻿package com.contoh.scentapp.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -96,9 +96,9 @@ class SearchViewModel(
             .filter { it in existing }
             .map { usage ->
                 val label = when (usage) {
-                    "SIANG"    -> "☀️ SIANG"
-                    "MALAM"    -> "🌙 MALAM"
-                    "KEDUANYA" -> "✨ KEDUANYA"
+                    "SIANG"    -> "â˜€ï¸ SIANG"
+                    "MALAM"    -> "ðŸŒ™ MALAM"
+                    "KEDUANYA" -> "âœ¨ KEDUANYA"
                     else       -> usage
                 }
                 UsageFilter(id = usage, label = label)
@@ -166,8 +166,6 @@ class SearchViewModel(
                     p.usage.uppercase() == "KEDUANYA"
             matchQuery && matchAroma && matchUsage
         }
-        
-        // Simpan riwayat pencarian jika tidak kosong dan hanya ketika mencari
         if (state.query.isNotBlank()) {
             viewModelScope.launch {
                 addSearchQueryUseCase(state.query)
@@ -177,3 +175,4 @@ class SearchViewModel(
         _uiState.update { it.copy(results = results) }
     }
 }
+

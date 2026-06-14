@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.order
+﻿package com.contoh.scentapp.ui.order
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -105,7 +105,7 @@ fun OrderDetailScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                "âœ“ PESANAN SELESAI",
+                                "Ã¢Å“â€œ PESANAN SELESAI",
                                 style = MaterialTheme.typography.labelSmall.copy(
                                     fontSize = 12.sp, letterSpacing = 2.sp,
                                     fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
@@ -118,14 +118,12 @@ fun OrderDetailScreen(
             }
         }
     ) { innerPadding ->
-        // ── Scrollable Content ────────────────────────────────────────────────
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
         ) {
-            // Top bar
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -192,7 +190,7 @@ fun OrderDetailScreen(
                                 color = MaterialTheme.colorScheme.onBackground
                             )
                             Text(
-                                "BOUTIQUE SERIES • 50ML",
+                                "BOUTIQUE SERIES â€¢ 50ML",
                                 style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f))
                             )
                         }
@@ -227,8 +225,6 @@ fun OrderDetailScreen(
             }
         }
     }
-
-    // ── Dialog Konfirmasi Terima ──────────────────────────────────────────────
     if (showKonfirmasi) {
         AlertDialog(
             onDismissRequest = { showKonfirmasi = false },
@@ -271,8 +267,6 @@ fun OrderDetailScreen(
             }
         )
     }
-
-    // ── Dialog Laporan Tidak Sampai ───────────────────────────────────────────
     if (showLaporan) {
         AlertDialog(
             onDismissRequest = { showLaporan = false },

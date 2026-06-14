@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.profile
+﻿package com.contoh.scentapp.ui.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,7 +34,8 @@ import com.contoh.scentapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShippingAddressScreen(
-    onBack : () -> Unit = {},
+    onBack          : () -> Unit = {},
+    onAddressSaved  : () -> Unit = {},
     viewModel: ShippingAddressViewModel = viewModel()
 ) {
     var namaPenerima   by rememberSaveable { mutableStateOf("") }
@@ -108,7 +109,6 @@ fun ShippingAddressScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .statusBarsPadding()
                         .padding(horizontal = 20.dp, vertical = 16.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -179,8 +179,6 @@ fun ShippingAddressScreen(
                     modifier        = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)
                 )
             }
-            
-            // PROVINCE DROPDOWN
             item(key = "provinsi") {
                 Column(modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp)) {
                     Text(
@@ -227,8 +225,6 @@ fun ShippingAddressScreen(
                     }
                 }
             }
-
-            // CITY AND POSTAL CODE
             item(key = "kota_kodepos") {
                 Row(
                     modifier              = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
@@ -414,7 +410,7 @@ fun ShippingAddressScreen(
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(10.dp))
                     .background(MaterialTheme.colorScheme.onBackground)
-                    .clickable { 
+                    .clickable {
                         if (namaPenerima.isBlank() || noTelepon.isBlank() || selectedCity == null || selectedProvince == null || alamatLengkap.isBlank()) {
                             coroutineScope.launch {
                                 snackbarHostState.showSnackbar(context.getString(R.string.shipping_address_incomplete))
@@ -422,18 +418,19 @@ fun ShippingAddressScreen(
                         } else {
                             viewModel.saveDestinationCity(selectedCity!!.id)
                             viewModel.saveStructuredAddress(
-                                nama = namaPenerima,
-                                telepon = noTelepon,
-                                alamat = alamatLengkap,
-                                kodePos = kodePos,
-                                provId = selectedProvince!!.id,
+                                nama     = namaPenerima,
+                                telepon  = noTelepon,
+                                alamat   = alamatLengkap,
+                                kodePos  = kodePos,
+                                provId   = selectedProvince!!.id,
                                 provName = selectedProvince!!.name,
-                                cityId = selectedCity!!.id,
+                                cityId   = selectedCity!!.id,
                                 cityName = selectedCity!!.name,
-                                label = labelAlamat,
-                                isUtama = isAlamatUtama
+                                label    = labelAlamat,
+                                isUtama  = isAlamatUtama
                             )
-                            onBack() 
+                            onAddressSaved()
+                            onBack()
                         }
                     }
                     .padding(vertical = 18.dp),

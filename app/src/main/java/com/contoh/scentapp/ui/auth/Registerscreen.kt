@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.auth
+﻿package com.contoh.scentapp.ui.auth
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,8 +41,6 @@ fun RegisterScreen(
     )
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    // State lokal form — sync ke ViewModel via LaunchedEffect
     var name     by rememberSaveable { mutableStateOf(uiState.registerName) }
     var email    by rememberSaveable { mutableStateOf(uiState.registerEmail) }
     var password by rememberSaveable { mutableStateOf(uiState.registerPassword) }
@@ -50,8 +48,6 @@ fun RegisterScreen(
     LaunchedEffect(name)     { viewModel.onRegisterNameChange(name) }
     LaunchedEffect(email)    { viewModel.onRegisterEmailChange(email) }
     LaunchedEffect(password) { viewModel.onRegisterPasswordChange(password) }
-
-    // ── Adaptive color tokens ──────────────────────────────────────────────
     val bg      = MaterialTheme.colorScheme.background
     val onBg    = MaterialTheme.colorScheme.onBackground
     val muted   = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
@@ -68,8 +64,6 @@ fun RegisterScreen(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             Spacer(Modifier.height(48.dp))
-
-            // ── Header ────────────────────────────────────────────────────
             Box(
                 modifier              = Modifier.fillMaxWidth()
             ) {
@@ -106,8 +100,6 @@ fun RegisterScreen(
             }
 
             Spacer(Modifier.height(40.dp))
-
-            // ── Judul ─────────────────────────────────────────────────────
             Text(
                 text  = stringResource(R.string.register_title),
                 style = MaterialTheme.typography.displayMedium.copy(
@@ -126,8 +118,6 @@ fun RegisterScreen(
             )
 
             Spacer(Modifier.height(40.dp))
-
-            // ── Field Nama ────────────────────────────────────────────────
             AuthFormField(
                 label       = stringResource(R.string.register_fullname),
                 value       = name,
@@ -141,8 +131,6 @@ fun RegisterScreen(
             )
 
             Spacer(Modifier.height(24.dp))
-
-            // ── Field Email ───────────────────────────────────────────────
             AuthFormField(
                 label        = stringResource(R.string.auth_email),
                 value        = email,
@@ -157,8 +145,6 @@ fun RegisterScreen(
             )
 
             Spacer(Modifier.height(24.dp))
-
-            // ── Field Password ────────────────────────────────────────────
             Text(
                 text  = stringResource(R.string.auth_password),
                 style = MaterialTheme.typography.labelSmall.copy(
@@ -186,7 +172,6 @@ fun RegisterScreen(
                             color    = onBg,
                             fontSize = 16.sp
                         ),
-                        // FIX: gunakan uiState.showRegisterPass untuk toggle visibility
                         visualTransformation = if (uiState.showRegisterPass)
                             VisualTransformation.None
                         else
@@ -198,7 +183,7 @@ fun RegisterScreen(
                         decorationBox   = { inner ->
                             if (password.isEmpty()) {
                                 Text(
-                                    text  = "••••••••",
+                                    text  = "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢",
                                     style = MaterialTheme.typography.bodyMedium.copy(
                                         color    = muted,
                                         fontSize = 16.sp
@@ -208,7 +193,6 @@ fun RegisterScreen(
                             inner()
                         }
                     )
-                    // FIX: langsung panggil viewModel.toggleRegisterPasswordVisibility()
                     Icon(
                         imageVector        = if (uiState.showRegisterPass)
                             Icons.Default.VisibilityOff
@@ -222,8 +206,6 @@ fun RegisterScreen(
                     )
                 }
             }
-
-            // ── Error Message ─────────────────────────────────────────────
             uiState.errorMessage?.let { error ->
                 Spacer(Modifier.height(12.dp))
                 Text(
@@ -235,14 +217,11 @@ fun RegisterScreen(
             }
 
             Spacer(Modifier.height(32.dp))
-
-            // ── Tombol Daftar ─────────────────────────────────────────────
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(10.dp))
                     .background(btnBg)
-                    // FIX: panggil viewModel.register() langsung, bukan extension function kosong
                     .clickable(enabled = !uiState.isLoading) {
                         viewModel.register(onSuccess = onRegisterSuccess)
                     }
@@ -270,8 +249,6 @@ fun RegisterScreen(
         }
     }
 }
-
-// ── Reusable Form Field ────────────────────────────────────────────────────────
 @Composable
 private fun AuthFormField(
     label        : String,

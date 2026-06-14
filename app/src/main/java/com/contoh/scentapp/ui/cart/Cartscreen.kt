@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.cart
+﻿package com.contoh.scentapp.ui.cart
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -94,7 +94,6 @@ fun CartScreen(
                 .padding(horizontal = 20.dp, vertical = 16.dp)
                 .navigationBarsPadding()
         ) {
-            // Tombol utama: background onBackground, teks background
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -115,7 +114,6 @@ fun CartScreen(
                 )
             }
             Spacer(Modifier.height(12.dp))
-            // Tombol sekunder: border, teks onBackground
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -295,7 +293,7 @@ private fun CartItemCard(
                     )
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        text  = "${item.aromaProfile} • ${item.volume}",
+                        text  = "${item.aromaProfile} â€¢ ${item.volume}",
                         style = MaterialTheme.typography.bodySmall.copy(
                             color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), lineHeight = 18.sp
                         )

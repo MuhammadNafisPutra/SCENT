@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.detail
+﻿package com.contoh.scentapp.ui.detail
 
 import android.widget.Toast
 import androidx.compose.animation.animateColorAsState
@@ -44,7 +44,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun DetailScreen(
-    firestoreId      : String,                   // ← ganti dari productId: Int
+    firestoreId      : String,
     onBack           : () -> Unit,
     onNavigateToCart : () -> Unit,
     onWriteReview    : () -> Unit = {},
@@ -146,8 +146,6 @@ fun DetailScreen(
     }
 }
 
-// ── TopBar ────────────────────────────────────────────────────────────────────
-
 @Composable
 private fun DetailTopBar(onBack: () -> Unit, onCartClick: () -> Unit) {
     Box(
@@ -178,8 +176,6 @@ private fun DetailTopBar(onBack: () -> Unit, onCartClick: () -> Unit) {
         )
     }
 }
-
-// ── ProductImageSection ───────────────────────────────────────────────────────
 
 @Composable
 private fun ProductImageSection(product: Product, modifier: Modifier = Modifier) {
@@ -276,8 +272,6 @@ private fun DetailBottleIllustration(product: Product) {
     }
 }
 
-// ── ProductInfoSection ────────────────────────────────────────────────────────
-
 @Composable
 private fun ProductInfoSection(product: Product, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
@@ -312,8 +306,6 @@ private fun ProductInfoSection(product: Product, modifier: Modifier = Modifier) 
         )
     }
 }
-
-// ── SizeSelectorSection ───────────────────────────────────────────────────────
 
 @Composable
 private fun SizeSelectorSection(
@@ -363,8 +355,6 @@ private fun SizeSelectorSection(
     }
 }
 
-// ── AddToCartButton ───────────────────────────────────────────────────────────
-
 @Composable
 private fun AddToCartButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     Box(
@@ -384,8 +374,6 @@ private fun AddToCartButton(onClick: () -> Unit, modifier: Modifier = Modifier) 
         )
     }
 }
-
-// ── ReviewsHeader ─────────────────────────────────────────────────────────────
 
 @Composable
 private fun ReviewsHeader(product: Product, onWriteReview: () -> Unit = {}, modifier: Modifier = Modifier) {
@@ -426,8 +414,6 @@ private fun ReviewsHeader(product: Product, onWriteReview: () -> Unit = {}, modi
         }
     }
 }
-
-// ── ReviewCard ────────────────────────────────────────────────────────────────
 
 @Composable
 private fun ReviewCard(review: Review, modifier: Modifier = Modifier) {

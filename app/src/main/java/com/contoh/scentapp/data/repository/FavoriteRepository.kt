@@ -16,9 +16,6 @@ class FavoriteRepository(
         private const val COLLECTION = "favorites"
     }
 
-    // Dokumen struktur di Firestore:
-    // favorites/{userId}/items/{parfumId}  →  { parfumId: String, addedAt: Long }
-
     private fun userFavoritesRef(userId: String) =
         firestore.collection(COLLECTION).document(userId).collection("items")
 

@@ -121,8 +121,6 @@ class ReviewRepository(
                     )
                 ).await()
         } catch (_: Exception) {
-            // Statistik agregat bersifat best-effort; gagal di sini tidak
-            // membatalkan pengiriman ulasan itu sendiri.
         }
     }
 
@@ -146,3 +144,4 @@ class ReviewRepository(
         }
     }
 }
+

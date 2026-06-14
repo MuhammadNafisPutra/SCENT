@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.sales
+﻿package com.contoh.scentapp.ui.sales
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,16 +38,12 @@ fun SellerOrderDetailScreen(
     var noResi         by rememberSaveable { mutableStateOf("") }
     var showResiDialog by rememberSaveable { mutableStateOf(false) }
     var showStatusMenu by rememberSaveable { mutableStateOf(false) }
-
-    // Demo data
     val paymentMethod  = "Transfer Bank"
     val buyerName      = "Julianne V."
     val buyerAddress   = "Jl. Melati No. 12, Banjarmasin Selatan, Kalsel 70113"
 
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(bottom = 120.dp)) {
-
-            // ── Top Bar ───────────────────────────────────────────────────────
             Row(
                 modifier = Modifier.fillMaxWidth().statusBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 16.dp),
@@ -84,8 +80,6 @@ fun SellerOrderDetailScreen(
             }
 
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
-
-                // ── Status Banner ─────────────────────────────────────────────
                 val statusColor = when (status) {
                     OrderStatus.MENUNGGU_KONFIRMASI       -> Color(0xFFD4A853)
                     OrderStatus.PEMBAYARAN_DIKONFIRMASI   -> Color(0xFF4CAF50)
@@ -113,8 +107,6 @@ fun SellerOrderDetailScreen(
                 }
 
                 Spacer(Modifier.height(16.dp))
-
-                // ── Order Info ────────────────────────────────────────────────
                 SellerSectionCard {
                     SellerInfoRow(label = "ORDER ID",       value = "#SCNT-$orderId")
                     SDivider()
@@ -126,8 +118,6 @@ fun SellerOrderDetailScreen(
                 }
 
                 Spacer(Modifier.height(16.dp))
-
-                // ── Alamat Pengiriman ─────────────────────────────────────────
                 SellerSectionCard {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(stringResource(R.string.shipping_address), style = MaterialTheme.typography.labelSmall.copy(
@@ -140,8 +130,6 @@ fun SellerOrderDetailScreen(
                 }
 
                 Spacer(Modifier.height(16.dp))
-
-                // ── Produk Pesanan ────────────────────────────────────────────
                 SellerSectionCard {
                     Text(stringResource(R.string.ordered_product), style = MaterialTheme.typography.labelSmall.copy(
                         fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
@@ -149,7 +137,7 @@ fun SellerOrderDetailScreen(
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
                         Column(modifier = Modifier.weight(1f)) {
                             Text("NOIR OBSCUR", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp), color = MaterialTheme.colorScheme.onBackground)
-                            Text("BOUTIQUE SERIES • 50ML • 1 pcs", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
+                            Text("BOUTIQUE SERIES â€¢ 50ML â€¢ 1 pcs", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
                         }
                         Text("Rp 240.000", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 14.sp, color = MaterialTheme.colorScheme.onBackground))
                     }
@@ -178,8 +166,6 @@ fun SellerOrderDetailScreen(
                 }
             }
         }
-
-        // ── Action Buttons ────────────────────────────────────────────────────
         Column(
             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background).padding(horizontal = 20.dp, vertical = 16.dp).navigationBarsPadding()
@@ -237,8 +223,6 @@ fun SellerOrderDetailScreen(
             }
         }
     }
-
-    // ── Resi Dialog ───────────────────────────────────────────────────────────
     if (showResiDialog) {
         var resiInput by remember { mutableStateOf(noResi) }
         AlertDialog(
@@ -309,3 +293,4 @@ private fun SellerInfoRow(label: String, value: String) {
 private fun SDivider() {
     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant, thickness = 0.5.dp, modifier = Modifier.padding(vertical = 12.dp))
 }
+

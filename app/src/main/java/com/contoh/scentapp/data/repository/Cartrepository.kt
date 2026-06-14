@@ -1,4 +1,4 @@
-package com.contoh.scentapp.data.repository
+﻿package com.contoh.scentapp.data.repository
 
 import com.contoh.scentapp.domain.model.CartItem
 import com.contoh.scentapp.domain.model.ShippingOption
@@ -23,8 +23,6 @@ class CartRepository private constructor(private val cartDao: CartDao) {
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: CartRepository(cartDao).also { INSTANCE = it }
             }
-        
-        // Throw error if not initialized
         fun getInstance(): CartRepository = INSTANCE ?: throw IllegalStateException("CartRepository not initialized")
     }
 
@@ -106,3 +104,4 @@ data class CheckoutSummary(
 ) {
     val total: Int get() = subtotal + shippingFee
 }
+

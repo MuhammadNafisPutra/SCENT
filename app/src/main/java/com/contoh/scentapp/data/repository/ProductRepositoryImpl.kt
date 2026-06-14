@@ -20,8 +20,6 @@ class ProductRepositoryImpl(
         private const val COLLECTION = "parfums"
     }
 
-    // ── Upload gambar ke Cloudinary ──────────────────────────────────────────
-
     /**
      * Upload gambar produk ke Cloudinary.
      * Return secure_url yang akan disimpan ke field imageUrl di Firestore.
@@ -29,8 +27,6 @@ class ProductRepositoryImpl(
     suspend fun uploadProductImage(context: Context, imageUri: Uri): Result<String> {
         return CloudinaryUploader.upload(context, imageUri)
     }
-
-    // ── Tambah produk baru ke Firestore ──────────────────────────────────────
 
     suspend fun addParfum(parfum: Parfum): Result<Unit> {
         return try {
@@ -50,8 +46,6 @@ class ProductRepositoryImpl(
         }
     }
 
-    // ── Ambil semua produk (realtime) ────────────────────────────────────────
-
     fun getAllParfums(): Flow<List<Parfum>> = callbackFlow {
         val listener = firestore.collection(COLLECTION)
             .orderBy("createdAt", Query.Direction.DESCENDING)
@@ -68,8 +62,6 @@ class ProductRepositoryImpl(
         awaitClose { listener.remove() }
     }
 
-    // ── Ambil produk milik seller yang sedang login (realtime) ───────────────
-
     fun getMyParfums(): Flow<List<Parfum>> = callbackFlow {
         val sellerId = auth.currentUser?.uid
         if (sellerId == null) {
@@ -77,12 +69,6 @@ class ProductRepositoryImpl(
             close()
             return@callbackFlow
         }
-        // Catatan: TIDAK menggunakan .orderBy("createdAt") di sini.
-        // whereEqualTo("sellerId", ...) + orderBy("createdAt") membutuhkan
-        // composite index di Firestore. Jika index belum dibuat, listener
-        // akan langsung error (FAILED_PRECONDITION) dan berhenti permanen,
-        // sehingga produk baru tidak akan pernah muncul tanpa restart app.
-        // Sebagai gantinya, urutkan hasilnya di klien.
         val listener = firestore.collection(COLLECTION)
             .whereEqualTo("sellerId", sellerId)
             .addSnapshotListener { snapshot, error ->
@@ -99,8 +85,6 @@ class ProductRepositoryImpl(
         awaitClose { listener.remove() }
     }
 
-    // ── Update produk ────────────────────────────────────────────────────────
-
     suspend fun updateParfum(parfum: Parfum): Result<Unit> {
         return try {
             firestore.collection(COLLECTION)
@@ -113,8 +97,6 @@ class ProductRepositoryImpl(
         }
     }
 
-    // ── Hapus produk ─────────────────────────────────────────────────────────
-
     suspend fun deleteParfum(parfumId: String): Result<Unit> {
         return try {
             firestore.collection(COLLECTION)
@@ -126,8 +108,6 @@ class ProductRepositoryImpl(
             Result.failure(e)
         }
     }
-
-    // ── Ambil satu produk by ID ──────────────────────────────────────────────
 
     suspend fun getParfumById(parfumId: String): Result<Parfum> {
         return try {

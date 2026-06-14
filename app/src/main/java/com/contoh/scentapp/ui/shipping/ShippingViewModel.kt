@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.shipping
+﻿package com.contoh.scentapp.ui.shipping
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -54,27 +54,28 @@ class ShippingViewModel(
         }
     }
 
+    fun refreshAddress() {
+        fetchAddress()
+    }
+
     private fun fetchDynamicShippingCosts() {
         val destinationId = shippingRepository.selectedDestinationCityId
         if (destinationId == null) {
             _shippingOptions.value = emptyList()
             return
         }
-        // We set Banjarmasin as origin. Banjarmasin ID in BinderByte depends on the API. 
-        // As a fallback, we will just pass "Banjarmasin" as string, or if it requires ID, we use a placeholder ID like "43"
-        // In this implementation we will try using the destination ID and "Banjarmasin".
-        val originId = "city_63.71" // You can adjust this if exact ID is known.
-        
+
+        val originId = "city_63.71"
+
         viewModelScope.launch {
             _isLoading.value = true
-            
-            // Fetch for 3 couriers: jnt, sicepat, jne
+
             val couriers = listOf(
                 Pair("jnt", "J&T Express"),
                 Pair("sicepat", "SiCepat"),
                 Pair("jne", "JNE REG")
             )
-            
+
             try {
                 val results = couriers.map { courier ->
                     async {
@@ -100,13 +101,12 @@ class ShippingViewModel(
                         } else null
                     }
                 }.awaitAll()
-                
+
                 val validOptions = results.filterNotNull()
                 if (validOptions.isNotEmpty()) {
                     _shippingOptions.value = validOptions
                 }
             } catch (e: Exception) {
-                // Keep default if error
             } finally {
                 _isLoading.value = false
             }

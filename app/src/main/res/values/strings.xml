@@ -19,7 +19,6 @@
     <string name="nav_profile">PROFIL</string>
 
     <!-- Language Screen -->
-    <string name="language_title">BAHASA</string>
     <string name="interface_preferences">PREFERENSI ANTARMUKA</string>
     <string name="select_language">Pilih bahasa yang kamu inginkan</string>
 
@@ -67,8 +66,8 @@
     <string name="auth_password">KATA SANDI</string>
     <string name="login_forgot_password">LUPA KATA SANDI</string>
     <string name="login_button">MASUK</string>
-    <string name="login_new_user">Baru di ASCENT? </string>
-    <string name="login_register_now">Daftar Sekarang</string>
+    <string name="login_new_user">Baru di SCENT?</string>
+    <string name="login_register_now"> Daftar Sekarang</string>
     <string name="register_login">MASUK</string>
     <string name="register_title">Buat Akun</string>
     <string name="register_subtitle">Masukkan detail Anda untuk bergabung dengan atelier digital kami dan jelajahi koleksi eksklusif.</string>
@@ -235,7 +234,7 @@
     <string name="account_detail_password_mismatch">Password tidak cocok</string>
 
     <!-- Shipping Address Screen -->
-    <string name="shipping_address_title">SHIPPING ADDRESS</string>
+    <string name="shipping_address_title">Alamat Pengiriman</string>
     <string name="shipping_address_info_title">INFORMASI PENGIRIMAN</string>
     <string name="shipping_address_info_desc">Masukkan detail alamat untuk pengiriman pesanan Anda.</string>
     <string name="shipping_address_recipient_name">NAMA PENERIMA</string>
@@ -280,7 +279,7 @@
 
     <string name="search_usage_siang">☀️ SIANG</string>
     <string name="search_usage_malam">🌙 MALAM</string>
-    <string name="search_usage_keduanya">✨ KEDUANYA</string>
+    <string name="search_usage_keduanya">KEDUANYA</string>
     <string name="account_detail_address_hint">Masukkan alamat lengkap, kelurahan, kota...</string>
     <string name="scent_title">SCENT</string>
     <string name="shipping_address_incomplete">Harap lengkapi semua data alamat</string>

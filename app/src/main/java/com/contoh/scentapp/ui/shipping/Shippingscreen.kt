@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.shipping
+﻿package com.contoh.scentapp.ui.shipping
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -50,8 +50,6 @@ fun ShippingScreen(
     val address by viewModel.address.collectAsState()
     
     var selectedId by rememberSaveable { mutableStateOf("jnt") }
-    
-    // Ensure selected option exists
     val selectedOption = shippingOptions.find { it.id == selectedId } ?: shippingOptions.firstOrNull()
     var isTransfer by rememberSaveable { mutableStateOf(false) }
     val cartItems by repository.cartItems.collectAsState(initial = emptyList())
@@ -60,7 +58,9 @@ fun ShippingScreen(
     val total = subtotal + shippingFee
 
     fun formatRp(value: Int) = "Rp ${"%,d".format(value).replace(",", ".")}"
-
+    LaunchedEffect(Unit) {
+        viewModel.refreshAddress()
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -78,7 +78,6 @@ fun ShippingScreen(
                         .statusBarsPadding()
                         .padding(horizontal = 20.dp, vertical = 16.dp)
                 ) {
-                    // Kiri: tombol back
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = stringResource(R.string.back),
@@ -88,7 +87,6 @@ fun ShippingScreen(
                             .clickable(onClick = onBack)
                             .align(Alignment.CenterStart)
                     )
-                    // Tengah: judul
                     Text(
                         text = stringResource(R.string.scent_title),
                         style = MaterialTheme.typography.titleLarge.copy(

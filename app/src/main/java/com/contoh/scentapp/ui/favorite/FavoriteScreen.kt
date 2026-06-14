@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.favorite
+﻿package com.contoh.scentapp.ui.favorite
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -192,7 +192,6 @@ private fun FavoriteItemCard(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.weight(1f)) {
-            // Thumbnail: AsyncImage jika ada imageUrl, fallback ilustrasi botol
             Box(
                 modifier = Modifier
                     .size(80.dp)

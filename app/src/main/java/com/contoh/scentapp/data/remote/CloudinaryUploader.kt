@@ -32,16 +32,11 @@ object CloudinaryUploader {
      */
     suspend fun upload(context: Context, imageUri: Uri): Result<String> {
         return try {
-            // Baca bytes dari Uri
             val bytes = context.contentResolver
                 .openInputStream(imageUri)
                 ?.use { it.readBytes() }
                 ?: return Result.failure(Exception("Tidak bisa membaca file gambar"))
-
-            // Tentukan media type (default jpeg)
             val mimeType = context.contentResolver.getType(imageUri) ?: "image/jpeg"
-
-            // Buat multipart request body
             val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(

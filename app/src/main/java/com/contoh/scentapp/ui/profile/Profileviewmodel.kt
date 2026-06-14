@@ -13,12 +13,20 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 sealed class UpdatePasswordState {
     object Idle    : UpdatePasswordState()
     object Loading : UpdatePasswordState()
     object Success : UpdatePasswordState()
     data class Error(val message: String) : UpdatePasswordState()
+}
+
+sealed class DeleteAccountState {
+    object Idle    : DeleteAccountState()
+    object Loading : DeleteAccountState()
+    object Success : DeleteAccountState()
+    data class Error(val message: String) : DeleteAccountState()
 }
 
 class ProfileViewModel(
@@ -40,6 +48,9 @@ class ProfileViewModel(
 
     private val _profileUpdateSuccess = MutableStateFlow(false)
     val profileUpdateSuccess: StateFlow<Boolean> = _profileUpdateSuccess.asStateFlow()
+
+    private val _deleteAccountState = MutableStateFlow<DeleteAccountState>(DeleteAccountState.Idle)
+    val deleteAccountState: StateFlow<DeleteAccountState> = _deleteAccountState.asStateFlow()
 
     init {
         loadCurrentUser()
@@ -149,6 +160,33 @@ class ProfileViewModel(
     }
 
     fun confirmDeleteAccount() {
-        viewModelScope.launch { hideDeleteDialog() }
+        viewModelScope.launch {
+            _deleteAccountState.value = DeleteAccountState.Loading
+            hideDeleteDialog()
+            try {
+                val uid = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
+                if (uid != null) {
+                    com.google.firebase.firestore.FirebaseFirestore.getInstance()
+                        .collection("users").document(uid)
+                        .delete()
+                        .await()
+                }
+                com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+                    ?.delete()
+                    ?.await()
+                _deleteAccountState.value = DeleteAccountState.Success
+            } catch (e: Exception) {
+                val msg = when {
+                    e.message?.contains("requires-recent-login", ignoreCase = true) == true ->
+                        "Silakan login ulang sebelum menghapus akun"
+                    else -> "Gagal menghapus akun: ${e.message}"
+                }
+                _deleteAccountState.value = DeleteAccountState.Error(msg)
+            }
+        }
+    }
+
+    fun resetDeleteAccountState() {
+        _deleteAccountState.value = DeleteAccountState.Idle
     }
 }

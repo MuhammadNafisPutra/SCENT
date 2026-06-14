@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.profile
+﻿package com.contoh.scentapp.ui.profile
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -46,8 +46,6 @@ fun LanguageScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-
-            // ── Header ────────────────────────────────────────────────────────
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -67,18 +65,9 @@ fun LanguageScreen(
                             .clickable(onClick = onBack)
                     )
                     Spacer(Modifier.width(16.dp))
-                    Text(
-                        text  = stringResource(R.string.language_title), // ✅
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            fontWeight    = FontWeight.Bold,
-                            fontSize      = 14.sp,
-                            letterSpacing = 3.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
                 }
                 Text(
-                    text  = "SCENT", // Nama brand, tidak perlu diterjemahkan
+                    text  = "SCENT",
                     style = MaterialTheme.typography.titleLarge.copy(
                         fontWeight    = FontWeight.Bold,
                         letterSpacing = 6.sp,
@@ -88,12 +77,10 @@ fun LanguageScreen(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
-
-            // ── Subtitle ──────────────────────────────────────────────────────
             Spacer(Modifier.height(16.dp))
             Column(modifier = Modifier.padding(horizontal = 20.dp)) {
                 Text(
-                    text  = stringResource(R.string.interface_preferences), // ✅
+                    text  = stringResource(R.string.interface_preferences),
                     style = MaterialTheme.typography.labelSmall.copy(
                         fontSize      = 10.sp,
                         letterSpacing = 2.sp,
@@ -102,7 +89,7 @@ fun LanguageScreen(
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text  = stringResource(R.string.select_language), // ✅
+                    text  = stringResource(R.string.select_language),
                     style = MaterialTheme.typography.displayMedium.copy(
                         fontWeight = FontWeight.Bold,
                         fontSize   = 28.sp,
@@ -111,8 +98,6 @@ fun LanguageScreen(
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
-
-            // ── Daftar Pilihan Bahasa ─────────────────────────────────────────
             Spacer(Modifier.height(32.dp))
             languageOptions.forEach { lang ->
                 val isSelected = lang.id == selectedLang

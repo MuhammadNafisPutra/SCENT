@@ -1,4 +1,4 @@
-package com.contoh.scentapp.di
+﻿package com.contoh.scentapp.di
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -28,8 +28,6 @@ object ViewModelFactory {
             return AuthViewModel(application, loginUseCase, registerUseCase, logoutUseCase) as T
         }
     }
-
-    // HomeViewModel menggunakan Use Cases
     fun homeFactory() = object : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -79,8 +77,6 @@ object ViewModelFactory {
             return DetailViewModel(firestoreId, getProductDetailUseCase, getProductReviewsUseCase, addToCartUseCase) as T
         }
     }
-
-    // FavoriteViewModel menggunakan Use Cases
     fun favoriteFactory() = object : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

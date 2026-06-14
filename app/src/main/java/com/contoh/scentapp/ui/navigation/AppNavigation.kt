@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.navigation
+﻿package com.contoh.scentapp.ui.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -82,11 +82,6 @@ fun AppNavigation(startLoggedIn: Boolean = false) {
         val coroutineScope  = rememberCoroutineScope()
         val cartRepository  = CartRepository.getInstance()
         val orderRepository = OrderRepositoryImpl()
-
-        // ── Buat dokumen pesanan dari isi keranjang saat checkout ──────────────
-        // Dipanggil baik dari jalur COD (ShippingScreen) maupun Transfer
-        // (UploadPaymentProofScreen), agar pesanan langsung tercatat di
-        // Firestore dan muncul di Riwayat Pesanan (buyer) & Pesanan Masuk (seller).
         fun createOrdersFromCart(isTransfer: Boolean, onDone: () -> Unit) {
             coroutineScope.launch {
                 val items   = cartRepository.cartItems.first()
@@ -103,16 +98,10 @@ fun AppNavigation(startLoggedIn: Boolean = false) {
                     OrderStatus.WAITING_PAYMENT
                 }
                 val paymentMethodLabel = if (isTransfer) "Transfer" else "COD"
-
-                // Pisahkan item per penjual (sellerId) — satu order Firestore
-                // hanya boleh memiliki satu sellerId agar muncul benar di
-                // halaman "Pesanan Masuk" milik penjual tersebut.
                 val itemsBySeller = items.groupBy { it.sellerId }
 
                 itemsBySeller.entries.forEachIndexed { index, (sellerId, sellerItems) ->
                     val subtotal = sellerItems.sumOf { it.totalPrice }
-                    // Biaya kirim dibebankan pada order pertama saja agar
-                    // total yang ditampilkan saat checkout tetap sesuai.
                     val shippingForThisOrder = if (index == 0) summary.shippingFee else 0
 
                     orderRepository.createOrder(
@@ -161,7 +150,6 @@ fun AppNavigation(startLoggedIn: Boolean = false) {
             }
             composable(Routes.HOME) {
                 HomeScreen(
-                    // ← passing firestoreId (String) bukan productId (Int)
                     onProductClick = { firestoreId ->
                         navController.navigate(Routes.detailRoute(firestoreId))
                     },
@@ -173,7 +161,6 @@ fun AppNavigation(startLoggedIn: Boolean = false) {
             composable(Routes.FAVORITE) {
                 FavoriteScreen(
                     onBack         = { navController.popBackStack() },
-                    // ← passing firestoreId (String)
                     onProductClick = { firestoreId ->
                         navController.navigate(Routes.detailRoute(firestoreId))
                     }
@@ -199,12 +186,17 @@ fun AppNavigation(startLoggedIn: Boolean = false) {
                         navController.navigate(Routes.LOGIN) {
                             popUpTo(navController.graph.id) { inclusive = true }
                         }
+                    },
+                    onDeleteSuccess  = {
+                        SessionManager.getInstance(context).clearSession()
+                        navController.navigate(Routes.LOGIN) {
+                            popUpTo(navController.graph.id) { inclusive = true }
+                        }
                     }
                 )
             }
             composable(
                 route     = Routes.DETAIL,
-                // ← ganti IntType → StringType, ganti key "productId" → "firestoreId"
                 arguments = listOf(navArgument("firestoreId") { type = NavType.StringType })
             ) { backStack ->
                 val firestoreId = backStack.arguments?.getString("firestoreId")
@@ -229,7 +221,6 @@ fun AppNavigation(startLoggedIn: Boolean = false) {
                 SearchScreen(
                     initialQuery   = backStack.arguments?.getString("query") ?: "",
                     onBack         = { navController.popBackStack() },
-                    // ← passing firestoreId (String)
                     onProductClick = { firestoreId ->
                         navController.navigate(Routes.detailRoute(firestoreId))
                     }
@@ -282,7 +273,15 @@ fun AppNavigation(startLoggedIn: Boolean = false) {
                 AccountDetailScreen(onBack = { navController.popBackStack() })
             }
             composable(Routes.SHIPPING_ADDRESS) {
-                ShippingAddressScreen(onBack = { navController.popBackStack() })
+                val profileViewModel: com.contoh.scentapp.ui.profile.ProfileViewModel = viewModel(
+                    factory = com.contoh.scentapp.di.ViewModelFactory.profileFactory(
+                        LocalContext.current.applicationContext as android.app.Application
+                    )
+                )
+                ShippingAddressScreen(
+                    onBack         = { navController.popBackStack() },
+                    onAddressSaved = { profileViewModel.refreshUser() }
+                )
             }
             composable(Routes.LANGUAGE) {
                 LanguageScreen(onBack = { navController.popBackStack() })

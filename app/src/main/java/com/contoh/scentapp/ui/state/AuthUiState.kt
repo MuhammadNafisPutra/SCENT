@@ -15,5 +15,6 @@ data class AuthUiState(
     val isLoading       : Boolean = false,
     val errorMessage    : String? = null,
     val isLoggedIn      : Boolean = false,
-    val currentUser     : User?   = null  // ✅ ADD THIS
+    val currentUser     : User?   = null
 )
+

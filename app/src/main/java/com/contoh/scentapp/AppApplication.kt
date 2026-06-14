@@ -1,4 +1,4 @@
-package com.contoh.scentapp
+﻿package com.contoh.scentapp
 
 import android.app.Application
 import com.contoh.scentapp.data.local.AppDatabase
@@ -19,9 +19,8 @@ class AppApplication : Application() {
         FirebaseApp.initializeApp(this)
 
         database = AppDatabase.getDatabase(this)
-        
-        // Inisialisasi Repositori yang butuh DAO
         CartRepository.getInstance(database.cartDao())
         searchHistoryRepository = SearchHistoryRepository(database.searchHistoryDao())
     }
 }
+

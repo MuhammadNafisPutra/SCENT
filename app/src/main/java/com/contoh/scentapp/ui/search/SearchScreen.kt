@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.search
+﻿package com.contoh.scentapp.ui.search
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -50,7 +50,7 @@ private enum class SearchPhase { FILTER, RESULTS }
 fun SearchScreen(
     initialQuery  : String = "",
     onBack        : () -> Unit,
-    onProductClick: (String) -> Unit = {},  // <- String
+    onProductClick: (String) -> Unit = {},
     viewModel     : SearchViewModel = viewModel(
         factory = com.contoh.scentapp.di.ViewModelFactory.searchFactory(
             androidx.compose.ui.platform.LocalContext.current.applicationContext as android.app.Application
@@ -130,7 +130,7 @@ private fun FilterPhase(
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
-                        text  = "✦",
+                        text  = "âœ¦",
                         style = MaterialTheme.typography.displayLarge.copy(color = MaterialTheme.colorScheme.outlineVariant)
                     )
                     Spacer(Modifier.height(16.dp))
@@ -224,7 +224,7 @@ private fun FilterPhase(
 private fun ResultsPhase(
     uiState        : com.contoh.scentapp.ui.state.SearchUiState,
     onBack         : () -> Unit,
-    onProductClick : (String) -> Unit,  // ← String
+    onProductClick : (String) -> Unit,
     onFavToggle    : (Int) -> Unit
 ) {
     val listState = rememberLazyListState()
@@ -291,7 +291,7 @@ private fun ResultsPhase(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text  = "✦",
+                                text  = "âœ¦",
                                 style = MaterialTheme.typography.displayLarge.copy(color = MaterialTheme.colorScheme.outlineVariant)
                             )
                             Spacer(Modifier.height(16.dp))
@@ -346,7 +346,7 @@ private fun FilterBadge(label: String) {
 @Composable
 private fun SearchProductRow(
     products       : List<Product>,
-    onProductClick : (String) -> Unit,  // ← String
+    onProductClick : (String) -> Unit,
     onFavToggle    : (Int) -> Unit,
     modifier       : Modifier = Modifier
 ) {
@@ -357,7 +357,7 @@ private fun SearchProductRow(
         products.forEach { product ->
             SearchProductCard(
                 product     = product,
-                onClick     = { onProductClick(product.firestoreId) },  // ← firestoreId
+                onClick     = { onProductClick(product.firestoreId) },
                 onFavToggle = { onFavToggle(product.id) },
                 modifier    = Modifier.weight(1f)
             )
@@ -392,7 +392,6 @@ private fun SearchProductCard(
                     )
                 )
         ) {
-            // Tampilkan foto produk asli jika ada, fallback ke placeholder botol
             if (product.imageUrl.isNotBlank()) {
                 AsyncImage(
                     model              = product.imageUrl,

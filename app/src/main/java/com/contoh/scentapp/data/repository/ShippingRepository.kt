@@ -1,4 +1,4 @@
-package com.contoh.scentapp.data.repository
+﻿package com.contoh.scentapp.data.repository
 
 import com.contoh.scentapp.data.remote.RetrofitClient
 import com.contoh.scentapp.data.remote.dto.CityDto
@@ -8,8 +8,6 @@ import com.contoh.scentapp.data.remote.dto.ShippingCostDetailDto
 class ShippingRepository {
     private val api = RetrofitClient.binderByteApiService
     private val apiKey = "92c0afa62243cf4ae9aaa1530bc98e2d2c834b80826bb9619f116bb3f753a117"
-    
-    // Save the selected city id globally for this simple app
     var selectedDestinationCityId: String? = null
 
     suspend fun getProvinces(): Result<List<ProvinceDto>> {
@@ -86,3 +84,4 @@ class ShippingRepository {
         }
     }
 }
+

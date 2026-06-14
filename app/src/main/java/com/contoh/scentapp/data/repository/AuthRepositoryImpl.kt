@@ -52,8 +52,6 @@ class AuthRepositoryImpl(
         val uid = currentUserId ?: return null
         return getUserFromFirestore(uid)
     }
-
-    // ✅ BARU: Update password dengan re-authentication
     override suspend fun updatePassword(
         currentPassword: String,
         newPassword: String
@@ -64,12 +62,8 @@ class AuthRepositoryImpl(
 
             val email = user.email
                 ?: return Result.failure(Exception("Email user tidak ditemukan"))
-
-            // Re-authenticate dulu sebelum ganti password (wajib oleh Firebase)
             val credential = EmailAuthProvider.getCredential(email, currentPassword)
             user.reauthenticate(credential).await()
-
-            // Update ke password baru
             user.updatePassword(newPassword).await()
 
             Result.success(Unit)

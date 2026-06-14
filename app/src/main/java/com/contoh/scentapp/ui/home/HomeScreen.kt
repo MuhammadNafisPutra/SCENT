@@ -1,4 +1,4 @@
-    package com.contoh.scentapp.ui.home
+﻿    package com.contoh.scentapp.ui.home
 
     import androidx.compose.animation.animateColorAsState
     import androidx.compose.animation.core.tween
@@ -39,7 +39,7 @@
 
     @Composable
     fun HomeScreen(
-        onProductClick : (String) -> Unit = {},  // ← String (firestoreId)
+        onProductClick : (String) -> Unit = {},
         onSearchClick  : () -> Unit       = {},
         viewModel      : HomeViewModel    = viewModel(factory = com.contoh.scentapp.di.ViewModelFactory.homeFactory())
     ) {
@@ -88,7 +88,7 @@
         uiState          : HomeUiState,
         listState        : LazyListState,
         onSearchClick    : () -> Unit,
-        onProductClick   : (String) -> Unit,  // ← String
+        onProductClick   : (String) -> Unit,
         onFavoriteToggle : (Int) -> Unit
     ) {
         LazyColumn(
@@ -311,7 +311,7 @@
     @Composable
     private fun ProductRow(
         products         : List<Product>,
-        onProductClick   : (String) -> Unit,  // ← String
+        onProductClick   : (String) -> Unit,
         onFavoriteToggle : (Int) -> Unit,
         modifier         : Modifier = Modifier
     ) {
@@ -322,7 +322,7 @@
             products.forEach { product ->
                 ProductCard(
                     product          = product,
-                    onClick          = { onProductClick(product.firestoreId) },  // ← firestoreId
+                    onClick          = { onProductClick(product.firestoreId) },
                     onFavoriteToggle = { onFavoriteToggle(product.id) },
                     modifier         = Modifier.weight(1f)
                 )

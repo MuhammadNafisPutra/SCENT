@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.ordersuccess
+﻿package com.contoh.scentapp.ui.ordersuccess
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -39,9 +39,6 @@ fun OrderSuccessScreen(
     val repository = CartRepository.getInstance()
     val checkoutSummary by repository.checkoutSummary.collectAsState(initial = com.contoh.scentapp.data.repository.CheckoutSummary())
     val totalPayment = "Rp${"%,d".format(checkoutSummary.total).replace(',', '.')}"
-
-    // Setelah pesanan berhasil dibuat, kosongkan keranjang agar halaman
-    // Keranjang/Pengiriman tidak menampilkan item pesanan yang sudah selesai.
     LaunchedEffect(Unit) {
         repository.clearCart()
     }

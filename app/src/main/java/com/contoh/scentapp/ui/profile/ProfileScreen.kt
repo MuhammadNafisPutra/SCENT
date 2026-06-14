@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.profile
+﻿package com.contoh.scentapp.ui.profile
 
 import android.app.Application
 import androidx.compose.foundation.background
@@ -43,13 +43,14 @@ import com.contoh.scentapp.ui.theme.*
 
 @Composable
 fun ProfileScreen(
-    onBack: () -> Unit = {},
-    onDetailAkun: () -> Unit = {},
-    onAlamat: () -> Unit = {},
-    onRiwayatPesanan: () -> Unit = {},
-    onBahasa: () -> Unit = {},
-    onPenjualan: () -> Unit = {},
-    onLogout: () -> Unit = {}
+    onBack           : () -> Unit = {},
+    onDetailAkun     : () -> Unit = {},
+    onAlamat         : () -> Unit = {},
+    onRiwayatPesanan : () -> Unit = {},
+    onBahasa         : () -> Unit = {},
+    onPenjualan      : () -> Unit = {},
+    onLogout         : () -> Unit = {},
+    onDeleteSuccess  : () -> Unit = {}
 ) {
     val context        = LocalContext.current
     val application    = context.applicationContext as Application
@@ -60,6 +61,20 @@ fun ProfileScreen(
     val listState       = rememberLazyListState()
     val sessionManager  = remember { SessionManager.getInstance(context) }
     val isDarkMode     by sessionManager.isDarkMode.collectAsState()
+
+    val deleteAccountState by viewModel.deleteAccountState.collectAsStateWithLifecycle()
+    LaunchedEffect(deleteAccountState) {
+        when (deleteAccountState) {
+            is DeleteAccountState.Success -> {
+                viewModel.resetDeleteAccountState()
+                onDeleteSuccess()
+            }
+            is DeleteAccountState.Error -> {
+                viewModel.resetDeleteAccountState()
+            }
+            else -> {}
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -115,7 +130,6 @@ fun ProfileScreen(
                         .padding(horizontal = 20.dp, vertical = 20.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    // ✅ FIX: Tampilkan foto profil jika ada, fallback ke icon Person
                     Box(
                         modifier = Modifier
                             .size(90.dp)

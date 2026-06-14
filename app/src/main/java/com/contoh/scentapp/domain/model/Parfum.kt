@@ -1,4 +1,4 @@
-package com.contoh.scentapp.domain.model
+﻿package com.contoh.scentapp.domain.model
 
 data class Parfum(
     val id: String = "",
@@ -23,6 +23,7 @@ data class Parfum(
     @set:com.google.firebase.firestore.PropertyName("decantAvailable")
     var decantAvailable: Boolean = false,
     val limitedDrop: Boolean = false,
-    val usage: String = "",          // "SIANG", "MALAM", atau "KEDUANYA"
+    val usage: String = "",
     val createdAt: Long = 0L
 )
+

@@ -3,8 +3,6 @@
 data class CartItem(
     val id: Int = 0,
     val productId: Int = 0,
-    // ID dokumen produk (parfums/{firestoreId}) & pemiliknya, dibutuhkan saat
-    // checkout untuk membuat dokumen order di Firestore (riwayat pesanan).
     val firestoreId: String = "",
     val sellerId: String = "",
     val name: String = "",
@@ -23,3 +21,4 @@ data class CartItem(
     val formattedPrice: String get() =
         "Rp%,.0f".format(totalPrice.toDouble()).replace(",", ".")
 }
+

@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.order
+﻿package com.contoh.scentapp.ui.order
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -148,7 +148,6 @@ fun OrderHistoryScreen(
 
     Box(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Column(modifier = Modifier.fillMaxSize()) {
-            // ── Top Bar ───────────────────────────────────────────────────────
             Row(
                 modifier = Modifier.fillMaxWidth().statusBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 16.dp),
@@ -162,8 +161,6 @@ fun OrderHistoryScreen(
                 ))
                 Spacer(Modifier.size(24.dp))
             }
-
-            // ── Tab Filter ────────────────────────────────────────────────────
             LazyRow(
                 contentPadding         = PaddingValues(horizontal = 20.dp),
                 horizontalArrangement  = Arrangement.spacedBy(8.dp),
@@ -200,8 +197,6 @@ fun OrderHistoryScreen(
                     }
                 }
             }
-
-            // ── Order List ────────────────────────────────────────────────────
             if (isLoading) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(color = ScentGold)
@@ -241,7 +236,6 @@ private fun OrderHistoryCard(order: OrderHistoryDisplay, onClick: () -> Unit) {
             .background(MaterialTheme.colorScheme.surface).border(0.5.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
             .clickable(onClick = onClick).padding(16.dp)
     ) {
-        // Header row
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
             Text(order.date, style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 10.sp))
             Box(modifier = Modifier.clip(RoundedCornerShape(6.dp)).background(statusBg).padding(horizontal = 8.dp, vertical = 4.dp)) {
@@ -254,8 +248,6 @@ private fun OrderHistoryCard(order: OrderHistoryDisplay, onClick: () -> Unit) {
         }
 
         Spacer(Modifier.height(12.dp))
-
-        // Product info
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Box(modifier = Modifier.size(52.dp).clip(RoundedCornerShape(8.dp)).background(MaterialTheme.colorScheme.surfaceVariant).border(0.5.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp)), contentAlignment = Alignment.Center) {
                 Icon(Icons.Default.LocalFlorist, null, tint = ScentGold.copy(alpha = 0.6f), modifier = Modifier.size(24.dp))
@@ -265,7 +257,7 @@ private fun OrderHistoryCard(order: OrderHistoryDisplay, onClick: () -> Unit) {
                 Text("#SCNT-${order.id}", style = MaterialTheme.typography.labelSmall.copy(fontSize = 10.sp, letterSpacing = 1.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(3.dp))
                 Text(order.productName, style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 15.sp), color = MaterialTheme.colorScheme.onBackground)
-                Text("${order.volume} • ${order.paymentMethod}", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
+                Text("${order.volume} â€¢ ${order.paymentMethod}", style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), fontSize = 11.sp))
             }
         }
 
@@ -277,8 +269,6 @@ private fun OrderHistoryCard(order: OrderHistoryDisplay, onClick: () -> Unit) {
             Text(stringResource(R.string.order_history_total), style = MaterialTheme.typography.bodySmall.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)))
             Text(order.totalStr, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onBackground, fontWeight = FontWeight.Bold))
         }
-
-        // Action button for DIKIRIM orders
         if (order.status == OrderStatus.DIKIRIM) {
             Spacer(Modifier.height(12.dp))
             Box(
@@ -310,3 +300,4 @@ private fun statusIcon(status: OrderStatus): ImageVector = when (status) {
     OrderStatus.CANCELLED, OrderStatus.TIDAK_SAMPAI             -> Icons.Default.Cancel
     else                                                         -> Icons.Default.ShoppingBag
 }
+

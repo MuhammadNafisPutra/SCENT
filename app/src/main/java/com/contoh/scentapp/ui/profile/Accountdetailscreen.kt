@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.profile
+﻿package com.contoh.scentapp.ui.profile
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -60,8 +60,6 @@ fun AccountDetailScreen(
     var showUpdatePasswordDialog by remember { mutableStateOf(false) }
 
     val snackbarHostState = remember { SnackbarHostState() }
-
-    // Tutup dialog otomatis saat password berhasil diubah
     LaunchedEffect(updatePasswordState) {
         if (updatePasswordState is UpdatePasswordState.Success) {
             showUpdatePasswordDialog = false
@@ -69,15 +67,11 @@ fun AccountDetailScreen(
             snackbarHostState.showSnackbar("Password berhasil diubah")
         }
     }
-
-    // Sync dari Firestore saat data loaded
     LaunchedEffect(key1 = uiState.fullName, key2 = uiState.email, key3 = uiState.address) {
         if (uiState.fullName.isNotBlank()) name  = uiState.fullName
         if (uiState.email.isNotBlank())    email = uiState.email
         if (uiState.address.isNotBlank())  address = uiState.address
     }
-
-    // ✅ FIX: Navigasi balik HANYA setelah upload + Firestore selesai
     val profileUpdateSuccess by viewModel.profileUpdateSuccess.collectAsStateWithLifecycle()
     LaunchedEffect(profileUpdateSuccess) {
         if (profileUpdateSuccess) {
@@ -92,8 +86,6 @@ fun AccountDetailScreen(
     val galleryLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? -> uri?.let { photoUri = it } }
-
-    // ✅ FIX: rememberSaveable agar URI tidak hilang saat recomposition
     var cameraUri by rememberSaveable { mutableStateOf<Uri?>(null) }
 
     val cameraLauncher = rememberLauncherForActivityResult(
@@ -117,12 +109,10 @@ fun AccountDetailScreen(
                 modifier       = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(bottom = 120.dp)
             ) {
-                // ── Top Bar ───────────────────────────────────────────────────
                 item(key = "topbar") {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .statusBarsPadding()
                             .padding(horizontal = 20.dp, vertical = 16.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -145,8 +135,6 @@ fun AccountDetailScreen(
                         )
                     }
                 }
-
-                // ── Avatar ────────────────────────────────────────────────────
                 item(key = "avatar") {
                     Column(
                         modifier            = Modifier
@@ -171,7 +159,6 @@ fun AccountDetailScreen(
                                         model = ImageRequest.Builder(context)
                                             .data(imageData)
                                             .crossfade(true)
-                                            // ✅ FIX: Nonaktifkan cache agar foto baru selalu tampil
                                             .diskCachePolicy(CachePolicy.DISABLED)
                                             .memoryCachePolicy(CachePolicy.DISABLED)
                                             .build(),
@@ -265,7 +252,7 @@ fun AccountDetailScreen(
                             )
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                text  = "••••••••••••",
+                                text  = "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢",
                                 style = MaterialTheme.typography.titleMedium.copy(
                                     color      = MaterialTheme.colorScheme.onBackground,
                                     fontSize   = 18.sp,

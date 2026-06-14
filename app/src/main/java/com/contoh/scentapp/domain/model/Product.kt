@@ -2,13 +2,13 @@
 
 data class Product(
     val id           : Int,
-    val firestoreId  : String       = "",   // ID dokumen Firestore
-    val sellerId     : String       = "",   // UID penjual pemilik produk
+    val firestoreId  : String       = "",
+    val sellerId     : String       = "",
     val brand        : String,
     val name         : String,
     val price        : String,
     val volume       : String,
-    val imageUrl     : String       = "",   // URL gambar dari Cloudinary
+    val imageUrl     : String       = "",
     val cardColor    : Long,
     val accentColor  : Long         = 0xFFD4A853,
     val isFavorite   : Boolean      = false,
@@ -20,3 +20,4 @@ data class Product(
     val rating       : Float        = 4.8f,
     val reviewCount  : Int          = 0
 )
+

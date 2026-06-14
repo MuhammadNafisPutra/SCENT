@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.profile
+﻿package com.contoh.scentapp.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -29,6 +29,9 @@ class ShippingAddressViewModel(
     private val _savedAddressObj = MutableStateFlow<Map<String, Any>?>(null)
     val savedAddressObj: StateFlow<Map<String, Any>?> = _savedAddressObj.asStateFlow()
 
+    private val _isSaved = MutableStateFlow(false)
+    val isSaved: StateFlow<Boolean> = _isSaved.asStateFlow()
+
     init {
         fetchProvinces()
         fetchSavedAddress()
@@ -40,7 +43,6 @@ class ShippingAddressViewModel(
             shippingRepository.getProvinces().onSuccess {
                 _provinces.value = it
             }.onFailure {
-                // handle error
             }
             _isLoadingProvinces.value = false
         }
@@ -52,7 +54,6 @@ class ShippingAddressViewModel(
             shippingRepository.getCities(provinceId).onSuccess {
                 _cities.value = it
             }.onFailure {
-                // handle error
             }
             _isLoadingCities.value = false
         }
@@ -83,6 +84,9 @@ class ShippingAddressViewModel(
                     "defaultAddress" to fullAddress,
                     "defaultAddressObj" to addressObj
                 ), com.google.firebase.firestore.SetOptions.merge())
+                .addOnSuccessListener {
+                    _isSaved.value = true
+                }
         }
     }
 
@@ -100,3 +104,4 @@ class ShippingAddressViewModel(
         }
     }
 }
+

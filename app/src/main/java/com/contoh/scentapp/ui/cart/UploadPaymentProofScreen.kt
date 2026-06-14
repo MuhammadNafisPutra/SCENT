@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.cart
+﻿package com.contoh.scentapp.ui.cart
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -44,7 +44,6 @@ fun UploadPaymentProofScreen(
             modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
                 .padding(bottom = 110.dp)
         ) {
-            // ── Top Bar ───────────────────────────────────────────────────────
             Box(
                 modifier = Modifier.fillMaxWidth().statusBarsPadding()
                     .padding(horizontal = 20.dp, vertical = 16.dp)
@@ -63,8 +62,6 @@ fun UploadPaymentProofScreen(
                 Text(stringResource(R.string.payment_proof_subtitle), style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f), lineHeight = 22.sp))
 
                 Spacer(Modifier.height(28.dp))
-
-                // ── Rekening Tujuan ───────────────────────────────────────────
                 Column(
                     modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp))
                         .background(MaterialTheme.colorScheme.surface).border(0.5.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(12.dp))
@@ -80,14 +77,11 @@ fun UploadPaymentProofScreen(
                 }
 
                 Spacer(Modifier.height(24.dp))
-
-                // ── Upload Area ───────────────────────────────────────────────
                 Text(stringResource(R.string.payment_proof_photo), style = MaterialTheme.typography.labelSmall.copy(
                     fontSize = 10.sp, letterSpacing = 1.5.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f)))
                 Spacer(Modifier.height(10.dp))
 
                 if (imageUri != null) {
-                    // Preview image
                     Box(
                         modifier = Modifier.fillMaxWidth().height(240.dp).clip(RoundedCornerShape(12.dp))
                             .border(1.dp, MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f), RoundedCornerShape(12.dp))
@@ -98,7 +92,6 @@ fun UploadPaymentProofScreen(
                             contentScale      = ContentScale.Crop,
                             modifier          = Modifier.fillMaxSize()
                         )
-                        // Re-upload button overlay
                         Box(
                             modifier = Modifier.align(Alignment.TopEnd).padding(10.dp)
                                 .size(36.dp).clip(RoundedCornerShape(8.dp))
@@ -110,7 +103,6 @@ fun UploadPaymentProofScreen(
                         }
                     }
                 } else {
-                    // Empty upload area
                     Box(
                         modifier = Modifier.fillMaxWidth().height(200.dp).clip(RoundedCornerShape(12.dp))
                             .background(MaterialTheme.colorScheme.surface)
@@ -135,8 +127,6 @@ fun UploadPaymentProofScreen(
                 }
 
                 Spacer(Modifier.height(16.dp))
-
-                // Gallery button
                 if (imageUri == null) {
                     Box(
                         modifier = Modifier.fillMaxWidth().clip(RoundedCornerShape(10.dp))
@@ -154,8 +144,6 @@ fun UploadPaymentProofScreen(
                 }
             }
         }
-
-        // ── Bottom Submit Button ──────────────────────────────────────────────
         Box(
             modifier = Modifier.align(Alignment.BottomCenter).fillMaxWidth()
                 .background(MaterialTheme.colorScheme.background).padding(horizontal = 20.dp, vertical = 16.dp).navigationBarsPadding()
@@ -198,3 +186,4 @@ private fun BankInfoRow(bank: String, accountNo: String, holder: String) {
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.auth
+﻿package com.contoh.scentapp.ui.auth
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,18 +42,20 @@ fun LoginScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     var email    by rememberSaveable { mutableStateOf(uiState.loginEmail) }
     var password by rememberSaveable { mutableStateOf(uiState.loginPassword) }
+    var showForgotDialog by remember { mutableStateOf(false) }
+    var forgotEmail      by remember { mutableStateOf("") }
+    var forgotSent       by remember { mutableStateOf(false) }
 
     LaunchedEffect(email)    { viewModel.onLoginEmailChange(email) }
     LaunchedEffect(password) { viewModel.onLoginPasswordChange(password) }
 
-    // ── Adaptive color tokens ──────────────────────────────────────────────
-    val bg       = MaterialTheme.colorScheme.background
-    val onBg     = MaterialTheme.colorScheme.onBackground
-    val muted    = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
-    val label    = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.38f)
-    val divider  = MaterialTheme.colorScheme.outline
-    val btnBg    = MaterialTheme.colorScheme.onBackground   // putih di dark, hitam di light
-    val btnText  = MaterialTheme.colorScheme.background     // kebalikannya
+    val bg      = MaterialTheme.colorScheme.background
+    val onBg    = MaterialTheme.colorScheme.onBackground
+    val muted   = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+    val label   = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.38f)
+    val divider = MaterialTheme.colorScheme.outline
+    val btnBg   = MaterialTheme.colorScheme.onBackground
+    val btnText = MaterialTheme.colorScheme.background
 
     Box(
         modifier = Modifier
@@ -71,7 +73,7 @@ fun LoginScreen(
                         letterSpacing = 6.sp,
                         fontSize      = 20.sp
                     ),
-                    color = onBg,
+                    color    = onBg,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
@@ -104,17 +106,17 @@ fun LoginScreen(
             )
             Spacer(Modifier.height(10.dp))
             BasicTextField(
-                value         = email,
-                onValueChange = { email = it },
-                textStyle     = MaterialTheme.typography.bodyMedium.copy(
+                value           = email,
+                onValueChange   = { email = it },
+                textStyle       = MaterialTheme.typography.bodyMedium.copy(
                     color    = onBg,
                     fontSize = 16.sp
                 ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                cursorBrush   = SolidColor(ScentGold),
-                singleLine    = true,
-                modifier      = Modifier.fillMaxWidth(),
-                decorationBox = { inner ->
+                cursorBrush     = SolidColor(ScentGold),
+                singleLine      = true,
+                modifier        = Modifier.fillMaxWidth(),
+                decorationBox   = { inner ->
                     if (email.isEmpty()) {
                         Text(
                             text  = "atelier@scent.com",
@@ -131,7 +133,6 @@ fun LoginScreen(
                 thickness = 0.5.dp,
                 modifier  = Modifier.padding(top = 10.dp)
             )
-
             Spacer(Modifier.height(28.dp))
             Row(
                 modifier              = Modifier.fillMaxWidth(),
@@ -153,7 +154,7 @@ fun LoginScreen(
                         letterSpacing = 1.5.sp,
                         color         = muted
                     ),
-                    modifier = Modifier.clickable { }
+                    modifier = Modifier.clickable { showForgotDialog = true }
                 )
             }
             Spacer(Modifier.height(10.dp))
@@ -176,7 +177,7 @@ fun LoginScreen(
                     decorationBox        = { inner ->
                         if (password.isEmpty()) {
                             Text(
-                                text  = "••••••••",
+                                text  = "â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢",
                                 style = MaterialTheme.typography.bodyMedium.copy(
                                     color = muted, fontSize = 16.sp
                                 )
@@ -209,7 +210,6 @@ fun LoginScreen(
                     )
                 )
             }
-
             Spacer(Modifier.height(32.dp))
             Box(
                 modifier = Modifier
@@ -224,8 +224,8 @@ fun LoginScreen(
             ) {
                 if (uiState.isLoading) {
                     CircularProgressIndicator(
-                        color    = btnText,
-                        modifier = Modifier.size(20.dp),
+                        color       = btnText,
+                        modifier    = Modifier.size(20.dp),
                         strokeWidth = 2.dp
                     )
                 } else {
@@ -249,10 +249,9 @@ fun LoginScreen(
         ) {
             Text(
                 text  = stringResource(R.string.login_new_user),
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = muted
-                )
+                style = MaterialTheme.typography.bodyMedium.copy(color = muted)
             )
+            Spacer(Modifier.width(4.dp))
             Text(
                 text  = stringResource(R.string.login_register_now),
                 style = MaterialTheme.typography.bodyMedium.copy(
@@ -262,5 +261,96 @@ fun LoginScreen(
                 modifier = Modifier.clickable(onClick = onRegister)
             )
         }
+    }
+
+    if (showForgotDialog) {
+        AlertDialog(
+            onDismissRequest = { showForgotDialog = false; forgotSent = false },
+            containerColor   = MaterialTheme.colorScheme.surface,
+            title = {
+                Text(
+                    text  = "Reset Password",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            },
+            text = {
+                Column {
+                    if (forgotSent) {
+                        Text(
+                            text  = "Email reset password telah dikirim ke $forgotEmail. Cek inbox Anda.",
+                            style = MaterialTheme.typography.bodyMedium.copy(
+                                color      = MaterialTheme.colorScheme.onBackground,
+                                lineHeight = 22.sp
+                            )
+                        )
+                    } else {
+                        Text(
+                            text  = "Masukkan email akun Anda untuk menerima link reset password.",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f)
+                            )
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        OutlinedTextField(
+                            value           = forgotEmail,
+                            onValueChange   = { forgotEmail = it },
+                            label           = { Text("Email") },
+                            singleLine      = true,
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                            modifier        = Modifier.fillMaxWidth(),
+                            colors          = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor   = MaterialTheme.colorScheme.onBackground,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant
+                            )
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                if (!forgotSent) {
+                    TextButton(
+                        onClick = {
+                            if (forgotEmail.isNotBlank()) {
+                                com.google.firebase.auth.FirebaseAuth.getInstance()
+                                    .sendPasswordResetEmail(forgotEmail)
+                                forgotSent = true
+                            }
+                        }
+                    ) {
+                        Text(
+                            text  = "KIRIM",
+                            color = ScentGold,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Bold, letterSpacing = 1.sp
+                            )
+                        )
+                    }
+                } else {
+                    TextButton(onClick = { showForgotDialog = false; forgotSent = false }) {
+                        Text(
+                            text  = "OK",
+                            color = ScentGold,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Bold, letterSpacing = 1.sp
+                            )
+                        )
+                    }
+                }
+            },
+            dismissButton = {
+                if (!forgotSent) {
+                    TextButton(onClick = { showForgotDialog = false }) {
+                        Text(
+                            text  = "Batal",
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontWeight = FontWeight.Bold, letterSpacing = 1.sp
+                            )
+                        )
+                    }
+                }
+            }
+        )
     }
 }

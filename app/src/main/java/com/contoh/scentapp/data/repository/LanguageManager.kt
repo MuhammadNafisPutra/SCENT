@@ -22,23 +22,17 @@ class LanguageManager private constructor(context: Context) {
         }
     }
 
-    // ── Simpan bahasa yang dipilih ────────────────────────────────────────────
-
     var selectedLanguage: String
         get() = prefs.getString("selected_language", "id") ?: "id"
         set(value) {
             prefs.edit().putString("selected_language", value).apply()
         }
 
-    // ── Terapkan bahasa ke seluruh app ────────────────────────────────────────
-
     fun applyLanguage(languageCode: String) {
         selectedLanguage = languageCode
         val localeList = LocaleListCompat.forLanguageTags(languageCode)
         AppCompatDelegate.setApplicationLocales(localeList)
     }
-
-    // ── Terapkan bahasa saat app dibuka ───────────────────────────────────────
 
     fun applyStoredLanguage() {
         val localeList = LocaleListCompat.forLanguageTags(selectedLanguage)

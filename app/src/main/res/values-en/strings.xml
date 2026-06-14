@@ -281,7 +281,7 @@
 
     <string name="search_usage_siang">☀️ DAY</string>
     <string name="search_usage_malam">🌙 NIGHT</string>
-    <string name="search_usage_keduanya">✨ BOTH</string>
+    <string name="search_usage_keduanya">BOTH</string>
     <string name="account_detail_address_hint">Enter full address, district, city...</string>
     <string name="scent_title">SCENT</string>
 </resources>

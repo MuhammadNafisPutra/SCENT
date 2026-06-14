@@ -1,4 +1,4 @@
-package com.contoh.scentapp.ui.sales
+﻿package com.contoh.scentapp.ui.sales
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -48,8 +48,6 @@ fun SalesScreen(
     val uiState      by viewModel.uiState.collectAsStateWithLifecycle()
     val resiDialogId by viewModel.resiDialogOrderId.collectAsStateWithLifecycle()
     val listState     = rememberLazyListState()
-
-    // State untuk dialog konfirmasi hapus
     var deleteConfirmProductId by remember { mutableStateOf<Int?>(null) }
     var deleteConfirmProductName by remember { mutableStateOf("") }
     
@@ -310,8 +308,6 @@ fun SalesScreen(
             onDismiss = { viewModel.closeResiDialog() }
         )
     }
-
-    // ── Dialog Konfirmasi Hapus ───────────────────────────────────────────────
     deleteConfirmProductId?.let { productId ->
         AlertDialog(
             onDismissRequest = { deleteConfirmProductId = null },
@@ -359,8 +355,6 @@ fun SalesScreen(
         )
     }
 }
-
-// ── ResiInputDialog ───────────────────────────────────────────────────────────
 
 @Composable
 private fun ResiInputDialog(orderId: String, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
@@ -431,8 +425,6 @@ private fun ResiInputDialog(orderId: String, onConfirm: (String) -> Unit, onDism
     )
 }
 
-// ── StatCard ──────────────────────────────────────────────────────────────────
-
 @Composable
 private fun StatCard(label: String, value: String, subLabel: String = "", isLarge: Boolean) {
     Box(
@@ -470,8 +462,6 @@ private fun StatCard(label: String, value: String, subLabel: String = "", isLarg
     }
 }
 
-// ── SalesProductItem — dengan AsyncImage ─────────────────────────────────────
-
 @Composable
 private fun SalesProductItem(
     product  : SalesProduct,
@@ -483,7 +473,6 @@ private fun SalesProductItem(
         modifier          = modifier.fillMaxWidth().padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Thumbnail: AsyncImage jika ada imageUrl, fallback ilustrasi botol
         Box(
             modifier = Modifier
                 .size(80.dp)
@@ -530,7 +519,7 @@ private fun SalesProductItem(
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                "${product.aromaFamily} • ${product.volume} • ${product.stockStatus}",
+                "${product.aromaFamily} â€¢ ${product.volume} â€¢ ${product.stockStatus}",
                 style = MaterialTheme.typography.bodySmall.copy(
                     color = if (product.stockStatus == "STOK MENIPIS")
                         Color(0xFFD4A853)
@@ -554,8 +543,6 @@ private fun SalesProductItem(
         }
     }
 }
-
-// Ilustrasi botol fallback (dipakai saat imageUrl kosong atau error)
 @Composable
 private fun BottleIllustration(product: SalesProduct) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -573,8 +560,6 @@ private fun BottleIllustration(product: SalesProduct) {
         )
     }
 }
-
-// ── ActiveOrderCard ───────────────────────────────────────────────────────────
 
 @Composable
 private fun ActiveOrderCard(
