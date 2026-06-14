@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.iml
 .gradle
 /local.properties
@@ -13,3 +14,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+=======
+/*
+!/ScentApp/
+!.gitignore
+>>>>>>> 83cc223876c034ed8fa43fba902ead331cf51cf4
