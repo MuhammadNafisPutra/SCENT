@@ -86,7 +86,7 @@ ScentApp adalah aplikasi *e-commerce* berbasis Android yang didesain khusus untu
 |---|---|---|
 | 1 | **Firebase Authentication** | Autentikasi pengguna dengan Email/Password |
 | 2 | **Firebase Firestore** | Backend-as-a-Service (BaaS) *real-time* NoSQL untuk menyimpan dan menyinkronkan data produk, pesanan, dan pengguna |
-| 3 | **BinderByte API** | Pelacakan nomor resi logistik secara *real-time* via HTTP request menggunakan `Retrofit` |
+| 3 | **BinderByte API** | Pengecekan harga ongkos kirim logistik secara *real-time* via HTTP request menggunakan `Retrofit` |
 | 4 | **Cloudinary API** | *Image hosting* pihak ketiga; aplikasi mengirim gambar via *Multipart Request* secara langsung (unsigned) untuk mendapatkan URL gambar (*secure_url*) |
 
 ---
